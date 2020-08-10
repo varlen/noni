@@ -1,8 +1,9 @@
 using System;
 
+
 namespace noni.Contracts {
 
-    public interface ITypeMapper
+    public interface IRegisterSource
     {
         
     }
