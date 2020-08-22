@@ -48,14 +48,18 @@ namespace noni
 
             Console.WriteLine("Connected");
             
-            //IStructureInspector representationExtractor = GetStructureInspector();
+            IStructureInspector representationExtractor = GetStructureInspector(knownDatabase);
 
             // Extract tables/columns/types information (representation)
-            //DatabaseStructure structure = representationExtractor.GetDatabaseStructure(connection);
+            DatabaseStructure structure = representationExtractor.GetDatabaseStructure(connection);
+
+
 
             // Extract statistics information for numeric columns
 
             // Classify textual information 
+
+            // Serialize structure to file
 
             
         }
@@ -84,8 +88,10 @@ namespace noni
             throw new NotImplementedException();
         }
 
-        public static IStructureInspector GetStructureInspector() {
-            return new PostgresStructureInspector();
+        public static IStructureInspector GetStructureInspector(KnownDatabase dbKind) {
+            if (dbKind == KnownDatabase.Postgres)
+                return new PostgresStructureInspector();
+            return null;
         }
     }
 }
