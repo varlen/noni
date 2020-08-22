@@ -2,6 +2,8 @@
 using System.Data.Common;
 using System.CommandLine.DragonFruit;
 
+using Npgsql;
+
 using noni.Contracts;
 using noni.Models;
 using noni.Implementations;
@@ -38,8 +40,7 @@ namespace noni
             }
 
             
-
-            DbConnection connection = ConnectTo(sourceDatabase);
+            DbConnection connection = ConnectTo(sourceDatabase, AcknowledgeDatabase(databaseType));
 
             Console.WriteLine("Connected");
             
@@ -55,9 +56,24 @@ namespace noni
             
         }
 
-        public static DbConnection ConnectTo(String connectionString) {
-            Console.WriteLine("Connection string is {0}",connectionString);
-            throw new NotImplementedException();
+        public static DbConnection ConnectTo(String connectionString, KnownDatabase database) {
+
+            if (database == KnownDatabase.Postgres) {
+                var conn = new NpgsqlConnection(connectionString); 
+                conn.Open();
+                return conn;                
+            } else {
+                throw new NotImplementedException();
+            }
+
+        }
+
+        public static KnownDatabase AcknowledgeDatabase(String databaseType) {
+            if (databaseType.ToLower() == "postgres")
+            {
+                return KnownDatabase.Postgres;
+            }
+            return KnownDatabase.Other;
         }
 
         public static void GenerateRegisterSource(DbConnection connection) {
