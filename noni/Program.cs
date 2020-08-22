@@ -22,21 +22,31 @@ namespace noni
         /// <summary>
         ///
         /// </summary>
+        /// <param name="databaseType"> Database type. E.g.: postgres, sqlserver, mysql</param>
         /// <param name="sourceDatabase"> Source database connection string</param>
         /// <param name="outputFile"> Output file name</param>
-        public static void Main(String sourceDatabase = null, String outputFile = "output.json")
+        public static void Main(String sourceDatabase = null, String databaseType = "postgres", String outputFile = "output.json")
         {
             if (sourceDatabase == null) {
                 Console.WriteLine("Please provide the source database connection string.");
                 return;
             }
 
-            DbConnection connection = ConnectTo(sourceDatabase);
+            if (databaseType == null) {
+                Console.WriteLine("Please provide the database type.");
+                return;
+            }
+
             
-            IStructureInspector representationExtractor = GetStructureInspector();
+
+            DbConnection connection = ConnectTo(sourceDatabase);
+
+            Console.WriteLine("Connected");
+            
+            //IStructureInspector representationExtractor = GetStructureInspector();
 
             // Extract tables/columns/types information (representation)
-            DatabaseStructure structure = representationExtractor.GetDatabaseStructure(connection);
+            //DatabaseStructure structure = representationExtractor.GetDatabaseStructure(connection);
 
             // Extract statistics information for numeric columns
 
@@ -45,11 +55,8 @@ namespace noni
             
         }
 
-        public static void PrintHelp() {
-            Console.WriteLine("Help");
-        }
-
         public static DbConnection ConnectTo(String connectionString) {
+            Console.WriteLine("Connection string is {0}",connectionString);
             throw new NotImplementedException();
         }
 

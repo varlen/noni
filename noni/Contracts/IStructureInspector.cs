@@ -13,7 +13,7 @@ namespace noni.Contracts {
         /// <summary>
         /// Inspects the database structure to retrive tables, columns and relations
         /// </summary>
-        public DatabaseStructure GetDatabaseStructure(DbConnection connection)
+        public DatabaseStructure GetDatabaseStructure(DbConnection connection);
         
     }
 

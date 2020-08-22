@@ -11,7 +11,7 @@ services:
     - POSTGRES_USER=pguser
     - POSTGRES_PASSWORD=password
     volumes:
-      - ./pginit/docker-entrypoint-initdb.d
+      - ./pginit:/docker-entrypoint-initdb.d
 
     
 
