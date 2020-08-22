@@ -39,8 +39,12 @@ namespace noni
                 return;
             }
 
-            
-            DbConnection connection = ConnectTo(sourceDatabase, AcknowledgeDatabase(databaseType));
+            KnownDatabase knownDatabase = AcknowledgeDatabase(databaseType);
+            if (knownDatabase == KnownDatabase.Other) {
+                Console.WriteLine("No implementation avaliable for database '{0}'", databaseType);
+                return;
+            }
+            DbConnection connection = ConnectTo(sourceDatabase, knownDatabase);
 
             Console.WriteLine("Connected");
             
