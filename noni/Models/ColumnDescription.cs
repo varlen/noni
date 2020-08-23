@@ -6,26 +6,18 @@ namespace noni.Models {
     public class ColumnDescription {
 
         /// <summary>Column name</summary>
-        public readonly string name;
+        public string name {get; set;}
 
         /// <summary>Agnostic column data type</summary>
-        public readonly AgnosticColumnType type;
+        public AgnosticColumnType type {get; set;}
 
         /// <summary>Original column data type</summary>
-        public readonly string nativeType;
+        public string nativeType {get; set;}
 
         /// <summary>Parameters for data generation</summary>
-        public Dictionary<string, string> generatorMetadata;
-
-        /// <summary> Store database column description </summary>
-        /// <param name="name">Column name</param>
-        /// <param name="nativeType">Column type in the native database</param>
-        /// <param name="type">Agnostic column data type</param>
-        public ColumnDescription(string name, string nativeType, AgnosticColumnType type) {
-            this.name = name;
-            this.nativeType = nativeType;
-            this.type = type;
+        private Dictionary<string, string> _generatorMetadata = new Dictionary<string, string>();
+        public Dictionary<string, string> generatorMetadata{ 
+            get { return _generatorMetadata; }
         }
-        
     }
 }

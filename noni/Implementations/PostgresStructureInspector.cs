@@ -56,7 +56,11 @@ namespace noni.Implementations {
                 Console.WriteLine("{0}.{1}.{2} [{3}]", columnRow["table_schema"], columnRow["table_name"], columnRow["column_name"], columnRow["data_type"]);
                 
                 TableDescription table = structure.GetExistingOrCreateTable(tableName, schema);
-                ColumnDescription column = new ColumnDescription(columnName, nativeType, InferAgnosticType(nativeType, columnName));
+                ColumnDescription column = new ColumnDescription{
+                    name = columnName,
+                    nativeType = nativeType,
+                    type = InferAgnosticType(nativeType, columnName)
+                };
                 table.AddColumn(column);
             
             }

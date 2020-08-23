@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.Common;
 using System.CommandLine.DragonFruit;
+using System.IO;
 
 using Npgsql;
 
@@ -53,8 +54,8 @@ namespace noni
             // Extract tables/columns/types information (representation)
             DatabaseStructure structure = representationExtractor.GetDatabaseStructure(connection);
 
-
-
+            string serializedStructure = structure.ToString();
+            File.WriteAllText(outputFile, serializedStructure);
             // Extract statistics information for numeric columns
 
             // Classify textual information 
