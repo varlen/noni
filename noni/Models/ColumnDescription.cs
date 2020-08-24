@@ -15,9 +15,7 @@ namespace noni.Models {
         public string nativeType {get; set;}
 
         /// <summary>Parameters for data generation</summary>
-        private Dictionary<string, string> _generatorMetadata = new Dictionary<string, string>();
-        public Dictionary<string, string> generatorMetadata{ 
-            get { return _generatorMetadata; }
-        }
+        public ColumnMetadata metadata{get; set;}
+
     }
 }

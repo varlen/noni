@@ -50,6 +50,7 @@ namespace noni
             Console.WriteLine("Connected");
             
             IStructureInspector representationExtractor = GetStructureInspector(knownDatabase);
+            IDatabaseMetadataCollector metadataCollector = GetDatabaseMetadataCollector(knownDatabase);
 
             // Extract tables/columns/types information (representation)
             DatabaseStructure structure = representationExtractor.GetDatabaseStructure(connection);
@@ -57,6 +58,8 @@ namespace noni
             string serializedStructure = structure.ToString();
             File.WriteAllText(outputFile, serializedStructure);
             // Extract statistics information for numeric columns
+
+            DatabaseStructure structureWithMetadata = metadataCollector.Collect(connection, structure);
 
             // Classify textual information 
 
@@ -92,6 +95,12 @@ namespace noni
         public static IStructureInspector GetStructureInspector(KnownDatabase dbKind) {
             if (dbKind == KnownDatabase.Postgres)
                 return new PostgresStructureInspector();
+            return null;
+        }
+
+        public static IDatabaseMetadataCollector GetDatabaseMetadataCollector(KnownDatabase dbKind) {
+            if (dbKind == KnownDatabase.Postgres)
+                return new PostgresDatabaseMetadataCollector();
             return null;
         }
     }
