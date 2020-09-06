@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using noni.Contracts;
+
 
 namespace noni.Implementations.Common {
 
@@ -8,11 +11,28 @@ namespace noni.Implementations.Common {
 
         public static NamedEntity Match(List<String> textData)
         {
-            var matchResult = NamedEntity.Unknown;
 
-            // TODO - Match logic
+            List<NamedEntity> matchedEntities = 
+            textData.AsParallel().Select((x) => {
+                return EntityMatcher.Match(x);
+            }).ToList();
 
-            return matchResult;
+            var votedMatch = matchedEntities
+                .GroupBy( n => n )
+                .Select( n => new {
+                    category = n.Key,
+                    count = n.Count()
+                })
+                .OrderByDescending( n => n.count)
+                .Select( n => n.category )
+                .FirstOrDefault();
+
+            return votedMatch;
+        }
+
+        public static NamedEntity Match(String text)
+        {
+            return NamedEntity.Unknown;
         }
 
     }
