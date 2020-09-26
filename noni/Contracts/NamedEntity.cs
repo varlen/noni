@@ -5,6 +5,7 @@ namespace noni.Contracts {
         Boolean,
         Name,
         Address,
+        CEP,
         CPF,
         CNPJ,
         ID,
@@ -12,7 +13,11 @@ namespace noni.Contracts {
         LicensePlate,
         PIS,
         VotingCardNumber,
-        CreditCardNumber
+        CreditCardNumber,
+
+        Email,
+
+        UUID
     }
 
 }
