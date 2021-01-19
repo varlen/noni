@@ -2,6 +2,7 @@
 using System.Data.Common;
 using System.CommandLine.DragonFruit;
 using System.IO;
+using System.Diagnostics;
 
 using Npgsql;
 
@@ -15,7 +16,6 @@ namespace noni
     {
         DatabaseStructure databaseStructure;
 
-        ITypeMapper typeMapper; 
         // Process the database according to the structure, match patterns and extract statistic data from column agreggations
         // Produces metadata that composes the register
 
@@ -45,6 +45,9 @@ namespace noni
                 Console.WriteLine("No implementation avaliable for database '{0}'", databaseType);
                 return;
             }
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+
             DbConnection connection = ConnectTo(sourceDatabase, knownDatabase);
 
             Console.WriteLine("Connected");
@@ -56,16 +59,22 @@ namespace noni
             DatabaseStructure structure = representationExtractor.GetDatabaseStructure(connection);
 
             string serializedStructure = structure.ToString();
-            File.WriteAllText(outputFile, serializedStructure);
-            // Extract statistics information for numeric columns
-
+            
+            // Extract statistics information for numeric columns and classify textual information 
             DatabaseStructure structureWithMetadata = metadataCollector.Collect(connection, structure);
-
-            // Classify textual information 
+ 
+            string serializedWithMetadata = structureWithMetadata.ToString();
 
             // Serialize structure to file
+            File.WriteAllText(outputFile, serializedStructure);
+            File.WriteAllText("serial_" + outputFile, serializedWithMetadata);
 
-            
+            timer.Stop();
+            TimeSpan ts = timer.Elapsed;
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+            ts.Hours, ts.Minutes, ts.Seconds,
+            ts.Milliseconds / 10);
+            Console.WriteLine("Done. Elapsed time: {0}", elapsedTime);
         }
 
         public static DbConnection ConnectTo(String connectionString, KnownDatabase database) {
