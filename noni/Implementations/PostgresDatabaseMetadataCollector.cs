@@ -26,6 +26,7 @@ namespace noni.Implementations {
 
         private void ApplyColumnMetadata(DbConnection connection, ColumnDescription column, TableDescription table)
         {
+            Console.WriteLine("Extracting column metadata to {0}.{1}", table.name, column.name);
             // https://devblogs.microsoft.com/dotnet/do-more-with-patterns-in-c-8-0/
             column.metadata = column.type switch
             {
@@ -48,7 +49,7 @@ namespace noni.Implementations {
             
             using (var cmd = new NpgsqlCommand(countQuery, (NpgsqlConnection) connection))
             {
-                metadata.distinct = (int) cmd.ExecuteScalar();
+                metadata.distinct = (Int64) cmd.ExecuteScalar();
             }
             return metadata;
         }
@@ -70,13 +71,13 @@ namespace noni.Implementations {
 
             using (var cmd = new NpgsqlCommand(trueQuery, (NpgsqlConnection) connection))
             {
-                var trueCount = (int) cmd.ExecuteScalar();
+                var trueCount = (Int64) cmd.ExecuteScalar();
                 metadata.categories.Add( true, trueCount );
             }
 
             using (var cmd = new NpgsqlCommand(falseQuery, (NpgsqlConnection) connection))
             {
-                var falseCount = (int) cmd.ExecuteScalar();
+                var falseCount = (Int64) cmd.ExecuteScalar();
                 metadata.categories.Add( false, falseCount );
             }
 
@@ -99,13 +100,20 @@ namespace noni.Implementations {
             using (var cmd = new NpgsqlCommand(numericStatQuery, (NpgsqlConnection) connection))
             using (var reader = cmd.ExecuteReader())
             {
-                metadata = new NumericColumnMetadata(defaultMetadata)
+                if (reader.HasRows && reader.Read()) 
                 {
-                    max = reader.GetFieldValue<Decimal>("max"),
-                    min = reader.GetFieldValue<Decimal>("min"),
-                    variance = reader.GetFieldValue<Decimal>("variance"),
-                    average = reader.GetFieldValue<Decimal>("average")
-                };
+                    metadata = new NumericColumnMetadata(defaultMetadata)
+                    {
+                        max = Convert.ToDecimal(reader.GetValue("max")),
+                        min = Convert.ToDecimal(reader.GetValue("min")),
+                        variance = Convert.ToDecimal(reader.GetValue("variance")),
+                        average = Convert.ToDecimal(reader.GetValue("average"))
+                    };
+                }
+                else
+                {
+                    metadata = new NumericColumnMetadata(defaultMetadata);
+                }
             }
 
             var modeQuery = String.Format(
@@ -114,7 +122,7 @@ namespace noni.Implementations {
             
             using (var cmd = new NpgsqlCommand(modeQuery, (NpgsqlConnection) connection))
             {
-                metadata.mode = (Decimal) cmd.ExecuteScalar();
+                metadata.mode = Convert.ToDecimal(cmd.ExecuteScalar());
             }
 
             return metadata;
@@ -126,23 +134,25 @@ namespace noni.Implementations {
             // Extract variance, max, min, mean, mode values
             // https://www.postgresql.org/docs/9.1/functions-aggregate.html
             DateTimeColumnMetadata metadata;
-            var numericStatQuery = String.Format(@"SELECT avg({0}) as average,
+            var numericStatQuery = String.Format(@"SELECT
                             max({0}) as max,
-                            min({0}) as min,
-                            variance({0}) as variance
+                            min({0}) as min
                             FROM {1}.{2}", 
                             column.name, table.schema, table.name);
 
             using (var cmd = new NpgsqlCommand(numericStatQuery, (NpgsqlConnection) connection))
             using (var reader = cmd.ExecuteReader())
             {
-                metadata = new DateTimeColumnMetadata(defaultMetadata)
-                {
-                    max = reader.GetFieldValue<DateTime>("max"),
-                    min = reader.GetFieldValue<DateTime>("min"),
-                    variance = reader.GetFieldValue<DateTime>("variance"),
-                    average = reader.GetFieldValue<DateTime>("average")
-                };
+                if (reader.Read()) {
+                    metadata = new DateTimeColumnMetadata(defaultMetadata)
+                    {
+                        max = reader.GetFieldValue<DateTime>("max"),
+                        min = reader.GetFieldValue<DateTime>("min")
+                    };
+                } else {
+                    metadata = new DateTimeColumnMetadata(defaultMetadata);
+                }
+
             }
 
             var modeQuery = String.Format(
@@ -157,61 +167,83 @@ namespace noni.Implementations {
             return metadata;
         }
 
-        private TextColumnMetadata GetTextColumnMetadata(DbConnection connection, ColumnDescription column, TableDescription table)
+        private ColumnMetadata GetTextColumnMetadata(DbConnection connection, ColumnDescription column, TableDescription table)
         {
             ColumnMetadata defaultMetadata = GetDefaultColumnMetadata(connection, column, table);
             var metadata = new TextColumnMetadata(defaultMetadata);
 
-            var countQuery = String.Format(@"SELECT count({0}) as count,
-                FROM {1}.{2}", 
-                column.name, table.schema, table.name);
+            var countQuery = String.Format(
+                @"SELECT count({0}) as count FROM {1}.{2}", 
+                column.name, table.schema, table.name
+            );
 
-            int rowCount;
+            Int64 rowCount;
             using (var cmd = new NpgsqlCommand(countQuery, (NpgsqlConnection) connection))
             {
-                rowCount = (int) cmd.ExecuteScalar();
+                rowCount = (Int64) cmd.ExecuteScalar();
+            }
+
+            if (column.nativeType == "text")
+            {
+                return metadata;
             }
             
-            // TODO - Make it configurable
-            var rowsToSample = 100;
-            metadata.sampleCount = rowsToSample;
-
-            var proportion = 100 * ( rowsToSample  / rowCount );
-
-            if (proportion > 100)
-            {
-                proportion = 100;
-            }
-
-            if (proportion < 1)
-            {
-                proportion = 1;
-            }
-
-            // Postgres 9.5+
-            var dataSampleQuery = String.Format(
-                @"SELECT {0} FROM {1}.{2} TABLESAMPLE SYSTEM ({3}) WHERE {0} IS NOT NULL LIMIT {4}",
-                column.name, table.schema, table.name, proportion, rowsToSample);
-
             List<String> samples = new List<String>();
-
-            using (var cmd = new NpgsqlCommand(dataSampleQuery, (NpgsqlConnection) connection))
-            using (var reader = cmd.ExecuteReader())
+            if (rowCount > 0) 
             {
-                foreach (String row in reader)
-                {
-                    samples.Add(row);
-                }
-            }
+                // TODO - Make it configurable
+                var rowsToSample = 100;
+                metadata.sampleCount = rowsToSample;
 
-            metadata.entityType = Common.EntityMatcher.Match(samples);
+                var proportion = 100 * ( rowsToSample  / rowCount );
+
+                if (proportion > 100)
+                {
+                    proportion = 100;
+                }
+
+                if (proportion < 1)
+                {
+                    proportion = 1;
+                }
+
+                // Postgres 9.5+
+                var dataSampleQuery = String.Format(
+                    @"SELECT {0} FROM {1}.{2} TABLESAMPLE SYSTEM ({3}) WHERE {0} IS NOT NULL LIMIT {4}",
+                    column.name, table.schema, table.name, proportion, rowsToSample);
+
+                using (var cmd = new NpgsqlCommand(dataSampleQuery, (NpgsqlConnection) connection))
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.HasRows && reader.Read())
+                    {
+                        samples.Add(reader.GetString(0));
+                    }
+                }
+
+                Console.WriteLine("Matching textual category");
+                metadata.entityType = Common.EntityMatcher.Match(samples);
+            }
+            
 
             if (metadata.entityType == NamedEntity.Unknown)
             {
-                // TODO - Handle unknown entity type, possibly try to convert to CategoricColumn
-                throw new Exception("Could not identify textual data type");
-            }
+                var samplesWithCommas = String.Join(",", samples);
 
+                Console.WriteLine("Could not identify textual data type. Examples:\n " + samplesWithCommas);
+
+                var categoryDict = CategoricColumnMetadata.TryCategoriesFromSamples(samples);
+
+                if (categoryDict.Keys.Count == samples.Count)
+                {
+                    Console.WriteLine("Data is probably not categoric. Using default metadata");
+                    return defaultMetadata;
+                }
+                else
+                {
+                    return new CategoricColumnMetadata(categoryDict);
+                }
+            }
             return metadata;
         }
 
