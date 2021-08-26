@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using noni.Contracts;
 
 namespace noni.Models {
@@ -10,6 +11,8 @@ namespace noni.Models {
 
         public int sampleCount{get; set;}
         public NamedEntity entityType = NamedEntity.Unknown;
+
+        public List<string> samples{get; set;}
         
 
         public TextColumnMetadata(ColumnMetadata defaultMetadata)

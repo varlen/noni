@@ -2,6 +2,7 @@ using System;
 using System.Data.Common;
 using System.Data;
 using System.Collections.Generic;
+using System.Linq;
 using Npgsql;
 
 using noni.Contracts;
@@ -177,11 +178,13 @@ namespace noni.Implementations {
                 column.name, table.schema, table.name
             );
 
-            Int64 rowCount;
+            Int64 rowCount = 0;
             using (var cmd = new NpgsqlCommand(countQuery, (NpgsqlConnection) connection))
             {
                 rowCount = (Int64) cmd.ExecuteScalar();
             }
+            
+
 
             if (column.nativeType == "text")
             {
@@ -221,7 +224,9 @@ namespace noni.Implementations {
                     }
                 }
 
-                Console.WriteLine("Matching textual category");
+                metadata.samples = samples.Distinct().ToList();
+
+                Console.WriteLine(" Testing textual category");
                 metadata.entityType = Common.EntityMatcher.Match(samples);
             }
             
@@ -230,14 +235,14 @@ namespace noni.Implementations {
             {
                 var samplesWithCommas = String.Join(",", samples);
 
-                Console.WriteLine("Could not identify textual data type. Examples:\n " + samplesWithCommas);
+                Console.WriteLine(" Could not identify textual data type. Examples:\n " + samplesWithCommas);
 
                 var categoryDict = CategoricColumnMetadata.TryCategoriesFromSamples(samples);
 
                 if (categoryDict.Keys.Count == samples.Count)
                 {
-                    Console.WriteLine("Data is probably not categoric. Using default metadata");
-                    return defaultMetadata;
+                    Console.WriteLine(" Data is probably not categoric. Using default metadata");
+                    return metadata;
                 }
                 else
                 {
