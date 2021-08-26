@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using noni.Serialization;
 
 namespace noni.Models {
 
@@ -71,10 +72,12 @@ namespace noni.Models {
 
             var options = new JsonSerializerOptions
             {
-                WriteIndented = true
+                WriteIndented = true,
+                Converters = { 
+                    new ColumnMetadataConverter(),
+                    new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) 
+                }
             };
-
-            options.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
 
             return JsonSerializer.Serialize(serializableDict, options);
         }

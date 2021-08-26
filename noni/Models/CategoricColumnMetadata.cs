@@ -38,9 +38,12 @@ namespace noni.Models {
             categories = externalCategories;
         }
 
-        public new decimal distinct{ 
+        public new Int64 distinct{ 
             get {
-                return categories.Count;
+                return (Int64) categories.Count;
+            }
+            set {
+
             }
         }
 
