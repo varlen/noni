@@ -69,7 +69,7 @@ namespace noni.Implementations {
             using (var content = new MultipartFormDataContent("Upload----" + DateTime.Now.ToString(CultureInfo.InvariantCulture)))
             {
                 var streamContent = new StreamContent(csvContent);
-                content.Add(streamContent, tableName, $"{tableName}.csv");
+                content.Add(streamContent,"file", $"{tableName}.csv");
 
                 using (var message = await client.PostAsync(SATO_URL, content))
                 {
@@ -145,7 +145,7 @@ namespace noni.Implementations {
                 return csvMemoryStream;
             }
 
-            using (StreamWriter sw = new StreamWriter(csvMemoryStream, Encoding.Unicode, 2048, true))
+            using (StreamWriter sw = new StreamWriter(csvMemoryStream, Encoding.UTF8, 2048, true))
             {
                 sw.WriteLine(string.Join(',', columnSamples.Keys));
 
@@ -163,7 +163,6 @@ namespace noni.Implementations {
                         {
                             // Index passed the last sample available for this column, repeat a random sample
                             var sampleIndex = rnd.Next(samples.Count);
-                            Console.WriteLine($"Picking random sample @ position {sampleIndex}  (total samples: {samples.Count})");
                             sample = samples[sampleIndex];
                         }
                         else
@@ -172,7 +171,8 @@ namespace noni.Implementations {
                             sample = samples[i];
                         }
 
-                        sw.Write(sample.Replace("'","\'"));
+                        var safeSample = sample.Replace("'","\\'");
+                        sw.Write($"'{safeSample}'");
 
                         if (lastColumn) 
                         {
