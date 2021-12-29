@@ -12,6 +12,8 @@ namespace noni.Models {
         public int sampleCount{get; set;}
         public NamedEntity entityType = NamedEntity.Unknown;
 
+        public string satoCategory{get; set;}
+
         public List<string> samples{get; set;}
         
 
