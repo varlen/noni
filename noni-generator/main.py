@@ -1,4 +1,4 @@
-from database.postgres import pool
+from database.common import create_new_table, save_schema, connection
 import json
 import sys
 
