@@ -1,16 +1,49 @@
 from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData
+from sqlalchemy.dialects import postgresql
 
 # TODO - Load from environment
-CONNECTION_URL = "postgresql://pguser:password@localhost:5432/mydb"
+CONNECTION_URL = "postgresql://pguser:password@localhost:5432/outputdb"
 
 engine = create_engine(CONNECTION_URL)
 metadata_context = MetaData()
 
-def create_new_table(table_name, column_data):
+string_to_type = {
+    "smallint":postgresql.SMALLINT,
+    "character varying":postgresql.VARCHAR,
+    "character":postgresql.CHAR,
+    "text":postgresql.TEXT,
+    "integer":postgresql.INTEGER,
+    "real":postgresql.REAL,
+    "date":postgresql.DATE,
+    "bytea":postgresql.BYTEA,
+    "boolean":postgresql.BOOLEAN,
+    "double":postgresql.DOUBLE_PRECISION,
+    "uuid":postgresql.UUID,
+    "bigint":postgresql.BIGINT,
+    "timestamp":postgresql.TIMESTAMP
+}
+
+def get_type(type_string):
+    if type_string in string_to_type:
+        return string_to_type[type_string]
+    raise Exception(f"Type {type_string} has no SQLAlchemy type mapping")
+
+def get_table_data(spec_table):
+    """
+    Returns a tuple with the schema name, table name and column data
+    """
+    column_data = [
+        (column['name'], get_type(column['nativeType']), column['type'] == 'key')
+        for column in spec_table['columns']
+    ]
+    return (spec_table['schema'], spec_table['name'], column_data)
+
+def create_new_table(schema_name, table_name, column_data):
     return Table(
         table_name,
         metadata_context,
-        **[Column(column_name, column_type, primary_key=is_pk) for column_name, column_type, is_pk in column_data]
+        schema=schema_name,
+        *[Column(column_name, column_type, primary_key=is_pk) for column_name, column_type, is_pk in column_data],
     )
 
 def save_schema():
