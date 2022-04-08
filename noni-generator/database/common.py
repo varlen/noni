@@ -1,3 +1,4 @@
+from typing import List
 from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData
 from sqlalchemy.dialects import postgresql
 
@@ -23,10 +24,33 @@ string_to_type = {
     "timestamp":postgresql.TIMESTAMP
 }
 
+def execute_commands(list_of_commands):
+    # TODO - Execute actual database commands
+    print(list_of_commands)
+
 def get_type(type_string):
     if type_string in string_to_type:
         return string_to_type[type_string]
     raise Exception(f"Type {type_string} has no SQLAlchemy type mapping")
+
+def as_sql_fragment(value):
+    if isinstance(value, str):
+        return f"'{value}'"
+    elif isinstance(value, bool):
+        return str(value).upper()
+    elif value == None:
+        return 'NULL'
+    else:
+        return str(value)
+
+def create_insert_command(
+    table_name : str,
+    columns : List[str],
+    values_set_list : List[List[object]]
+    ) -> str:
+    value_set = [ f"({', '.join([ as_sql_fragment(v) for v in values ])})" for values in values_set_list ]
+    formatted_values = ',\n'.join(value_set)
+    return f"INSERT INTO {table_name} ({ ', '.join(columns) }) VALUES\n{formatted_values}"
 
 def get_table_data(spec_table):
     """
