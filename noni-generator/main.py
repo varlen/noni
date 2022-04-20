@@ -11,11 +11,14 @@ def load_spec_file(path):
 
 table_models = []
 
+dbg = None
+
 def run_commands(list_of_commands):
     # TODO - Change to actual implementation
     print('\n'.join(list_of_commands))
 
 def main(spec):
+    global dbg
     table_data_generators = {}
     tables_spec_by_name = {}
     for index, table in enumerate(spec['tables']):
@@ -31,6 +34,7 @@ def main(spec):
     # Build dataset
     dataset = []
     for table_name, generators in table_data_generators.items():
+        print(f"Building row generator for table {table_name}")
         # Compose an INSERT generator using existing generators
         columns = []
 
@@ -43,6 +47,8 @@ def main(spec):
 
         # Generate insert commands
         number_of_rows_to_create = 50
+
+        dbg = generators
 
         def get_new_data_row():
             return tuple([ generators[column]() for column in generators.keys() ])

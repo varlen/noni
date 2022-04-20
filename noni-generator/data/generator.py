@@ -1,4 +1,5 @@
 import random, uuid
+from string import ascii_letters
 from typing import Callable
 from datetime import datetime
 from itertools import count
@@ -28,7 +29,11 @@ def textual_data_generator(column) -> Callable:
         if column['metadata'] and \
             (not column['metadata']['columnData']
                 or not 'samples' in column['metadata']['columnData']) or not column['metadata']:
-            return lambda : None
+            print("First case textual data generator ")
+            if column['type'] == 'key':
+                lambda : str(uuid.uuid4())
+            else:
+                return lambda : None
         else:
             generator = type78_generator(column['metadata']['columnData']['satoCategory'])
             if generator:
@@ -44,6 +49,11 @@ def textual_data_generator(column) -> Callable:
                 lambda : str(uuid.uuid4())
             else:
                 return lambda : ''
+        if not column['metadata'] and column['type'] == 'key':
+            if column['nativeType'] == 'character':
+                return lambda : random.choice(list(ascii_letters + '1234567890'))
+            else:
+                return lambda : str(uuid.uuid4())
     except:
         print(f"[ERROR] Bad column data @ {column}")
         raise
@@ -75,6 +85,7 @@ def get_row_generators(table_spec):
     for column in table_spec['columns']:
         column_type = column['nativeType'].upper()
         if column_type in generators_per_native_type:
+            print(f"Using native type based generator for column {column['name']} @ {table_spec['name']}")
             row_generators[column['name']] = generators_per_native_type[column_type](column)
         else:
             print(f"[WARN] Column {column['name']} with native database type {column_type} has no generator defined and will not receive any data")
