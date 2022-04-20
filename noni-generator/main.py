@@ -16,14 +16,6 @@ def run_commands(list_of_commands):
     print('\n'.join(list_of_commands))
 
 def main(spec):
-    """
-    # Test connection
-    with pool.connection() as conn:
-        with conn.cursor() as cur:
-            cur.execute("SELECT * FROM products")
-            for result in cur:
-                print(result)
-    """
     table_data_generators = {}
     tables_spec_by_name = {}
     for index, table in enumerate(spec['tables']):
@@ -33,16 +25,11 @@ def main(spec):
         table_models.append(table_model)
         print(f"{index} {table_model}")
         table_data_generators[table_name] = generator.get_row_generators(table)
-        """
-        for column in table['columns']:
-            sato_category = '' if not column['metadata'] else column['metadata']['columnData']['satoCategory'] if 'satoCategory' in column['metadata']['columnData'] else ''
-            print(f"    {column['name']} {column['type']}({column['nativeType']}) {'[M] ?> ' + str(sato_category) if column['metadata'] != None else ''}")
-        print()
-        """
     db.save_schema()
+    print("Database structure created")
 
-    db_commands = []
-
+    # Build dataset
+    dataset = []
     for table_name, generators in table_data_generators.items():
         # Compose an INSERT generator using existing generators
         columns = []
@@ -55,16 +42,21 @@ def main(spec):
             continue
 
         # Generate insert commands
-        rows_to_create = 50
+        number_of_rows_to_create = 50
 
         def get_new_data_row():
-            return [ generators[column]() for column in generators.keys() ]
+            return tuple([ generators[column]() for column in generators.keys() ])
 
-        generated_data = [ get_new_data_row() for _ in range(rows_to_create) ]
+        generated_data = [ get_new_data_row() for _ in range(number_of_rows_to_create) ]
+        dataset.append((table_name, columns, generated_data))
 
-        db_commands.append(db.create_insert_command(table_name, columns, generated_data))
+    print("Dataset built")
 
-    db.execute_commands(db_commands)
+    # Consume dataset
+    # for table_name, columns, rows in dataset:
+    #     db.insert_rows(table_name, columns, rows)
+    db.insert_tables(dataset)
+    print("Database populated")
 
 
 if __name__ == "__main__":

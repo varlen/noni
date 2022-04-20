@@ -3,12 +3,6 @@ import random
 
 fake = Faker(['pt_BR','en_US'])
 
-def pick_from_samples(samples, can_use_samples = True):
-    if can_use_samples:
-        return lambda : random.choice(samples)
-    else:
-        return lambda : None
-# 29 specific generators 
 specific_generators = {
     'address': lambda : fake.street_address(),
     'age': lambda : str(random.uniform(21, 99)),
@@ -42,8 +36,8 @@ specific_generators = {
     'weight': lambda : str(random.uniform(1, 150))
 }
 
-def type78_generator(type, samples):
+def type78_generator(type):
     if not type in specific_generators:
-        return pick_from_samples(samples)
+        return None
     else:
         return specific_generators[type]
