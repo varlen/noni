@@ -1,9 +1,7 @@
 import random, uuid
-from string import ascii_letters
 from typing import Callable
 from datetime import datetime
 from itertools import count
-from sqlalchemy.dialects import postgresql as pgtypes
 from data.textual import type78_generator
 
 def null_generator(column) -> Callable:
