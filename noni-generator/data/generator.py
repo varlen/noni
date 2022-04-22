@@ -50,10 +50,7 @@ def textual_data_generator(column) -> Callable:
             else:
                 return lambda : ''
         if not column['metadata'] and column['type'] == 'key':
-            if column['nativeType'] == 'character':
-                return lambda : random.choice(list(ascii_letters + '1234567890'))
-            else:
-                return lambda : str(uuid.uuid4())
+            return lambda : str(uuid.uuid4())
     except:
         print(f"[ERROR] Bad column data @ {column}")
         raise

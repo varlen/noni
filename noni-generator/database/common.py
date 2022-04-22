@@ -14,7 +14,7 @@ metadata_context = MetaData()
 string_to_type = {
     "smallint":postgresql.SMALLINT,
     "character varying":postgresql.VARCHAR,
-    "character":postgresql.CHAR,
+    "character":postgresql.VARCHAR,
     "text":postgresql.TEXT,
     "integer":postgresql.INTEGER,
     "real":postgresql.REAL,
