@@ -3,13 +3,11 @@ from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData
 from sqlalchemy.dialects import postgresql
 from rich import print
 
-# TODO - Load from environment
-CONNECTION_URL = "postgresql://pguser:password@localhost:5432/outputdb"
+DEFAULT_CONNECTION_URL = "postgresql://pguser:password@localhost:5432/mydb"
 
-def get_engine():
-    return create_engine(CONNECTION_URL)
+def get_engine(connection_url = DEFAULT_CONNECTION_URL):
+    return create_engine(connection_url)
 
-engine = get_engine()
 metadata_context = MetaData()
 
 string_to_type = {
@@ -58,7 +56,7 @@ def create_new_table(schema_name, table_name, column_data):
         *[Column(column_name, column_type, primary_key=is_pk) for column_name, column_type, is_pk in column_data],
     )
 
-def save_schema():
+def save_schema(engine):
     metadata_context.create_all(engine)
 
 def insert_tables(dataset):
@@ -78,14 +76,24 @@ def insert_tables(dataset):
     conn.commit()
     conn.close()
 
-def insert_rows(table_name : str, columns : str, data : List[Tuple]):
+def insert_rows(engine, table_name : str, columns : str, data : List[Tuple]):
     insert_command = create_insert_command(table_name, columns)
     with engine.raw_connection() as conn:
         with conn.cursor() as cur:
             for row in data:
                 cur.execute(insert_command, row)
 
-def example():
+def get(engine, query):
+    """Returns an array of tuples with query results"""
+    #print(engine)
+    #print(engine.name)
+    #print(dir(engine))
+    conn = engine.raw_connection()
+    with conn.cursor() as cur:
+        cur.execute(query)
+        return cur.fetchall()
+
+def example(engine):
     with engine.raw_connection() as conn:
         with conn.cursor() as cur:
             cur.execute('SELECT * FROM products')
