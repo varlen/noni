@@ -16,23 +16,28 @@ and t.table_schema = c.table_schema
 where t.table_schema not in ('pg_catalog', 'information_schema')
 and t.table_type = 'BASE TABLE';"""
 
-KEYS_QUERY = \
+CONSTRAINTS_QUERY = \
 """SELECT t.table_schema, t.table_name, c.column_name,
-ccu.constraint_name, tc.constraint_type
+ccu.constraint_name, tc.constraint_type, kcu.table_schema,
+kcu.table_name, kcu.column_name, kcu.ordinal_position, kcu.position_in_unique_constraint
 FROM information_schema.tables as t
-inner join information_schema.columns as c
+left join information_schema.columns as c
     on t.table_name = c.table_name
     and t.table_catalog = c.table_catalog
     and t.table_schema = c.table_schema
-inner join information_schema.constraint_column_usage as ccu
+left join information_schema.constraint_column_usage as ccu
     on c.column_name = ccu.column_name
     and c.table_name = ccu.table_name
     and c.table_schema = ccu.table_schema
-inner join information_schema.table_constraints as tc
+left join information_schema.key_column_usage as kcu
+	on kcu.constraint_name = ccu.constraint_name
+	and kcu.constraint_schema = ccu.constraint_schema
+left join information_schema.table_constraints as tc
     on ccu.constraint_name = tc.constraint_name
     and ccu.constraint_schema = tc.constraint_schema
     and ccu.table_name = tc.table_name
 where t.table_schema not in ('pg_catalog', 'information_schema')
+and ccu.constraint_name is not NULL
 and t.table_type = 'BASE TABLE';"""
 
 def get_numeric_stat_query(table_schema, table_name, column_name):
@@ -63,8 +68,8 @@ def get_count_query(table_schema, table_name, column_name):
 
 def get_datasample_query(table_schema, table_name, column_name, proportion, rows_to_sample):
     'Requires Postgres 9.5+'
-    return f"""SELECT DISTINCT {column_name} FROM {table_schema}.{table_name} 
-TABLESAMPLE SYSTEM ({proportion}) 
+    return f"""SELECT DISTINCT {column_name} FROM {table_schema}.{table_name}
+TABLESAMPLE SYSTEM ({proportion})
 WHERE {column_name} IS NOT NULL LIMIT {rows_to_sample}"""
 
 def get_select_rows_query(column_names, table_schema, table_name, max_rows):
@@ -86,14 +91,15 @@ def get_tables_columns_dataset(engine, db):
     return db.get(engine, TABLES_COLUMNS_QUERY)
 
 def get_keys_dataset(engine, db):
-    return db.get(engine, KEYS_QUERY)
+    return db.get(engine, CONSTRAINTS_QUERY)
 
 def infer_agnostic_column_type(native_type, column_name):
+    print(f"[red] INFERING COLUMN TYPE FOR {native_type} {column_name} [/red]")
     time_types = { 'date', 'timestamp without time zone', 'timestamp with timezone', 'time without time zone', 'time with time zone' }
     text_types = { 'text', 'character varying', 'character', 'citext', 'json', 'jsonb', 'xml' }
     integer_types = { 'smallint', 'integer', 'bigint' }
     decimal_types = { 'real', 'double precision', 'numeric', 'money' }
-    boolean_types = { 'bit(1)', 'bool' }
+    boolean_types = { 'bit(1)', 'bool', 'boolean' }
 
     if column_name.startswith('id_') or column_name.endswith('_id') or native_type == 'uuid':
         return 'key'
@@ -109,20 +115,46 @@ def infer_agnostic_column_type(native_type, column_name):
         return 'bool'
     return 'unknown'
 
+def get_constraints(engine, db):
+    keys_dataset = get_keys_dataset(engine, db)
+
+    keys_by_table = {}
+    for key_info in keys_dataset:
+        source_schema, source_table, source_column, constraint_name, constraint_type, \
+            target_schema, target_table, target_column, \
+            ordinal_position, unique_position = key_info
+        if not (target_schema, target_table) in keys_by_table:
+            keys_by_table[(target_schema, target_table)] = {
+                'primary_key' : [],
+                'foreign_key' : []
+            }
+        if constraint_type == 'PRIMARY KEY':
+            keys_by_table[(target_schema, target_table)]['primary_key'].append({
+                'name' : constraint_name,
+                'column' : target_column,
+                'order' : ordinal_position
+            })
+        else:
+            keys_by_table[(target_schema, target_table)]['foreign_key'].append({
+                'name' : constraint_name,
+                'column' : target_column,
+                'refer_schema' : source_schema,
+                'refer_table' : source_table,
+                'refer_column' : source_column,
+                'order' : ordinal_position,
+                'unique_order' : unique_position
+            })
+    return keys_by_table
+
 def get_database_structure(engine, db):
 
     # Load tables_columns data
     tables_columns_dataset = get_tables_columns_dataset(engine, db)
 
     # Load database keys information
-    keys_dataset = get_keys_dataset(engine, db)
-
-    # TODO - Add key information as metadata
+    constraints = get_constraints(engine, db)
 
     tables_dict = {}
-
-    # t.table_schema, t.table_name, t.table_type, c.column_name, c.ordinal_position, 
-    # c.column_default, c.is_nullable, c.data_type, c.character_maximum_length, c.numeric_precision
 
     for column_data in tables_columns_dataset:
         schema_name, table_name, table_type,\
@@ -131,17 +163,21 @@ def get_database_structure(engine, db):
             max_char_length, num_precision = column_data
         print(f'{schema_name}.{table_name}.{column_name} [{native_type}]')
         table_spec = get_table(tables_dict, table_name, schema_name)
+        ag_col_type = infer_agnostic_column_type(native_type, column_name)
+        print(f"[red]   {ag_col_type}[/red]")
         column_definition = {
             'name' : column_name,
             'nativeType' : native_type,
-            'type' : infer_agnostic_column_type(native_type, column_name),
-            'foreignKey' : None
+            'type' : ag_col_type,
         }
         table_spec['columns'].append(column_definition)
+        if not 'constraints' in table_spec and (schema_name, table_name) in constraints:
+            table_spec['constraints'] = constraints[(schema_name, table_name)]
 
     database_structure = {
         'tables' : [ v for v in tables_dict.values()]
     }
+
     return database_structure
 
 ##### Named entity matching
@@ -263,15 +299,12 @@ def get_text_column_metadata(engine, db, column, table):
         m['sampleCount'] = len(data_sample)
         samples = [ s[0] for s in data_sample ]
         m['samples'] = samples
-
-        print("  Testing textual category")
         m['entityType'] = match_entity(samples)
 
     if not m['entityType'] or m['entityType'] == 'unknown':
-        print(f"  Could not identify textual data type. Examples: \n    {'\n    '.join(samples[0:3])}")
+        print(f"  Could not identify textual data type. Examples: {', '.join(samples[0:3])}")
 
         possible_categories = try_categories_from_samples(samples)
-        print(possible_categories)
         if len(possible_categories) == len(samples):
             print("  Data in column is probably not categoric. Using default metadata structure.")
             return m
@@ -334,13 +367,12 @@ def add_metadata(engine, db, structure):
         if csv_table_sample:
             # call SATO for semantic inference
             semantic_inferences = run_semantic_inference_model(table, csv_table_sample)
-            print(f"[purple]  Semantic inferences: {semantic_inferences}[/purple]")
+            print(f"  Semantic inferences done.")
 
             # map semantic inferences to generators
             for column in table['columns']:
                 if column['name'] in semantic_inferences:
                     inferred_category = semantic_inferences[column['name']]
-                    print(column)
                     if not 'metadata' in column or not column['metadata']:
                         column['metadata'] = {}
                     column['metadata']['satoCategory'] = inferred_category
