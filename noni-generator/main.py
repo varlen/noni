@@ -1,7 +1,11 @@
-from database import common as db
-from data import generator
 import json
 import sys
+
+from rich import print
+
+from database import common as db
+from data import generator
+
 
 def load_spec_file(path):
     with open(path) as spec_file:
@@ -17,10 +21,50 @@ def run_commands(list_of_commands):
     # TODO - Change to actual implementation
     print('\n'.join(list_of_commands))
 
+def get_ordered_tables(tables_list):
+    # Rebuilding table filling algorithm
+
+
+    # First, topologically sort tables to consider their FK -> PK relations
+    working_stack = [] # push with append, top is [-1]
+    output_stack = []
+    visited = set()
+    tables = { (t['schema'],t['name']) : t for t in tables_list }
+    table_index = 0
+    number_of_tables = len(tables_list)
+
+    while True:
+        # print(f"w {working_stack} o {output_stack} v {visited} i {table_index} n {number_of_tables}")
+        if not working_stack:
+            if len(visited) == number_of_tables:
+                break # done
+            working_stack.append(tables_list[table_index])
+            table_index += 1
+        top_of_stack = (working_stack[-1]['schema'],working_stack[-1]['name'])
+        if not top_of_stack in visited:
+            visited.add(top_of_stack)
+            output_stack.append(top_of_stack)
+            for fk in tables[top_of_stack]['constraints']['foreign_key']:
+                dependency = (fk['refer_schema'], fk['refer_table'])
+                if not dependency in visited:
+                    working_stack.append(tables[dependency])
+        else:
+            working_stack.pop()
+
+    print(output_stack)
+    exit()
+
+
+
 def main(spec):
     global dbg
     table_data_generators = {}
     tables_spec_by_name = {}
+
+    
+    # Topologically order tables to allow creating in the right dependency order
+    ordered_tables = get_ordered_tables(spec['tables'])
+
     for index, table in enumerate(spec['tables']):
         schema_name, table_name, columns = db.get_table_data(table)
         tables_spec_by_name[table_name] = table
