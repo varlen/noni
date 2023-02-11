@@ -169,6 +169,9 @@ def get_database_structure(engine, db):
             'name' : column_name,
             'nativeType' : native_type,
             'type' : ag_col_type,
+            'properties' : {
+                'nullable' : bool(is_nullable),
+            }
         }
         table_spec['columns'].append(column_definition)
         if not 'constraints' in table_spec and (schema_name, table_name) in constraints:
