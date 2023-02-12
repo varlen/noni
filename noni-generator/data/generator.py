@@ -25,7 +25,7 @@ def small_int_generator(column) -> Callable:
 def textual_data_generator(column) -> Callable:
     try:
         if column['metadata'] and \
-            (not column['metadata']['columnData']
+            (not 'columnData' in column['metadata']
                 or not 'samples' in column['metadata']['columnData']) or not column['metadata']:
             print("First case textual data generator ")
             if column['type'] == 'key':
@@ -75,11 +75,29 @@ generators_per_native_type = {
     'TIMESTAMP' : date_generator
 }
 
-def get_row_generators(table_spec):
+def get_row_generators(table_spec, datasets):
     row_generators = {}
+
+    #print(table_spec['constraints']['foreign_key'])
+    columns_with_fks = { dep['column'] : dep for dep in table_spec['constraints']['foreign_key'] }
+
     for column in table_spec['columns']:
         column_type = column['nativeType'].upper()
-        if column_type in generators_per_native_type:
+        if column['name'] in columns_with_fks:
+            dependency = columns_with_fks[column['name']]
+
+            # Define an entry in datasets if the column is in another table
+            source_column = (dependency['refer_schema'], dependency['refer_table'], dependency['refer_column'])
+            datasets[source_column] = []
+
+            def fk_generator():
+                if not datasets[source_column]:
+                    print(f"[WARN] No data available for filling foreign key bounded column {source_column}")
+                    return None
+                return random.choice(datasets[source_column])
+            row_generators[column['name']] = fk_generator
+
+        elif column_type in generators_per_native_type:
             print(f"Using native type based generator for column {column['name']} @ {table_spec['name']}")
             row_generators[column['name']] = generators_per_native_type[column_type](column)
         else:

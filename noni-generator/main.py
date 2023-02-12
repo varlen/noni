@@ -22,9 +22,6 @@ def run_commands(list_of_commands):
     print('\n'.join(list_of_commands))
 
 def get_ordered_tables(tables_list):
-    # Rebuilding table filling algorithm
-
-
     # First, topologically sort tables to consider their FK -> PK relations
     working_stack = [] # push with append, top is [-1]
     output_stack = []
@@ -50,28 +47,25 @@ def get_ordered_tables(tables_list):
                     working_stack.append(tables[dependency])
         else:
             working_stack.pop()
-
-    print(output_stack)
-    exit()
-
-
+    return output_stack, tables
 
 def main(spec):
     global dbg
     table_data_generators = {}
     tables_spec_by_name = {}
 
-    
     # Topologically order tables to allow creating in the right dependency order
-    ordered_tables = get_ordered_tables(spec['tables'])
+    ordered_tables, tables_dict = get_ordered_tables(spec['tables'])
 
-    for index, table in enumerate(spec['tables']):
-        schema_name, table_name, columns = db.get_table_data(table)
-        tables_spec_by_name[table_name] = table
-        table_model = db.create_new_table(schema_name, table_name, columns)
+    datasets = {}
+
+    for schema, table in ordered_tables:
+        table_metadata = tables_dict[(schema, table)]
+        columns = db.get_column_data(table_metadata)
+        table_model = db.create_new_table(schema, table, columns)
         table_models.append(table_model)
-        print(f"{index} {table_model}")
-        table_data_generators[table_name] = generator.get_row_generators(table)
+        table_data_generators[(schema, table)] = generator.get_row_generators(table_metadata, datasets)
+
     db.save_schema()
     print("Database structure created")
 

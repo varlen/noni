@@ -40,15 +40,20 @@ def create_insert_command(
     value_placeholder =  f"({', '.join([ '%s' for _ in columns ])})"
     return (f"INSERT INTO {table_name} ({ ', '.join(columns) }) VALUES {value_placeholder}")
 
+def get_column_data(spec_table):
+    """
+    Returns the column data given a table specification
+    """
+    return [
+        (column['name'], get_type(column['nativeType']), column['type'] == 'key')
+        for column in spec_table['columns']
+    ]
+
 def get_table_data(spec_table):
     """
     Returns a tuple with the schema name, table name and column data
     """
-    column_data = [
-        (column['name'], get_type(column['nativeType']), column['type'] == 'key')
-        for column in spec_table['columns']
-    ]
-    return (spec_table['schema'], spec_table['name'], column_data)
+    return (spec_table['schema'], spec_table['name'], get_column_data(spec_table))
 
 def create_new_table(schema_name, table_name, column_data):
     return Table(
