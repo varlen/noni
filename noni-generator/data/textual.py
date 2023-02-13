@@ -13,6 +13,7 @@ specific_generators = {
     'birthPlace': lambda : fake.city(),
     'brand': lambda : fake.company(),
     'city': lambda : fake.city(),
+    'region' : lambda : fake.city(),
     'company': lambda : fake.company(),
     'continent': lambda : random.choice(['South America', 'North America', 'Africa', 'Europe', 'Central America', 'Asia', 'Australia']),
     'country': lambda : fake.country(),

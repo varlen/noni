@@ -57,22 +57,26 @@ def main(spec):
     # Topologically order tables to allow creating in the right dependency order
     ordered_tables, tables_dict = get_ordered_tables(spec['tables'])
 
-    datasets = {}
+    foreign_key_data_sources = {}
 
     for schema, table in ordered_tables:
         table_metadata = tables_dict[(schema, table)]
         columns = db.get_column_data(table_metadata)
         table_model = db.create_new_table(schema, table, columns)
         table_models.append(table_model)
-        table_data_generators[(schema, table)] = generator.get_row_generators(table_metadata, datasets)
+        table_data_generators[(schema, table)] = generator.get_row_generators(table_metadata, foreign_key_data_sources)
 
     db.save_schema()
     print("Database structure created")
 
+    print(ordered_tables)
+    #exit()
+
     # Build dataset
     dataset = []
-    for table_name, generators in table_data_generators.items():
-        print(f"Building row generator for table {table_name}")
+    for schema, table in ordered_tables:
+        generators = table_data_generators[(schema, table)]
+        print(f"Building row generator for table {schema}.{table}")
         # Compose an INSERT generator using existing generators
         columns = []
 
@@ -80,7 +84,7 @@ def main(spec):
             columns.append(column)
 
         if not columns:
-            print(f"No columns for table {table_name}. Skipping...")
+            print(f"No columns for table {schema}.{table}. Skipping...")
             continue
 
         # Generate insert commands
@@ -88,11 +92,22 @@ def main(spec):
 
         dbg = generators
 
+        print('Generators', generators)
+        def generate_data(column):
+            print('gen data for', column)
+            data = generators[column]()
+            if (schema, table, column) in foreign_key_data_sources:
+                foreign_key_data_sources[(schema, table, column)].append(data)
+            return data
+
         def get_new_data_row():
-            return tuple([ generators[column]() for column in generators.keys() ])
+            return tuple([ generate_data(column) for column in generators.keys() ])
 
         generated_data = [ get_new_data_row() for _ in range(number_of_rows_to_create) ]
-        dataset.append((table_name, columns, generated_data))
+        dataset.append((f'{table}.{schema}', columns, generated_data))
+
+    print(dataset)
+    exit()
 
     print("Dataset built")
 

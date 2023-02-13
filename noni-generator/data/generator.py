@@ -3,6 +3,7 @@ from typing import Callable
 from datetime import datetime
 from itertools import count
 from data.textual import type78_generator
+from rich import print
 
 def null_generator(column) -> Callable:
     if column['type'] == 'key':
@@ -24,21 +25,29 @@ def small_int_generator(column) -> Callable:
 
 def textual_data_generator(column) -> Callable:
     try:
-        if column['metadata'] and \
-            (not 'columnData' in column['metadata']
-                or not 'samples' in column['metadata']['columnData']) or not column['metadata']:
+        # If have no samples or no sato category...
+        if  'metadata' in column and (column['metadata'] and \
+            (not 'samples' in column['metadata'] or not column['metadata']['samples'])) \
+            and not ('satoCategory' in column['metadata'] and column['metadata']['satoCategory']):
             print("First case textual data generator ")
             if column['type'] == 'key':
-                lambda : str(uuid.uuid4())
+                return lambda : str(uuid.uuid4())
+            elif 'distinct' in column['metadata'] and column['metadata']['distinct'] == 0:
+                return lambda : ''
             else:
-                return lambda : None
+                raise Exception(f'Bad textual generator for column {column["name"]}')
         else:
-            generator = type78_generator(column['metadata']['columnData']['satoCategory'])
-            if generator:
+            if not column['metadata'] and column['type'] == 'key':
+                return lambda : str(uuid.uuid4())
+
+            generator = type78_generator(column['metadata']['satoCategory'])
+            if not generator:
+                print(f"No text generator assigned for satoCategory {column['metadata']['satoCategory']}")
+            else:
                 return generator
 
-            samples = column['metadata']['columnData']['samples']
-            if samples:
+            if 'samples' in column['metadata']:
+                samples = column['metadata']['samples']
                 return lambda : random.choice(samples)
 
             # No samples and no generator
@@ -90,12 +99,14 @@ def get_row_generators(table_spec, datasets):
             source_column = (dependency['refer_schema'], dependency['refer_table'], dependency['refer_column'])
             datasets[source_column] = []
 
-            def fk_generator():
+            def generate_fk_data():
                 if not datasets[source_column]:
-                    print(f"[WARN] No data available for filling foreign key bounded column {source_column}")
+                    print(f"[WARN] No data available in {source_column} for filling foreign key bounded column {column['name']} ({dependency['name']})")
                     return None
-                return random.choice(datasets[source_column])
-            row_generators[column['name']] = fk_generator
+                else:
+                    return random.choice(datasets[source_column])
+
+            row_generators[column['name']] = generate_fk_data
 
         elif column_type in generators_per_native_type:
             print(f"Using native type based generator for column {column['name']} @ {table_spec['name']}")
