@@ -48,7 +48,7 @@ def get_ordered_tables(tables_list):
             output_stack.append((ordered_table['schema'], ordered_table['name']))
     return output_stack, tables
 
-def main(spec):
+def main(spec, build_structure=True, populate=True):
     global dbg
     table_data_generators = {}
 
@@ -64,8 +64,9 @@ def main(spec):
         table_models.append(table_model)
         table_data_generators[(schema, table)] = generator.get_row_generators(table_metadata, foreign_key_data_sources)
 
-    db.save_schema()
-    print("Database structure created")
+    if build_structure:
+        db.save_schema()
+        print("Database structure created")
     print(ordered_tables)
 
     # Build dataset
@@ -102,15 +103,15 @@ def main(spec):
         dataset.append((f'{schema}.{table}', columns, generated_data))
 
     print(dataset)
-    exit()
 
     print("Dataset built")
 
-    # Consume dataset
-    # for table_name, columns, rows in dataset:
-    #     db.insert_rows(table_name, columns, rows)
-    #db.insert_tables(dataset)
-    print("Database populated")
+    if populate:
+        # Consume dataset
+        for table_name, columns, rows in dataset:
+            db.insert_rows(table_name, columns, rows)
+        # db.insert_tables(dataset)
+        print("Database populated")
 
 
 if __name__ == "__main__":
@@ -118,7 +119,7 @@ if __name__ == "__main__":
         print("Expected spec file path as argument")
         exit(-1)
     spec = load_spec_file(sys.argv[1])
-    main(spec)
+    main(spec, build_structure= '--structure' in sys.argv, populate='--data' in sys.argv)
 
 
 
