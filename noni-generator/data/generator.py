@@ -3,6 +3,7 @@ from typing import Callable
 from datetime import datetime
 from itertools import count
 from data.textual import type78_generator
+from dateutil.parser import parse as parse_date
 from rich import print
 
 def null_generator(column) -> Callable:
@@ -63,8 +64,18 @@ def textual_data_generator(column) -> Callable:
         raise
 
 def date_generator(column) -> Callable:
-    # TODO - Improve to generate dates within the samples range
-    return lambda : datetime.now()
+    if 'metadata' in column:
+        max = datetime.now().timestamp()
+        min = datetime.now().timestamp()
+        if 'max' in column['metadata']:
+            max = parse_date(column['metadata']['max'])
+        if 'min' in column['metadata']:
+            min = parse_date(column['metadata']['min'])
+        if min > max:
+            min, max = max, min
+        return lambda : random.uniform(min, max)
+    else:
+        return lambda : datetime.now()
 
 # compare type(column.type) with the actual types
 generators_per_native_type = {
