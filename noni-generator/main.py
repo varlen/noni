@@ -11,15 +11,9 @@ def load_spec_file(path):
     with open(path) as spec_file:
         return json.load(spec_file)
 
-# TODO - Load from args
-
 table_models = []
 
 dbg = None
-
-def run_commands(list_of_commands):
-    # TODO - Change to actual implementation
-    print('\n'.join(list_of_commands))
 
 def get_ordered_tables(tables_list):
     # First, topologically sort tables to consider their FK -> PK relations
