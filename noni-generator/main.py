@@ -105,7 +105,7 @@ def main(spec):
             return tuple([ generate_data(column) for column in generators.keys() ])
 
         generated_data = [ get_new_data_row() for _ in range(number_of_rows_to_create) ]
-        dataset.append((f'{table}.{schema}', columns, generated_data))
+        dataset.append((f'{schema}.{table}', columns, generated_data))
 
     print(dataset)
     exit()
