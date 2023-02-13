@@ -2,7 +2,7 @@ from faker import Faker
 import random
 
 fake = Faker(['pt_BR','en_US'])
-
+# category, class, code, status, rank, type missing
 specific_generators = {
     'address': lambda : fake.street_address(),
     'age': lambda : str(random.uniform(21, 99)),
@@ -29,6 +29,7 @@ specific_generators = {
     'location': lambda : fake.city(),
     'manufacturer': lambda : fake.company(),
     'name': lambda : fake.name(),
+    'notes': lambda : '\n'.join(fake.paragraphs(nb=4)),
     'operator': lambda : fake.name(),
     'organisation': fake.company(),
     'owner': lambda : fake.name(),
