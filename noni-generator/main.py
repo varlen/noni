@@ -31,28 +31,32 @@ def get_ordered_tables(tables_list):
     number_of_tables = len(tables_list)
 
     while True:
-        # print(f"w {working_stack} o {output_stack} v {visited} i {table_index} n {number_of_tables}")
         if not working_stack:
             if len(visited) == number_of_tables:
-                break # done
-            working_stack.append(tables_list[table_index])
+                break # ordering finished
+            # in the list of tables to order, check if the next was already visited
+            next_candidate = tables_list[table_index]
             table_index += 1
+            if (next_candidate['schema'], next_candidate['name']) in visited:
+                continue
+            working_stack.append(next_candidate)
         top_of_stack = (working_stack[-1]['schema'],working_stack[-1]['name'])
+        # if top of stack not visited yet, visit and stack dependencies
         if not top_of_stack in visited:
             visited.add(top_of_stack)
-            output_stack.append(top_of_stack)
             for fk in tables[top_of_stack]['constraints']['foreign_key']:
                 dependency = (fk['refer_schema'], fk['refer_table'])
                 if not dependency in visited:
                     working_stack.append(tables[dependency])
+        # if visited, then move to output stack
         else:
-            working_stack.pop()
+            ordered_table = working_stack.pop()
+            output_stack.append((ordered_table['schema'], ordered_table['name']))
     return output_stack, tables
 
 def main(spec):
     global dbg
     table_data_generators = {}
-    tables_spec_by_name = {}
 
     # Topologically order tables to allow creating in the right dependency order
     ordered_tables, tables_dict = get_ordered_tables(spec['tables'])
@@ -68,9 +72,7 @@ def main(spec):
 
     db.save_schema()
     print("Database structure created")
-
     print(ordered_tables)
-    #exit()
 
     # Build dataset
     dataset = []
@@ -94,7 +96,6 @@ def main(spec):
 
         print('Generators', generators)
         def generate_data(column):
-            print('gen data for', column)
             data = generators[column]()
             if (schema, table, column) in foreign_key_data_sources:
                 foreign_key_data_sources[(schema, table, column)].append(data)
@@ -114,7 +115,7 @@ def main(spec):
     # Consume dataset
     # for table_name, columns, rows in dataset:
     #     db.insert_rows(table_name, columns, rows)
-    db.insert_tables(dataset)
+    #db.insert_tables(dataset)
     print("Database populated")
 
 
