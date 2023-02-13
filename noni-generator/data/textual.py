@@ -20,7 +20,7 @@ specific_generators = {
     'creator': lambda : fake.name(),
     'credit': lambda : fake.credit_card_number(),
     'currency': lambda : fake.currency_name(),
-    'description': lambda : fake.paragraphs(nb=4),
+    'description': lambda : '\n'.join(fake.paragraphs(nb=4)),
     'director': lambda : fake.name(),
     'family': lambda : fake.last_name(),
     'fileSize': lambda : fake.numerify('### KB' if fake.pybool() else '### MB'),
