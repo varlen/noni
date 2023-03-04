@@ -378,7 +378,7 @@ def add_metadata(engine, db, structure):
                     inferred_category = semantic_inferences[column['name']]
                     if not 'metadata' in column or not column['metadata']:
                         column['metadata'] = {}
-                    column['metadata']['satoCategory'] = inferred_category
+                    column['metadata']['semanticClass'] = inferred_category
 
                 # TODO - Depending on the category, it may no longer be a text column
 

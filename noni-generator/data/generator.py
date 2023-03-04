@@ -29,7 +29,7 @@ def textual_data_generator(column) -> Callable:
         # If have no samples or no sato category...
         if  'metadata' in column and (column['metadata'] and \
             (not 'samples' in column['metadata'] or not column['metadata']['samples'])) \
-            and not ('satoCategory' in column['metadata'] and column['metadata']['satoCategory']):
+            and not ('semanticClass' in column['metadata'] and column['metadata']['semanticClass']):
             print("First case textual data generator ")
             if column['type'] == 'key':
                 return lambda : str(uuid.uuid4())
@@ -41,9 +41,9 @@ def textual_data_generator(column) -> Callable:
             if not column['metadata'] and column['type'] == 'key':
                 return lambda : str(uuid.uuid4())
 
-            generator = type78_generator(column['metadata']['satoCategory'])
+            generator = type78_generator(column['metadata']['semanticClass'])
             if not generator:
-                print(f"No text generator assigned for satoCategory {column['metadata']['satoCategory']}")
+                print(f"No text generator assigned for semanticClass {column['metadata']['semanticClass']}")
             else:
                 return generator
 
