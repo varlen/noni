@@ -86,10 +86,14 @@ def insert_tables(dataset):
 
 def insert_rows(table_name : str, columns : str, data : List[Tuple]):
     insert_command = create_insert_command(table_name, columns)
-    with engine.raw_connection() as conn:
-        with conn.cursor() as cur:
-            for row in data:
-                cur.execute(insert_command, row)
+    own_engine = get_engine()
+    conn = own_engine.raw_connection()
+    with conn.cursor() as cur:
+        for row in data:
+            print(f'[cyan]{insert_command} <- {row}[/cyan]')
+            cur.execute(insert_command, row)
+    conn.commit()
+    conn.close()
 
 def register_foreign_keys(table_name : str, constraint_name : str, column_name : str, ref_table_name : str, ref_column_name : str):
     print(f"[green]  Creating FK {constraint_name}: {table_name}.{column_name} -> {ref_table_name}.{ref_column_name}[/green]")
