@@ -48,7 +48,7 @@ def get_ordered_tables(tables_list):
             output_stack.append((ordered_table['schema'], ordered_table['name']))
     return output_stack, tables
 
-def main(spec, build_structure=True, populate=True):
+def main(spec, build_structure=True, populate=True, print_dataset=False):
     global dbg
     table_data_generators = {}
 
@@ -66,8 +66,33 @@ def main(spec, build_structure=True, populate=True):
 
     if build_structure:
         db.save_schema()
+        # Add foreign keys to database
+        for schema, table in ordered_tables:
+            table_metadata = tables_dict[(schema, table)]
+            if 'constraints' in table_metadata and 'foreign_key' in table_metadata['constraints'] \
+                and len(table_metadata['constraints']['foreign_key']):
+                constraints = table_metadata['constraints']
+                fk_dict = {}
+                for fk_data in constraints['foreign_key']:
+                    if not fk_data['name'] in fk_dict:
+                        fk_dict[fk_data['name']] = {
+                            'cols' : [fk_data['column']],
+                            'ref_schema' : fk_data['refer_schema'],
+                            'ref_table' : fk_data['refer_table'],
+                            'ref_cols' : [fk_data['refer_column']]
+                        }
+                    else:
+                        fk_dict[fk_data['name']]['cols'].append(fk_data['column'])
+                        fk_dict[fk_data['name']]['ref_cols'].append(fk_data['refer_column'])
+                for fk_name, fk_details in fk_dict.items():
+                    cols = ','.join(fk_details['cols'])
+                    ref_cols = ','.join(fk_details['ref_cols'])
+                    full_ref_table_name = f'{fk_details["ref_schema"]}.{fk_details["ref_table"]}'
+                    db.register_foreign_keys(table_metadata['name'], fk_name, cols,
+                                             full_ref_table_name, ref_cols)
+                    print(f"  [green]Created foreign key {fk_name}[/green]")
         print("Database structure created")
-    print(ordered_tables)
+        print(ordered_tables)
 
     # Build dataset
     dataset = []
@@ -102,7 +127,8 @@ def main(spec, build_structure=True, populate=True):
         generated_data = [ get_new_data_row() for _ in range(number_of_rows_to_create) ]
         dataset.append((f'{schema}.{table}', columns, generated_data))
 
-    print(dataset)
+    if print_dataset:
+        print(dataset)
 
     print("Dataset built")
 
@@ -119,7 +145,10 @@ if __name__ == "__main__":
         print("Expected spec file path as argument")
         exit(-1)
     spec = load_spec_file(sys.argv[1])
-    main(spec, build_structure= '--structure' in sys.argv, populate='--data' in sys.argv)
+    main(spec,
+         build_structure= '--structure' in sys.argv,
+         populate='--data' in sys.argv,
+         print_dataset='--print-data' in sys.argv)
 
 
 

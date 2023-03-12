@@ -4,7 +4,7 @@ from sqlalchemy.dialects import postgresql
 from rich import print
 
 # TODO - Load from environment
-CONNECTION_URL = "postgresql://pguser:password@localhost:5432/outputdb"
+CONNECTION_URL = "postgresql://pguser:password@localhost:5432/outputdb2"
 
 def get_engine():
     return create_engine(CONNECTION_URL)
@@ -44,8 +44,9 @@ def get_column_data(spec_table):
     """
     Returns the column data given a table specification
     """
+    primary_key = { col['column'] for col in spec_table['constraints']['primary_key']}
     return [
-        (column['name'], get_type(column['nativeType']), column['type'] == 'key')
+        (column['name'], get_type(column['nativeType']), column['name'] in primary_key)
         for column in spec_table['columns']
     ]
 
@@ -89,6 +90,19 @@ def insert_rows(table_name : str, columns : str, data : List[Tuple]):
         with conn.cursor() as cur:
             for row in data:
                 cur.execute(insert_command, row)
+
+def register_foreign_keys(table_name : str, constraint_name : str, column_name : str, ref_table_name : str, ref_column_name : str):
+    print(f"[green]  Creating FK {constraint_name}: {table_name}.{column_name} -> {ref_table_name}.{ref_column_name}[/green]")
+    alter_command = f"""ALTER TABLE {table_name}
+    ADD CONSTRAINT {constraint_name} FOREIGN KEY ({column_name})
+    REFERENCES {ref_table_name} ({ref_column_name})"""
+    print(alter_command)
+    own_engine = get_engine()
+    conn = own_engine.raw_connection()
+    with conn.cursor() as cur:
+        cur.execute(alter_command)
+    conn.commit()
+    conn.close()
 
 def example():
     with engine.raw_connection() as conn:
