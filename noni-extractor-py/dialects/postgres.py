@@ -2,6 +2,7 @@ import re
 from collections import Counter
 import requests
 from rich import print
+from analysis import numerictools
 
 DEFAULT_SATO_MODEL_URL = "http://localhost:5000/upload-and-predict"
 
@@ -61,7 +62,7 @@ def get_bool_count_query(table_schema, table_name, column_name):
     return f"""SELECT {column_name}::text, count(1) FROM {table_schema}.{table_name} group by {column_name}"""
 
 def get_distinct_count_query(table_schema, table_name, column_name):
-    return f"""SELECT DISTINCT count({column_name}) FROM {table_schema}.{table_name}"""
+    return f"""SELECT count(1) FROM (SELECT DISTINCT {column_name} FROM {table_schema}.{table_name}) AS tmp"""
 
 def get_count_query(table_schema, table_name, column_name):
     return f"""SELECT count({column_name}) as count FROM {table_schema}.{table_name}"""
@@ -173,6 +174,13 @@ def get_database_structure(engine, db):
                 'nullable' : bool(is_nullable),
             }
         }
+
+        if num_precision:
+            column_definition['properties']['precision'] = num_precision
+
+        if max_char_length:
+            column_definition['properties']['maxLength'] = max_char_length
+
         table_spec['columns'].append(column_definition)
         if not 'constraints' in table_spec and (schema_name, table_name) in constraints:
             table_spec['constraints'] = constraints[(schema_name, table_name)]
@@ -216,6 +224,14 @@ def try_categories_from_samples(samples):
     categorizer = Counter(samples)
     return [ category for category, _ in categorizer.most_common() ]
 
+def get_row_count(engine, db, column, table):
+    count_query = get_count_query(table['schema'], table['name'], column['name'])
+    count = db.get(engine, count_query)
+    row_count = 0
+    if len(count):
+        row_count = count[0][0]
+    return row_count
+
 ##### Column metadata collectors
 
 def get_default_column_metadata(engine, db, column, table):
@@ -239,12 +255,27 @@ def get_numeric_column_metadata(engine, db, column, table):
 
     mode_query = \
         get_numeric_mode_query(table['schema'], table['name'], column['name'])
-
     mode_result = db.get(engine, mode_query)
+
     if len(mode_result):
         m['mode'] = mode_result[0][0]
     else:
         print(f'[yellow] No numeric mode metadata available for column {table["schema"]}.{table["name"]}.{column["name"]} [/yellow]')
+
+    # distribution inference
+    if m['distinct'] > 1 and 'metadata' in table and 'rowCount' in table['metadata'] :
+        print("[green]  Sampling numeric distribution[/green]")
+        row_count = m['distinct']
+        if row_count < 1000:
+            rows_to_sample = row_count
+        else:
+            rows_to_sample = 1000
+
+        column_numeric_samples = get_column_samples(engine, db, column, table, row_count , rows_to_sample)
+        SAMPLES_FOR_NUMERIC_COLUMN = 40
+        similar_sequence = numerictools.sequence_from_samples(column_numeric_samples, SAMPLES_FOR_NUMERIC_COLUMN, unique=True)
+        m['sequence'] = similar_sequence
+
     return m
 
 def get_boolean_column_metadata(engine, db, column, table):
@@ -279,28 +310,25 @@ def get_datetime_column_metadata(engine, db, column, table):
         print(f'[yellow] No date time mode metadata available for column {table["schema"]}.{table["name"]}.{column["name"]} [/yellow]')
     return m
 
+def get_column_samples(engine, db, column, table, row_count, rows_to_sample):
+    proportion = max(min(100, (100 * (rows_to_sample / row_count))), 1)
+    data_sample_query = get_datasample_query(table['schema'], table['name'], column['name'], proportion, rows_to_sample)
+    data_sample = db.get(engine, data_sample_query)
+    samples = [ s[0] for s in data_sample ]
+    return samples
+
 def get_text_column_metadata(engine, db, column, table):
     m = get_default_column_metadata(engine, db, column, table)
 
-    count_query = get_count_query(table['schema'], table['name'], column['name'])
-    count = db.get(engine, count_query)
-    row_count = 0
-    if len(count):
-        row_count = count[0][0]
-
+    row_count = get_row_count(engine, db, column, table) # refactor to count once
     m['rowCount'] = row_count
     if column['nativeType'] == 'text':
         return m
     samples = []
     if row_count:
         rows_to_sample = 100
-        m['sampleCount'] = rows_to_sample
-        proportion = max(min(100, (100 * (rows_to_sample / row_count))), 1)
-
-        data_sample_query = get_datasample_query(table['schema'], table['name'], column['name'], proportion, rows_to_sample)
-        data_sample = db.get(engine, data_sample_query)
+        data_sample = get_column_samples(engine, db, column, table, row_count, rows_to_sample)
         m['sampleCount'] = len(data_sample)
-        samples = [ s[0] for s in data_sample ]
         m['samples'] = samples
         m['entityType'] = match_entity(samples)
 
@@ -360,8 +388,14 @@ def run_semantic_inference_model(table, csv_str, model_url = DEFAULT_SATO_MODEL_
     return dict(zip(column_names, inferences))
 
 def add_metadata(engine, db, structure):
-    # NOTE - this whole semantic inference process is database agnostic and should not be in a specific dialect implementation
+    # TODO - Refactor out. This whole semantic inference process is database agnostic and should not be in a specific dialect implementation
     for table in structure['tables']:
+
+        row_count = get_row_count(engine, db, {'name' : 1}, table) # TODO - Improve this ugly call
+        table['metadata'] = {
+            'rowCount' : row_count
+        }
+
         for column in table['columns']:
             column['metadata'] = get_column_metadata(engine, db, column, table)
 

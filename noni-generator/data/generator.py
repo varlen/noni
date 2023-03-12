@@ -5,6 +5,7 @@ from itertools import count
 from data.textual import type78_generator
 from dateutil.parser import parse as parse_date
 from rich import print
+from data.numeric import next_from_distribution
 
 def null_generator(column) -> Callable:
     if column['type'] == 'key':
@@ -17,12 +18,45 @@ def uuid_generator(column) -> Callable:
 def boolean_generator(column) -> Callable:
     return lambda : random.choice([True, False])
 
-def small_int_generator(column) -> Callable:
+def generic_distribution_generator(column) -> Callable:
+    is_integer = column['type'] == 'integer'
+
+    if 'metadata' in column and column['metadata'] and 'sequence' in column['metadata']:
+        previous_draws_set = set()
+        previous_draws_list = []
+
+        def draw_from_distribution():
+            previous_draws_list
+            draw = next_from_distribution(column['metadata']['sequence'], is_integer)
+            if len(previous_draws_set) < column['metadata']['distinct']:
+                previous_draws_set.add(draw)
+                if len(previous_draws_set) == column['metadata']['distinct']:
+                    previous_draws_list.extend(list(previous_draws_set))
+                return draw
+            else:
+                return random.choice(previous_draws_list)
+
+        return draw_from_distribution
+    else:
+        return uniform_number_generator(column)
+
+def uniform_number_generator(column) -> Callable:
     if column['type'] == 'key':
         k = count()
         return lambda : k.__next__()
     else:
-        return lambda : int(random.uniform(0, 32000))
+        min = 0
+        max = 32000
+        if 'metadata' in column:
+            if 'max' in column['metadata']:
+                max = column['metadata']['max']
+            if 'min' in column['metadata']:
+                min = column['metadata']['min']
+
+        if column['type'] == 'integer':
+            return lambda : round(random.uniform(min, max))
+        else:
+            return lambda : random.uniform(min, max)
 
 def textual_data_generator(column) -> Callable:
     try:
@@ -47,7 +81,7 @@ def textual_data_generator(column) -> Callable:
             else:
                 return generator
 
-            if 'samples' in column['metadata']:
+            if 'samples' in column['metadata'] and len(column['metadata']['samples']):
                 samples = column['metadata']['samples']
                 return lambda : random.choice(samples)
 
@@ -79,15 +113,15 @@ def date_generator(column) -> Callable:
 
 # compare type(column.type) with the actual types
 generators_per_native_type = {
-    'SMALLINT' : small_int_generator,
+    'SMALLINT' : uniform_number_generator,
     'VARCHAR' : textual_data_generator,
     'TEXT' : textual_data_generator,
     'CHAR' : textual_data_generator,
     'CHARACTER VARYING' : textual_data_generator,
     'CHARACTER' : textual_data_generator,
-    'INTEGER' : small_int_generator,
-    'REAL' : small_int_generator,
-    'BIGINT' : small_int_generator,
+    'INTEGER' : uniform_number_generator,
+    'REAL' : uniform_number_generator,
+    'BIGINT' : uniform_number_generator,
     'BOOLEAN' : boolean_generator,
     'BYTEA' : null_generator,
     'UUID' : uuid_generator,
