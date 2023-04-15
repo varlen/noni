@@ -110,7 +110,7 @@ def main(spec, build_structure=True, populate=True, print_dataset=False):
             continue
 
         # Generate insert commands
-        number_of_rows_to_create = 50
+        number_of_rows_to_create = 5 # TODO - Change
 
         dbg = generators
 
@@ -134,10 +134,16 @@ def main(spec, build_structure=True, populate=True, print_dataset=False):
 
     if populate:
         # Consume dataset
-        for table_name, columns, rows in dataset:
-            db.insert_rows(table_name, columns, rows)
-        # db.insert_tables(dataset)
-        print("Database populated")
+        try:
+            for table_name, columns, rows in dataset:
+                print(f"  [purple]Populating table [white]{table_name}[/white][/purple]")
+                db.insert_rows(table_name, columns, rows)
+            # db.insert_tables(dataset)
+            print("Database populated")
+        except Exception as e:
+            print("[red]ERROR[/red]")
+            print(e)
+            print(foreign_key_data_sources)
 
 
 if __name__ == "__main__":

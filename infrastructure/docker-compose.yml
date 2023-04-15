@@ -12,9 +12,3 @@ services:
     - POSTGRES_PASSWORD=password
     volumes:
       - ./pginit:/docker-entrypoint-initdb.d
-
-    
-
-  
-  
-  

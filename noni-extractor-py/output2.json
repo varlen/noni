@@ -1,0 +1,2333 @@
+{
+  "tables": [
+    {
+      "name": "categories",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "category_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "category_name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 15
+          },
+          "metadata": {
+            "distinct": 8,
+            "rowCount": 8,
+            "sampleCount": 8,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "type"
+          }
+        },
+        {
+          "name": "description",
+          "nativeType": "text",
+          "type": "text",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 8,
+            "rowCount": 8,
+            "semanticClass": "description"
+          }
+        },
+        {
+          "name": "picture",
+          "nativeType": "bytea",
+          "type": "unknown",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 1,
+            "semanticClass": "category"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "pk_categories",
+            "column": "category_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": []
+      },
+      "metadata": {
+        "rowCount": 8
+      }
+    },
+    {
+      "name": "customer_customer_demo",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "customer_id",
+          "nativeType": "character",
+          "type": "key",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": null
+        },
+        {
+          "name": "customer_type_id",
+          "nativeType": "character",
+          "type": "key",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": null
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "pk_customer_customer_demo",
+            "column": "customer_id",
+            "order": 1
+          },
+          {
+            "name": "pk_customer_customer_demo",
+            "column": "customer_type_id",
+            "order": 2
+          },
+          {
+            "name": "pk_customer_customer_demo",
+            "column": "customer_id",
+            "order": 1
+          },
+          {
+            "name": "pk_customer_customer_demo",
+            "column": "customer_type_id",
+            "order": 2
+          }
+        ],
+        "foreign_key": [
+          {
+            "name": "fk_customer_customer_demo_customer_demographics",
+            "column": "customer_type_id",
+            "refer_schema": "public",
+            "refer_table": "customer_demographics",
+            "refer_column": "customer_type_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "fk_customer_customer_demo_customers",
+            "column": "customer_id",
+            "refer_schema": "public",
+            "refer_table": "customers",
+            "refer_column": "customer_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 0
+      }
+    },
+    {
+      "name": "customer_demographics",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "customer_type_id",
+          "nativeType": "character",
+          "type": "key",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": null
+        },
+        {
+          "name": "customer_desc",
+          "nativeType": "text",
+          "type": "text",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 0,
+            "rowCount": 0
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "pk_customer_demographics",
+            "column": "customer_type_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": []
+      },
+      "metadata": {
+        "rowCount": 0
+      }
+    },
+    {
+      "name": "customers",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "customer_id",
+          "nativeType": "character",
+          "type": "key",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "company_name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 40
+          },
+          "metadata": {
+            "distinct": 91,
+            "rowCount": 91,
+            "sampleCount": 91,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "contact_name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 30
+          },
+          "metadata": {
+            "distinct": 91,
+            "rowCount": 91,
+            "sampleCount": 91,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "contact_title",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 30
+          },
+          "metadata": {
+            "distinct": 12,
+            "rowCount": 91,
+            "sampleCount": 12,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "category"
+          }
+        },
+        {
+          "name": "address",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 60
+          },
+          "metadata": {
+            "distinct": 91,
+            "rowCount": 91,
+            "sampleCount": 91,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "city",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 15
+          },
+          "metadata": {
+            "distinct": 69,
+            "rowCount": 91,
+            "sampleCount": 69,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "city"
+          }
+        },
+        {
+          "name": "region",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 15
+          },
+          "metadata": {
+            "distinct": 19,
+            "rowCount": 31,
+            "sampleCount": 18,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "status"
+          }
+        },
+        {
+          "name": "postal_code",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 10
+          },
+          "metadata": {
+            "distinct": 87,
+            "rowCount": 90,
+            "sampleCount": 86,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "code"
+          }
+        },
+        {
+          "name": "country",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 15
+          },
+          "metadata": {
+            "distinct": 21,
+            "rowCount": 91,
+            "sampleCount": 21,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "country"
+          }
+        },
+        {
+          "name": "phone",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 24
+          },
+          "metadata": {
+            "distinct": 91,
+            "rowCount": 91,
+            "sampleCount": 91,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "area"
+          }
+        },
+        {
+          "name": "fax",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 24
+          },
+          "metadata": {
+            "distinct": 70,
+            "rowCount": 69,
+            "sampleCount": 69,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "weight"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "pk_customers",
+            "column": "customer_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": []
+      },
+      "metadata": {
+        "rowCount": 91
+      }
+    },
+    {
+      "name": "employees",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "employee_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "last_name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 20
+          },
+          "metadata": {
+            "distinct": 9,
+            "rowCount": 9,
+            "sampleCount": 9,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "first_name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 10
+          },
+          "metadata": {
+            "distinct": 9,
+            "rowCount": 9,
+            "sampleCount": 9,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "title",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 30
+          },
+          "metadata": {
+            "distinct": 4,
+            "rowCount": 9,
+            "sampleCount": 4,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "type"
+          }
+        },
+        {
+          "name": "title_of_courtesy",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 25
+          },
+          "metadata": {
+            "distinct": 4,
+            "rowCount": 9,
+            "sampleCount": 4,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "class"
+          }
+        },
+        {
+          "name": "birth_date",
+          "nativeType": "date",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 9,
+            "max": "1966-01-27",
+            "min": "1937-09-19",
+            "mode": "1937-09-19",
+            "semanticClass": "code"
+          }
+        },
+        {
+          "name": "hire_date",
+          "nativeType": "date",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 8,
+            "max": "1994-11-15",
+            "min": "1992-04-01",
+            "mode": "1993-10-17",
+            "semanticClass": "code"
+          }
+        },
+        {
+          "name": "address",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 60
+          },
+          "metadata": {
+            "distinct": 9,
+            "rowCount": 9,
+            "sampleCount": 9,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "city",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 15
+          },
+          "metadata": {
+            "distinct": 5,
+            "rowCount": 9,
+            "sampleCount": 5,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "city"
+          }
+        },
+        {
+          "name": "region",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 15
+          },
+          "metadata": {
+            "distinct": 2,
+            "rowCount": 5,
+            "sampleCount": 1,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "state"
+          }
+        },
+        {
+          "name": "postal_code",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 10
+          },
+          "metadata": {
+            "distinct": 9,
+            "rowCount": 9,
+            "sampleCount": 9,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "code"
+          }
+        },
+        {
+          "name": "country",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 15
+          },
+          "metadata": {
+            "distinct": 2,
+            "rowCount": 9,
+            "sampleCount": 2,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "country"
+          }
+        },
+        {
+          "name": "home_phone",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 24
+          },
+          "metadata": {
+            "distinct": 9,
+            "rowCount": 9,
+            "sampleCount": 9,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "fileSize"
+          }
+        },
+        {
+          "name": "extension",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 4
+          },
+          "metadata": {
+            "distinct": 9,
+            "rowCount": 9,
+            "sampleCount": 9,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "photo",
+          "nativeType": "bytea",
+          "type": "unknown",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 1,
+            "semanticClass": "category"
+          }
+        },
+        {
+          "name": "notes",
+          "nativeType": "text",
+          "type": "text",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 9,
+            "rowCount": 9,
+            "semanticClass": "description"
+          }
+        },
+        {
+          "name": "reports_to",
+          "nativeType": "smallint",
+          "type": "integer",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "distinct": 3,
+            "average": "3.1250000000000000",
+            "max": 5,
+            "min": 2,
+            "variance": "2.4107142857142857",
+            "mode": 2,
+            "sequence": [
+              2.0022054690599886,
+              2.2061082569162793,
+              2.2282840907523545,
+              2.287777952049278,
+              2.3238419294206385,
+              2.401168038029742,
+              2.4507832490071815,
+              2.4663906986545365,
+              2.47984716362346,
+              2.6280739206711967,
+              2.778578214654227,
+              2.92803736881085,
+              2.9624492168286256,
+              3.0455952045007484,
+              3.1183630860037193,
+              3.3376928435931856,
+              3.553494548419405,
+              3.651961444415991,
+              3.7545931885225605,
+              3.8438556619949047,
+              3.9789922180821793,
+              3.9797172765235223,
+              3.9916518138586,
+              4.082897294036238,
+              4.107961384652661,
+              4.11091713513308,
+              4.170913754787926,
+              4.1945412396156065,
+              4.241785263537315,
+              4.3462224112683305,
+              4.422415727238174,
+              4.45993106021934,
+              4.503026690343867,
+              4.517545802532784,
+              4.547077336522669,
+              4.72753029263426,
+              4.875427978693862,
+              4.8854448474428604,
+              4.90581823123336,
+              4.936825558756456
+            ],
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "photo_path",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 255
+          },
+          "metadata": {
+            "distinct": 5,
+            "rowCount": 9,
+            "sampleCount": 5,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "format"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "pk_employees",
+            "column": "employee_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": [
+          {
+            "name": "fk_employees_employees",
+            "column": "reports_to",
+            "refer_schema": "public",
+            "refer_table": "employees",
+            "refer_column": "employee_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 9
+      }
+    },
+    {
+      "name": "employee_territories",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "employee_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "age"
+          }
+        },
+        {
+          "name": "territory_id",
+          "nativeType": "character varying",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "maxLength": 20
+          },
+          "metadata": {
+            "semanticClass": "region"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "pk_employee_territories",
+            "column": "employee_id",
+            "order": 1
+          },
+          {
+            "name": "pk_employee_territories",
+            "column": "territory_id",
+            "order": 2
+          },
+          {
+            "name": "pk_employee_territories",
+            "column": "employee_id",
+            "order": 1
+          },
+          {
+            "name": "pk_employee_territories",
+            "column": "territory_id",
+            "order": 2
+          }
+        ],
+        "foreign_key": [
+          {
+            "name": "fk_employee_territories_employees",
+            "column": "employee_id",
+            "refer_schema": "public",
+            "refer_table": "employees",
+            "refer_column": "employee_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "fk_employee_territories_territories",
+            "column": "territory_id",
+            "refer_schema": "public",
+            "refer_table": "territories",
+            "refer_column": "territory_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 49
+      }
+    },
+    {
+      "name": "order_details",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "order_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "product_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "plays"
+          }
+        },
+        {
+          "name": "unit_price",
+          "nativeType": "real",
+          "type": "decimal",
+          "properties": {
+            "nullable": true,
+            "precision": 24
+          },
+          "metadata": {
+            "distinct": 116,
+            "average": 26.218519710222143,
+            "max": 263.5,
+            "min": 2.0,
+            "variance": 889.6748643799394,
+            "mode": 18.0,
+            "sequence": [
+              5.716054049191655,
+              7.733543178554632,
+              7.737199167794529,
+              9.070629442035049,
+              9.473332525986978,
+              9.478379552346798,
+              9.65261360424179,
+              9.973016837453763,
+              10.3959612706282,
+              12.151494379272155,
+              13.713702161816862,
+              13.916200485915201,
+              13.953173854948997,
+              15.79963084963714,
+              16.775222343737404,
+              17.046452027321173,
+              18.429436115302988,
+              20.72565870230084,
+              22.37451352794858,
+              22.454766966744945,
+              25.859716504351045,
+              25.944777875587103,
+              26.14662710288157,
+              28.003947213669488,
+              31.047575002588225,
+              31.205457513027916,
+              31.3647941469351,
+              32.68158042647379,
+              34.681405381296386,
+              34.86412705149739,
+              35.45436041473125,
+              36.2109391024711,
+              37.83383319766467,
+              39.2422632788935,
+              46.44370396004638,
+              54.23183957387357,
+              81.77265878172284,
+              83.33835957781139,
+              98.16293145144496,
+              98.97816278000221
+            ],
+            "semanticClass": "weight"
+          }
+        },
+        {
+          "name": "quantity",
+          "nativeType": "smallint",
+          "type": "integer",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "distinct": 55,
+            "average": "23.8129930394431555",
+            "max": 130,
+            "min": 1,
+            "variance": "361.8382712139719553",
+            "mode": 20,
+            "sequence": [
+              1.173332927892511,
+              1.8685038127545763,
+              2.502734159147228,
+              4.322147032283633,
+              5.750986003208253,
+              6.837272258415651,
+              8.497133871148216,
+              8.962460392090822,
+              9.033548997128502,
+              9.399217804608522,
+              9.499179239237913,
+              11.285572138734253,
+              13.529713138311662,
+              13.542431848284389,
+              20.181149870372323,
+              20.293870569413826,
+              20.55886516458017,
+              23.7646116408488,
+              24.839479145822768,
+              26.16215609331261,
+              29.320475359346915,
+              31.932444398255143,
+              33.64304604080189,
+              35.61271733393838,
+              38.217741444563,
+              39.573383098832316,
+              42.92969503999751,
+              43.25177235305423,
+              54.367926499232894,
+              58.177127458630196,
+              58.392707617811254,
+              65.97554633105383,
+              67.82832532129487,
+              69.0187637147879,
+              73.502317280787,
+              79.43444357531479,
+              85.33982714712462,
+              93.81971209394496,
+              108.25923491610361,
+              120.98006265212987
+            ],
+            "semanticClass": "age"
+          }
+        },
+        {
+          "name": "discount",
+          "nativeType": "real",
+          "type": "decimal",
+          "properties": {
+            "nullable": true,
+            "precision": 24
+          },
+          "metadata": {
+            "distinct": 11,
+            "average": 0.05616705420226066,
+            "max": 0.25,
+            "min": 0.0,
+            "variance": 0.006963946237484176,
+            "mode": 0.0,
+            "sequence": [
+              0.007433265416007849,
+              0.009021103324723374,
+              0.0094465482938343,
+              0.010537021849372673,
+              0.011796848710402343,
+              0.018508310728235725,
+              0.02319874524783512,
+              0.023411747665125517,
+              0.02499446432084648,
+              0.025045554133167034,
+              0.026615277348010825,
+              0.027860153104251682,
+              0.029643720119532476,
+              0.04426745794290814,
+              0.04471970503540968,
+              0.04611336508394275,
+              0.04777616307205382,
+              0.0481862648487823,
+              0.04956040201505505,
+              0.053254888519695426,
+              0.054074105869549,
+              0.05862031970040636,
+              0.08847734437845248,
+              0.09697699004311577,
+              0.1053761520995585,
+              0.11762298942379373,
+              0.12851637713067793,
+              0.1375550485413195,
+              0.15996651349897018,
+              0.1621392732007993,
+              0.1632685852868594,
+              0.1770300475779548,
+              0.17876476509167158,
+              0.1939472493031519,
+              0.20492808760485348,
+              0.20797562920939694,
+              0.211997404497827,
+              0.2357988288527066,
+              0.2418830515842479,
+              0.2447694962690136
+            ],
+            "semanticClass": "elevation"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "pk_order_details",
+            "column": "order_id",
+            "order": 1
+          },
+          {
+            "name": "pk_order_details",
+            "column": "product_id",
+            "order": 2
+          },
+          {
+            "name": "pk_order_details",
+            "column": "order_id",
+            "order": 1
+          },
+          {
+            "name": "pk_order_details",
+            "column": "product_id",
+            "order": 2
+          }
+        ],
+        "foreign_key": [
+          {
+            "name": "fk_order_details_orders",
+            "column": "order_id",
+            "refer_schema": "public",
+            "refer_table": "orders",
+            "refer_column": "order_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "fk_order_details_products",
+            "column": "product_id",
+            "refer_schema": "public",
+            "refer_table": "products",
+            "refer_column": "product_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 2155
+      }
+    },
+    {
+      "name": "orders",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "order_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "customer_id",
+          "nativeType": "character",
+          "type": "key",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "employee_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "age"
+          }
+        },
+        {
+          "name": "order_date",
+          "nativeType": "date",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 480,
+            "max": "1998-05-06",
+            "min": "1996-07-04",
+            "mode": "1998-02-26",
+            "semanticClass": "year"
+          }
+        },
+        {
+          "name": "required_date",
+          "nativeType": "date",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 454,
+            "max": "1998-06-11",
+            "min": "1996-07-24",
+            "mode": "1998-03-26",
+            "semanticClass": "year"
+          }
+        },
+        {
+          "name": "shipped_date",
+          "nativeType": "date",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 388,
+            "max": "1998-05-06",
+            "min": "1996-07-10",
+            "mode": "1998-04-10",
+            "semanticClass": "year"
+          }
+        },
+        {
+          "name": "ship_via",
+          "nativeType": "smallint",
+          "type": "integer",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "distinct": 3,
+            "average": "2.0072289156626506",
+            "max": 3,
+            "min": 1,
+            "variance": "0.60790907901812315607",
+            "mode": 2,
+            "sequence": [
+              1.0342223809346103,
+              1.0799211312039443,
+              1.0996274719720083,
+              1.11430514044828,
+              1.1357126529734747,
+              1.1503280760124768,
+              1.1519632870678458,
+              1.2341069024563436,
+              1.2682864158004876,
+              1.3215981349019503,
+              1.5260736145285223,
+              1.5427103591236286,
+              1.6457531374960048,
+              1.677176415583866,
+              1.7006561631006214,
+              1.7819328756004635,
+              1.7957961517785264,
+              1.8277302552914905,
+              1.8394811489997327,
+              1.885835548337885,
+              1.90383204280212,
+              1.9040667278440686,
+              1.9146537763799596,
+              1.9605445799554775,
+              2.040218520714766,
+              2.07571932289116,
+              2.1158193400666896,
+              2.1871650656371244,
+              2.2198392910246962,
+              2.228048861001506,
+              2.248082617596766,
+              2.261479632834614,
+              2.622717047011557,
+              2.742753552370621,
+              2.7789377877336774,
+              2.782877088386082,
+              2.7966206998952714,
+              2.9813042406564705,
+              2.9880209208299213,
+              2.991227892156247
+            ],
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "freight",
+          "nativeType": "real",
+          "type": "decimal",
+          "properties": {
+            "nullable": true,
+            "precision": 24
+          },
+          "metadata": {
+            "distinct": 799,
+            "average": 78.244204877492,
+            "max": 1007.64,
+            "min": 0.02,
+            "variance": 13637.403521758011,
+            "mode": 0.56,
+            "sequence": [
+              0.16114746106372432,
+              0.39401361701203297,
+              1.160493122176541,
+              1.3891430204790918,
+              4.908408695040119,
+              11.244047150649303,
+              13.576618600552738,
+              14.644577471207302,
+              16.293462113514153,
+              18.608171073358605,
+              25.22401116083055,
+              30.952370186518333,
+              34.65047818768916,
+              42.01618300310723,
+              48.27691265152887,
+              54.16553908931786,
+              58.31788925343854,
+              58.94318909898849,
+              63.68228747425196,
+              64.21908602785552,
+              65.46751951614132,
+              65.70233160719953,
+              73.12144157561025,
+              84.04278375431551,
+              85.47494462913487,
+              87.2208237674144,
+              96.07157695963673,
+              116.97684686546516,
+              139.11008554093513,
+              145.53534424635467,
+              149.34461150188986,
+              149.48715206853356,
+              150.59296436170584,
+              155.3615355427282,
+              189.07564303865942,
+              219.34776103679496,
+              235.67586655190377,
+              368.77998133607446,
+              459.43277906116106,
+              774.7907982130594
+            ],
+            "semanticClass": "region"
+          }
+        },
+        {
+          "name": "ship_name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 40
+          },
+          "metadata": {
+            "distinct": 90,
+            "rowCount": 830,
+            "sampleCount": 28,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "ship_address",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 60
+          },
+          "metadata": {
+            "distinct": 89,
+            "rowCount": 830,
+            "sampleCount": 78,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "ship_city",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 15
+          },
+          "metadata": {
+            "distinct": 70,
+            "rowCount": 830,
+            "sampleCount": 50,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "city"
+          }
+        },
+        {
+          "name": "ship_region",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 15
+          },
+          "metadata": {
+            "distinct": 20,
+            "rowCount": 323,
+            "sampleCount": 17,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "country"
+          }
+        },
+        {
+          "name": "ship_postal_code",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 10
+          },
+          "metadata": {
+            "distinct": 85,
+            "rowCount": 811,
+            "sampleCount": 40,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "ship_country",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 15
+          },
+          "metadata": {
+            "distinct": 21,
+            "rowCount": 830,
+            "sampleCount": 0,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "country"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "pk_orders",
+            "column": "order_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": [
+          {
+            "name": "fk_orders_customers",
+            "column": "customer_id",
+            "refer_schema": "public",
+            "refer_table": "customers",
+            "refer_column": "customer_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "fk_orders_employees",
+            "column": "employee_id",
+            "refer_schema": "public",
+            "refer_table": "employees",
+            "refer_column": "employee_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "fk_orders_shippers",
+            "column": "ship_via",
+            "refer_schema": "public",
+            "refer_table": "shippers",
+            "refer_column": "shipper_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 830
+      }
+    },
+    {
+      "name": "products",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "product_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "product_name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 40
+          },
+          "metadata": {
+            "distinct": 77,
+            "rowCount": 77,
+            "sampleCount": 77,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "supplier_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "age"
+          }
+        },
+        {
+          "name": "category_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "quantity_per_unit",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 20
+          },
+          "metadata": {
+            "distinct": 70,
+            "rowCount": 77,
+            "sampleCount": 70,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "unit_price",
+          "nativeType": "real",
+          "type": "decimal",
+          "properties": {
+            "nullable": true,
+            "precision": 24
+          },
+          "metadata": {
+            "distinct": 61,
+            "average": 28.83389609200614,
+            "max": 263.5,
+            "min": 2.5,
+            "variance": 1144.4223001785078,
+            "mode": 14.0,
+            "sequence": [
+              3.5055095293993994,
+              8.168744166730406,
+              9.199913408191422,
+              9.596578746424585,
+              9.604332192675958,
+              9.991951254873719,
+              10.370133083883903,
+              12.447779924733517,
+              12.793157891232601,
+              13.556445078433308,
+              13.666238425482987,
+              15.458688664314737,
+              15.886451159739941,
+              16.29992253260326,
+              17.245381401549793,
+              18.456480649912546,
+              19.414216197829766,
+              20.237459955369353,
+              22.02088844776258,
+              22.888449923824627,
+              23.639789219826213,
+              25.470969671170646,
+              27.308609321170096,
+              29.697560214346627,
+              30.127129878250237,
+              30.629405493027427,
+              31.682282804423203,
+              32.20010089128595,
+              35.56510509450594,
+              35.99923496188446,
+              36.291649331188395,
+              37.52703326678285,
+              39.308481974087265,
+              39.49351271166146,
+              44.90406710779724,
+              48.39030871985607,
+              54.05006789321075,
+              56.25720698282001,
+              82.75899657865943,
+              113.73999395597303
+            ],
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "units_in_stock",
+          "nativeType": "smallint",
+          "type": "integer",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "distinct": 51,
+            "average": "40.5064935064935065",
+            "max": 125,
+            "min": 0,
+            "variance": "1306.6216678058783322",
+            "mode": 0,
+            "sequence": [
+              1.2292783555370268,
+              3.1516818266602757,
+              6.619822563581552,
+              7.076493395660244,
+              10.866997149700474,
+              11.078377243377574,
+              11.757866390346347,
+              12.950173787380784,
+              13.320623959498537,
+              14.253867417953016,
+              16.26681332248741,
+              16.61490398438444,
+              19.681820604751547,
+              20.26356208075517,
+              23.983839578439056,
+              24.888371503090674,
+              26.149583551855628,
+              26.56988518971804,
+              26.989715503222925,
+              29.59363463986105,
+              31.448369083442373,
+              31.570584717905536,
+              35.23048930132671,
+              35.75991841630241,
+              37.89117132937849,
+              37.960980228769294,
+              38.08473180555338,
+              40.219367694816825,
+              40.33489991385136,
+              40.582827726135264,
+              41.93848638074875,
+              44.36380312397213,
+              64.01778289183326,
+              81.28423239690208,
+              82.09640627555586,
+              107.88240847000802,
+              111.43715365283737,
+              111.73242661938164,
+              112.17097619629382,
+              112.96559757103094
+            ],
+            "semanticClass": "plays"
+          }
+        },
+        {
+          "name": "units_on_order",
+          "nativeType": "smallint",
+          "type": "integer",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "distinct": 10,
+            "average": "10.1298701298701299",
+            "max": 100,
+            "min": 0,
+            "variance": "535.5092276144907724",
+            "mode": 0,
+            "sequence": [
+              1.4328173869535443,
+              5.74208960785092,
+              8.874402351855327,
+              11.162123526554746,
+              11.687918386963979,
+              13.563938476343807,
+              15.449604528414318,
+              20.444397837451966,
+              26.42057420753679,
+              27.30434115073581,
+              28.253149997973292,
+              29.220070844548562,
+              30.543736018292613,
+              32.507893407287185,
+              33.16170147710709,
+              33.58676872684399,
+              33.89651495268443,
+              36.53152351726572,
+              39.68140670311538,
+              47.49625857263701,
+              48.06785731740785,
+              48.34582365718405,
+              48.79743447378509,
+              49.214967722286396,
+              50.64245495278833,
+              51.04151039169206,
+              52.88658924198733,
+              54.47581960373624,
+              56.2049828836159,
+              62.44130193492444,
+              63.722548301640245,
+              66.08727354710999,
+              66.29208665730522,
+              66.30334192893966,
+              70.43175694345467,
+              73.46794543250789,
+              78.70498578316514,
+              81.69423928977679,
+              82.73946678222607,
+              99.36529298473775
+            ],
+            "semanticClass": "duration"
+          }
+        },
+        {
+          "name": "reorder_level",
+          "nativeType": "smallint",
+          "type": "integer",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "distinct": 7,
+            "average": "12.4675324675324675",
+            "max": 30,
+            "min": 0,
+            "variance": "119.4890635680109364",
+            "mode": 0,
+            "sequence": [
+              0.6587958152123202,
+              1.3507998788809528,
+              2.522110799918129,
+              2.5267473194763195,
+              3.0018857116524025,
+              3.561451935242696,
+              3.817944674389644,
+              4.703202655320372,
+              7.895145520644099,
+              8.921690943705345,
+              9.41100872897457,
+              10.159661144835862,
+              11.630320644292375,
+              12.026687244696024,
+              12.505024900928223,
+              13.276774692549118,
+              13.969975641502081,
+              13.97322726743959,
+              13.98670451507386,
+              14.47279573269777,
+              15.826484678797524,
+              16.51544833376186,
+              16.88420126200605,
+              17.349514410699474,
+              17.444716373667617,
+              18.144898408264925,
+              18.40586337261754,
+              18.458185499687193,
+              18.53734526982872,
+              19.777965434717927,
+              23.014596830549564,
+              23.09031191458857,
+              23.65552358024206,
+              23.972077317056616,
+              26.016426437739277,
+              26.39127892276492,
+              27.10210061239004,
+              28.290519260186056,
+              28.363318904248686,
+              28.427836185283127
+            ],
+            "semanticClass": "plays"
+          }
+        },
+        {
+          "name": "discontinued",
+          "nativeType": "integer",
+          "type": "integer",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "distinct": 2,
+            "average": "0.12987012987012987013",
+            "max": 1,
+            "min": 0,
+            "variance": "0.11449077238550922761",
+            "mode": 0,
+            "sequence": [
+              0.03739824120917978,
+              0.07030543108486587,
+              0.08848563846711222,
+              0.10355219999755683,
+              0.13874370267990188,
+              0.14029445094975657,
+              0.17337883668992005,
+              0.17947041575488032,
+              0.21470089524698666,
+              0.22563184033014827,
+              0.23470490806341449,
+              0.2440011132544715,
+              0.2942121045961408,
+              0.3136137488773978,
+              0.3820891639474644,
+              0.39289267653251536,
+              0.3929043062439532,
+              0.42477619909134057,
+              0.4252869425942327,
+              0.44033111589660967,
+              0.44697633074378174,
+              0.4831980566908376,
+              0.5043349317084587,
+              0.518360996361344,
+              0.5527642101018846,
+              0.6071187186229894,
+              0.6499366268437534,
+              0.6574874393235319,
+              0.6601410661636578,
+              0.6709120477988608,
+              0.6982301202006693,
+              0.7071735514403334,
+              0.7545374073787021,
+              0.7613285483666823,
+              0.7843193947216358,
+              0.7971847561630203,
+              0.8512691955213747,
+              0.8644393002286583,
+              0.8804621099338432,
+              0.9982583222085568
+            ],
+            "semanticClass": "duration"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "pk_products",
+            "column": "product_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": [
+          {
+            "name": "fk_products_categories",
+            "column": "category_id",
+            "refer_schema": "public",
+            "refer_table": "categories",
+            "refer_column": "category_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "fk_products_suppliers",
+            "column": "supplier_id",
+            "refer_schema": "public",
+            "refer_table": "suppliers",
+            "refer_column": "supplier_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 77
+      }
+    },
+    {
+      "name": "region",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "region_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "region_description",
+          "nativeType": "character",
+          "type": "text",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 4,
+            "rowCount": 4,
+            "sampleCount": 4,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "team"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "pk_region",
+            "column": "region_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": []
+      },
+      "metadata": {
+        "rowCount": 4
+      }
+    },
+    {
+      "name": "shippers",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "shipper_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "company_name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 40
+          },
+          "metadata": {
+            "distinct": 6,
+            "rowCount": 6,
+            "sampleCount": 6,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "company"
+          }
+        },
+        {
+          "name": "phone",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 24
+          },
+          "metadata": {
+            "distinct": 6,
+            "rowCount": 6,
+            "sampleCount": 6,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "isbn"
+          }
+        },
+        {
+          "name": "express",
+          "nativeType": "boolean",
+          "type": "bool",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 2,
+            "entityType": "boolean",
+            "categories": {
+              "false": 4,
+              "true": 2
+            },
+            "semanticClass": "type"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "pk_shippers",
+            "column": "shipper_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": []
+      },
+      "metadata": {
+        "rowCount": 6
+      }
+    },
+    {
+      "name": "suppliers",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "supplier_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "company_name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 40
+          },
+          "metadata": {
+            "distinct": 29,
+            "rowCount": 29,
+            "sampleCount": 29,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "contact_name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 30
+          },
+          "metadata": {
+            "distinct": 29,
+            "rowCount": 29,
+            "sampleCount": 29,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "contact_title",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 30
+          },
+          "metadata": {
+            "distinct": 15,
+            "rowCount": 29,
+            "sampleCount": 15,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "type"
+          }
+        },
+        {
+          "name": "address",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 60
+          },
+          "metadata": {
+            "distinct": 29,
+            "rowCount": 29,
+            "sampleCount": 29,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "city",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 15
+          },
+          "metadata": {
+            "distinct": 29,
+            "rowCount": 29,
+            "sampleCount": 29,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "city"
+          }
+        },
+        {
+          "name": "region",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 15
+          },
+          "metadata": {
+            "distinct": 9,
+            "rowCount": 9,
+            "sampleCount": 8,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "state"
+          }
+        },
+        {
+          "name": "postal_code",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 10
+          },
+          "metadata": {
+            "distinct": 29,
+            "rowCount": 29,
+            "sampleCount": 29,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "country",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 15
+          },
+          "metadata": {
+            "distinct": 16,
+            "rowCount": 29,
+            "sampleCount": 16,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "country"
+          }
+        },
+        {
+          "name": "phone",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 24
+          },
+          "metadata": {
+            "distinct": 29,
+            "rowCount": 29,
+            "sampleCount": 29,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "fax",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 24
+          },
+          "metadata": {
+            "distinct": 14,
+            "rowCount": 13,
+            "sampleCount": 13,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "status"
+          }
+        },
+        {
+          "name": "homepage",
+          "nativeType": "text",
+          "type": "text",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 6,
+            "rowCount": 5,
+            "semanticClass": "notes"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "pk_suppliers",
+            "column": "supplier_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": []
+      },
+      "metadata": {
+        "rowCount": 29
+      }
+    },
+    {
+      "name": "territories",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "territory_id",
+          "nativeType": "character varying",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "maxLength": 20
+          },
+          "metadata": {
+            "semanticClass": "region"
+          }
+        },
+        {
+          "name": "territory_description",
+          "nativeType": "character",
+          "type": "text",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 52,
+            "rowCount": 53,
+            "sampleCount": 52,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "city"
+          }
+        },
+        {
+          "name": "region_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "pk_territories",
+            "column": "territory_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": [
+          {
+            "name": "fk_territories_region",
+            "column": "region_id",
+            "refer_schema": "public",
+            "refer_table": "region",
+            "refer_column": "region_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 53
+      }
+    },
+    {
+      "name": "us_states",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "state_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "state_name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 100
+          },
+          "metadata": {
+            "distinct": 51,
+            "rowCount": 51,
+            "sampleCount": 51,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "state"
+          }
+        },
+        {
+          "name": "state_abbr",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 2
+          },
+          "metadata": {
+            "distinct": 51,
+            "rowCount": 51,
+            "sampleCount": 51,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "state"
+          }
+        },
+        {
+          "name": "state_region",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 50
+          },
+          "metadata": {
+            "distinct": 5,
+            "rowCount": 51,
+            "sampleCount": 5,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "city"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "pk_usstates",
+            "column": "state_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": []
+      },
+      "metadata": {
+        "rowCount": 51
+      }
+    }
+  ]
+}

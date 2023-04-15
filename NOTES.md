@@ -85,9 +85,7 @@ Preciso garantir que as colunas estão ordenadas pelas dependências de foreign 
 # Problema: Qual é a ordem de criação das tabelas dadas as dependências de foreign key?
     - Uma FK pode apontar para a própria tabela
     - Uma tabela pode ter mais de uma FK
-    
 
-    
 ## Modelando como grafo:
 - O algoritmo de data generation recebe um Grafo de Tabelas e retorna uma lista ordenada de Datasets preenchidos de acordo com as dependencias entre tabelas
 - Grafo de Tabelas ---> [ Algoritmo ] ---> Lista de Datasets
@@ -143,3 +141,46 @@ Preciso garantir que as colunas estão ordenadas pelas dependências de foreign 
 
 
 https://www.geeksforgeeks.org/find-the-ordering-of-tasks-from-given-dependencies/
+
+## 2023-02-12
+- Lots of progress and improvement
+- TODO NEXT: Improve data generator to consider samples
+
+## 2023-03-11
+- Data scanner is sampling numeric distributions
+- Data generator is using generic distributions to generate numbers,
+  will use uniform distribution as fallback if no sequence available
+
+- TODO: 
+    - Test & Fix generation of a new database
+        - Check values
+        - Check if related columns are working properly
+
+        - Automatic PK are created wrongly
+        - Implement PK creation
+    - Debug generators
+        - Ambas os datasources estão no dicionário com dados válidos...
+        - Ambos os valores foram preenchidos com dados da mesma lista no dicionário...
+        - Logo, ambas as tuplas de acesso ao dicionário tinham os mesmos 3 valores
+        - Quem faz esse acesso?
+        - Erro causado pelas variaveis sendo alteradas no escopo do loop
+    - Where did the samples go?
+    - Bonus: ChatGPT as Semantic Extraction Model
+        - It seems to outperform SATO but is not perfect(company_name identified as name, would make the generator miss it)
+    - Analise results
+    - Write write write explaining the code
+    - Graduate
+
+
+run with 
+    main.py ..\noni-extractor-py\output2.json --structure --data
+
+
+I want you to provide semantic types for CSV data.  I'll give you the CSV data starting with the column names. Please provide a valid semantic type for each column, separated by comma. Constrain the semantic types to the ones present in the following JSON list:
+["address", "affiliate", "affiliation", "age", "album", "area", "artist", "birthDate", "birthPlace", "brand", "capacity", "category", "city", "class", "classification", "club", "code", "collection", "command", "company", "component", "continent", "country", "county", "creator", "credit", "currency", "day", "depth", "description", "director", "duration", "education", "elevation", "family", "fileSize", "format", "gender", "genre", "grades", "isbn", "industry", "jockey", "language", "location", "manufacturer", "name", "nationality", "notes", "operator", "order", "organisation", "origin", "owner", "person", "plays", "position", "product", "publisher", "range", "rank", "ranking", "region", "religion", "requirement", "result", "sales", "service", "sex", "species", "state", "status", "symbol", "team", "teamName", "type", "weight", "year"]
+Give your answer formatted as a JSON array, like the example:
+[{
+   "column" : "<the name of the column>",
+   "type" : "<the semantic type for the column>",
+   "reasoning" : "<a simple explanation for why the type was chosen>"
+}]

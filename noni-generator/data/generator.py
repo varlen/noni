@@ -129,29 +129,39 @@ generators_per_native_type = {
     'TIMESTAMP' : date_generator
 }
 
+def make_fk_data_generator(source_column, datasets, column_name, dep_name):
+    print(f"[yellow] Building generator for {source_column}")
+    def generate_fk_data():
+        if not datasets[source_column]:
+            print(f"[red] No data available in {source_column} for filling foreign key bounded column {column_name} ({dep_name})")
+            return None
+        else:
+            chosen_key = random.choice(datasets[source_column])
+            print(f"[cyan] Generating data for FK in {column_name} taking from {source_column} -> {chosen_key}")
+            return chosen_key
+
+    return generate_fk_data
+
 def get_row_generators(table_spec, datasets):
     row_generators = {}
 
     #print(table_spec['constraints']['foreign_key'])
     columns_with_fks = { dep['column'] : dep for dep in table_spec['constraints']['foreign_key'] }
+    print(f"COLUMNS WITH FK: {columns_with_fks}")
+    print(f"[yellow] FKs in table {table_spec['name']}: {columns_with_fks}")
 
     for column in table_spec['columns']:
+        print(f"Defining generator for {table_spec['name']}.{column['name']}")
         column_type = column['nativeType'].upper()
-        if column['name'] in columns_with_fks:
+        if column['name'] in columns_with_fks.keys():
             dependency = columns_with_fks[column['name']]
-
             # Define an entry in datasets if the column is in another table
             source_column = (dependency['refer_schema'], dependency['refer_table'], dependency['refer_column'])
-            datasets[source_column] = []
+            print(f"[pink]Column {column['name']} refers an FK:", source_column)
+            if not source_column in datasets:
+                datasets[source_column] = []
 
-            def generate_fk_data():
-                if not datasets[source_column]:
-                    print(f"[WARN] No data available in {source_column} for filling foreign key bounded column {column['name']} ({dependency['name']})")
-                    return None
-                else:
-                    return random.choice(datasets[source_column])
-
-            row_generators[column['name']] = generate_fk_data
+            row_generators[column['name']] = make_fk_data_generator(source_column, datasets, column['name'], dependency['name'])
 
         elif column_type in generators_per_native_type:
             print(f"Using native type based generator for column {column['name']} @ {table_spec['name']}")

@@ -1,10 +1,11 @@
+import os
 from typing import List, Tuple
 from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData
 from sqlalchemy.dialects import postgresql
 from rich import print
 
-# TODO - Load from environment
-CONNECTION_URL = "postgresql://pguser:password@localhost:5432/outputdb2"
+CONNECTION_URL = os.environ['DATABASE_URL'] if 'DATABASE_URL' in os.environ\
+    else "postgresql://pguser:password@localhost:5432/outputdb6"
 
 def get_engine():
     return create_engine(CONNECTION_URL)
