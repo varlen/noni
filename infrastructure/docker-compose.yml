@@ -1,11 +1,10 @@
 version: '3'
 
 services:
-
   postgres:
     ports:
       - '5432:5432'
-    restart: always 
+    restart: always
     image: postgres:12-alpine
     environment:
     - POSTGRES_USER=pguser
