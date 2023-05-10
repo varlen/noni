@@ -151,14 +151,12 @@ https://www.geeksforgeeks.org/find-the-ordering-of-tasks-from-given-dependencies
 - Data generator is using generic distributions to generate numbers,
   will use uniform distribution as fallback if no sequence available
 
-- TODO: 
+- TODO:
     - Test & Fix generation of a new database
-        - Check values
-        - Check if related columns are working properly
-
-        - Automatic PK are created wrongly
-        - Implement PK creation
-    - Debug generators
+        - Implement proper PK creation - DONE
+            - Alter the extractor to properly add primary key data
+            - [SOLUTION] Filter out duplicated pk entries
+    - Debug generators - DONE
         - Ambas os datasources estão no dicionário com dados válidos...
         - Ambos os valores foram preenchidos com dados da mesma lista no dicionário...
         - Logo, ambas as tuplas de acesso ao dicionário tinham os mesmos 3 valores
@@ -167,12 +165,13 @@ https://www.geeksforgeeks.org/find-the-ordering-of-tasks-from-given-dependencies
     - Where did the samples go?
     - Bonus: ChatGPT as Semantic Extraction Model
         - It seems to outperform SATO but is not perfect(company_name identified as name, would make the generator miss it)
-    - Analise results
+
+    - Analyse results
     - Write write write explaining the code
     - Graduate
 
 
-run with 
+run with
     main.py ..\noni-extractor-py\output2.json --structure --data
 
 

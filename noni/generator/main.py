@@ -125,6 +125,44 @@ def main(spec, build_structure=True, populate=True, print_dataset=False):
             return tuple([ generate_data(column) for column in generators.keys() ])
 
         generated_data = [ get_new_data_row() for _ in range(number_of_rows_to_create) ]
+
+        # Validate composite PKs in the data
+        table_metadata = tables_dict[(schema, table)]
+        primary_key = table_metadata['constraints']['primary_key']
+        if len(primary_key) > 1:
+            # load primary key details
+            primary_key_detail = sorted(list({
+                (key_row['name'], key_row['column'], key_row['order'])
+                for key_row in primary_key
+            }), key=lambda row : row[2])
+
+            # map pk columns to column indexes
+            table_column_names = list(map(lambda t: t['name'], table_metadata['columns']))
+            pk_column_indexes = [
+                table_column_names.index(pk_column[1])
+                for pk_column in primary_key_detail
+            ]
+
+            # iterate the generated dataset to check for duplications
+            existing_pks = set()
+            def deduplicate_pk(row):
+                pk_entry_buffer = []
+                for i in pk_column_indexes:
+                    pk_entry_buffer.append(row[i])
+                pk_entry = tuple(pk_entry_buffer)
+                if pk_entry in existing_pks:
+                    return False
+                else:
+                    existing_pks.add(pk_entry)
+                    return True
+
+            # filter to remove duplicated pks
+            filtered_data = list(filter(deduplicate_pk, generated_data))
+            if len(filtered_data):
+                duplications = len(generated_data) - len(filtered_data)
+                print(f"[WARN] {duplications} row(s) filtered out due to primary key duplication")
+                generated_data = filtered_data
+
         dataset.append((f'{schema}.{table}', columns, generated_data))
 
     if print_dataset:
