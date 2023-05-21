@@ -4,8 +4,8 @@ from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData
 from sqlalchemy.dialects import postgresql
 from rich import print
 
-CONNECTION_URL = os.environ['DATABASE_URL'] if 'DATABASE_URL' in os.environ\
-    else "postgresql://pguser:password@localhost:5432/outputdb6"
+CONNECTION_URL = os.environ['OUTPUT_DATABASE_URL'] if 'OUTPUT_DATABASE_URL' in os.environ\
+    else "postgresql://pguser:password@localhost:5432/outputdb5"
 
 def get_engine():
     return create_engine(CONNECTION_URL)
@@ -96,6 +96,7 @@ def insert_rows(table_name : str, columns : str, data : List[Tuple]):
     conn.commit()
     conn.close()
 
+# IMPROVE - Allow receiving List[str] for creating composite foreign keys
 def register_foreign_keys(table_name : str, constraint_name : str, column_name : str, ref_table_name : str, ref_column_name : str):
     print(f"[green]  Creating FK {constraint_name}: {table_name}.{column_name} -> {ref_table_name}.{ref_column_name}[/green]")
     alter_command = f"""ALTER TABLE {table_name}
