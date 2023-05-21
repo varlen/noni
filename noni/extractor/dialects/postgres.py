@@ -194,8 +194,7 @@ def get_database_structure(engine, db):
 
     return database_structure
 
-##### Named entity matching
-
+# Can also be extracted outside a implementation specific file (receive query fn)
 def get_row_count(engine, db, column, table):
     count_query = get_count_query(table['schema'], table['name'], column['name'])
     count = db.get(engine, count_query)
@@ -206,6 +205,7 @@ def get_row_count(engine, db, column, table):
 
 ##### Column metadata collectors
 
+# Can be refactored outside (receive query fn)
 def get_default_column_metadata(engine, db, column, table):
     m = {}
     distinct_query = get_distinct_count_query(table['schema'], table['name'], column['name'])
@@ -214,6 +214,7 @@ def get_default_column_metadata(engine, db, column, table):
         m['distinct'] = distinct_count[0][0]
     return m
 
+# Can be refactored outside (receive query fns)
 def get_numeric_column_metadata(engine, db, column, table):
     m = get_default_column_metadata(engine, db, column, table)
     numeric_stat_query = \
@@ -225,6 +226,7 @@ def get_numeric_column_metadata(engine, db, column, table):
         print(f'[yellow] No numeric stats metadata available for column {table["schema"]}.{table["name"]}.{column["name"]} [/yellow]')
         return m
 
+    ## TODO - Split this mode part into a separate function
     mode_query = \
         get_numeric_mode_query(table['schema'], table['name'], column['name'])
     mode_result = db.get(engine, mode_query)
@@ -234,6 +236,7 @@ def get_numeric_column_metadata(engine, db, column, table):
     else:
         print(f'[yellow] No numeric mode metadata available for column {table["schema"]}.{table["name"]}.{column["name"]} [/yellow]')
 
+    # TODO - Split this distribution inference part into a separate function
     # distribution inference
     if m['distinct'] > 1 and 'metadata' in table and 'rowCount' in table['metadata'] :
         print("[green]  Sampling numeric distribution[/green]")
@@ -250,16 +253,20 @@ def get_numeric_column_metadata(engine, db, column, table):
 
     return m
 
+# Not postgres specific - refactor, receiving query fn
 def get_boolean_column_metadata(engine, db, column, table):
     m = get_default_column_metadata(engine, db, column, table)
     bool_query = get_bool_count_query(table['schema'], table['name'], column['name'])
     bool_stats = db.get(engine, bool_query)
     m['entityType'] = 'boolean'
-    m['categories'] = {}
-    for boolean, count in bool_stats:
-        m['categories'][boolean] = count
+    m['categories'] = {
+        boolean : count
+        for boolean, count
+        in bool_stats
+    }
     return m
 
+# non postgres exclusive, refactor receiving queries, reuse mode code
 def get_datetime_column_metadata(engine, db, column, table):
     m = get_default_column_metadata(engine, db, column, table)
     max_min_query = \
@@ -282,6 +289,7 @@ def get_datetime_column_metadata(engine, db, column, table):
         print(f'[yellow] No date time mode metadata available for column {table["schema"]}.{table["name"]}.{column["name"]} [/yellow]')
     return m
 
+# this makes sense to be db specific, since not all db will have the same concept of sampling with proportions
 def get_column_samples(engine, db, column, table, row_count, rows_to_sample):
     proportion = max(min(100, (100 * (rows_to_sample / row_count))), 1)
     data_sample_query = get_datasample_query(table['schema'], table['name'], column['name'], proportion, rows_to_sample)
@@ -289,6 +297,7 @@ def get_column_samples(engine, db, column, table, row_count, rows_to_sample):
     samples = [ s[0] for s in data_sample ]
     return samples
 
+# this can be refactored out, receiving queries
 def get_text_column_metadata(engine, db, column, table):
     m = get_default_column_metadata(engine, db, column, table)
 
@@ -316,6 +325,7 @@ def get_text_column_metadata(engine, db, column, table):
 
     return m
 
+# This can be refactored out
 column_metadata_collectors = {
     'key': lambda x,y,z,w : None,
     'time': get_datetime_column_metadata,
@@ -327,6 +337,7 @@ column_metadata_collectors = {
 
 ##### End of column metadata collectors
 
+# Refactor out
 def get_column_metadata(engine, db, column, table):
     agnostic_column_type = column['type']
     if agnostic_column_type in column_metadata_collectors:
@@ -334,7 +345,7 @@ def get_column_metadata(engine, db, column, table):
     else:
         return get_default_column_metadata(engine, db, column, table)
 
-
+# Refactor out
 def add_metadata(engine, db, structure):
     # TODO - Refactor out. This whole semantic inference process is database agnostic and should not be in a specific dialect implementation
     for table in structure['tables']:
