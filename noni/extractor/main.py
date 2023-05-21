@@ -1,5 +1,6 @@
 import time
 import sys
+import os
 import database.common as db
 import json
 from rich import print
@@ -52,7 +53,13 @@ def main(source_database_url = None, database_type = "postgres", output_file_nam
     print(f"Done. Elapsed time: {elapsed_time_seconds} s")
 
 if __name__ == "__main__":
-    # TODO - Refactor
-    if len(sys.argv) > 1:
-        main(sys.argv[1])
-    main(None)
+    CONNECTION_URL = os.environ['INPUT_DATABASE_URL'] \
+        if 'INPUT_DATABASE_URL' in os.environ\
+        else None
+    DIALECT = os.environ['DB_DIALECT'] \
+        if 'DB_DIALECT' in os.environ\
+        else "postgres"
+    OUTPUT_FILE_NAME = os.environ['OUTPUT_FILE'] \
+        if 'OUTPUT_FILE' in os.environ \
+        else 'output.json'
+    main(source_database_url=CONNECTION_URL, database_type=DIALECT, output_file_name=OUTPUT_FILE_NAME)
