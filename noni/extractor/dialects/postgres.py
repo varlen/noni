@@ -1,10 +1,6 @@
-import re
-from collections import Counter
 import requests
 from rich import print
-from analysis import numerictools, semantics
-
-DEFAULT_SATO_MODEL_URL = "http://localhost:5000/upload-and-predict"
+from analysis import numerictools, semantics, named_entity
 
 TABLES_COLUMNS_QUERY = \
 """SELECT t.table_schema, t.table_name, t.table_type, c.column_name, c.ordinal_position,
@@ -77,7 +73,7 @@ def get_select_rows_query(column_names, table_schema, table_name, max_rows):
     return f"""SELECT {', '.join(column_names)} FROM {table_schema}.{table_name} LIMIT {max_rows};"""
 ### End of queries
 
-
+# NOT POSTGRES SPECIFIC
 def get_table(structure, name, schema = 'public'):
     key = f'{schema}.{name}'
     if not key in structure:
@@ -88,12 +84,15 @@ def get_table(structure, name, schema = 'public'):
         }
     return structure[key]
 
+# NOT POSTGRES SPECIFIC
 def get_tables_columns_dataset(engine, db):
     return db.get(engine, TABLES_COLUMNS_QUERY)
 
+# NOT POSTGRES_SPECIFIC
 def get_keys_dataset(engine, db):
     return db.get(engine, CONSTRAINTS_QUERY)
 
+# types are postgres specific... Maybe split into a dict + actual non-specific function
 def infer_agnostic_column_type(native_type, column_name):
     print(f"[red] INFERING COLUMN TYPE FOR {native_type} {column_name} [/red]")
     time_types = { 'date', 'timestamp without time zone', 'timestamp with timezone', 'time without time zone', 'time with time zone' }
@@ -116,6 +115,8 @@ def infer_agnostic_column_type(native_type, column_name):
         return 'bool'
     return 'unknown'
 
+# Data model based on postgres but can be modular
+# TODO - Add documentation providing expected output example
 def get_constraints(engine, db):
     keys_dataset = get_keys_dataset(engine, db)
 
@@ -147,6 +148,9 @@ def get_constraints(engine, db):
             })
     return keys_by_table
 
+# Core function of extractor. Maybe move it somewhere else and
+# make it dialect agnostic?
+# Definitelly not postgres exclusive
 def get_database_structure(engine, db):
 
     # Load tables_columns data
@@ -192,37 +196,6 @@ def get_database_structure(engine, db):
     return database_structure
 
 ##### Named entity matching
-
-named_entity_regexps = { k : re.compile(v) for k,v in {
-    'CPF' : '(^\d{10,11}$)|(^\d{3}\.\d{3}\.\d{3}-\d{2}$)',
-    'CEP' : '^(\d{8}|\d{2}\.?\d{3}\-\d{3})$',
-    'CreditCardNumber' : '^(\d{4} ?){4}$',
-    'CNPJ' : '^(\d{14}|\d{2}\.?\d{3}\.?\d{3}\/?\d{4}\-?\d{2})$',
-    'LicensePlate' : '(^([a-z]|[A-Z]){3}-?\d{4}$)|(^([a-z]|[A-Z]){3}\d([a-z]|[A-Z])\d{2}$)',
-    'ID' : '^\d{2}.?\d{3}.?\d{3}-?\d$',
-    'Name' : '^(\w+ ?)+$',
-    'Email' : '^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$',
-    'UUID' : '^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$',
-    'PhoneNumber' : '^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$',
-    'PIS' : '^\d{11}$',
-    'Address' : '^(\w+ ?)+.+\d+$'
-}.items()}
-
-def test_sample_for_named_entity(sample):
-    for entity_name, regex in named_entity_regexps.items():
-        if regex.fullmatch(sample):
-            return entity_name.lower()
-    return 'unknown'
-
-def match_entity(samples):
-    if not len(samples):
-        return 'unknown'
-    votes = Counter([ test_sample_for_named_entity(s) for s in samples ])
-    return votes.most_common(1)[0][0]
-
-def try_categories_from_samples(samples):
-    categorizer = Counter(samples)
-    return [ category for category, _ in categorizer.most_common() ]
 
 def get_row_count(engine, db, column, table):
     count_query = get_count_query(table['schema'], table['name'], column['name'])
@@ -330,12 +303,12 @@ def get_text_column_metadata(engine, db, column, table):
         data_sample = get_column_samples(engine, db, column, table, row_count, rows_to_sample)
         m['sampleCount'] = len(data_sample)
         m['samples'] = samples
-        m['entityType'] = match_entity(samples)
+        m['entityType'] = named_entity.match_entity(samples)
 
     if not m['entityType'] or m['entityType'] == 'unknown':
         print(f"  Could not identify textual data type. Examples: {', '.join(samples[0:3])}")
 
-        possible_categories = try_categories_from_samples(samples)
+        possible_categories = named_entity.try_categories_from_samples(samples)
         if len(possible_categories) == len(samples):
             print("  Data in column is probably not categoric. Using default metadata structure.")
             return m
