@@ -2,12 +2,12 @@ import re
 from collections import Counter
 import requests
 from rich import print
-from analysis import numerictools
+from analysis import numerictools, semantics
 
 DEFAULT_SATO_MODEL_URL = "http://localhost:5000/upload-and-predict"
 
 TABLES_COLUMNS_QUERY = \
-"""SELECT t.table_schema, t.table_name, t.table_type, c.column_name, c.ordinal_position, 
+"""SELECT t.table_schema, t.table_name, t.table_type, c.column_name, c.ordinal_position,
 c.column_default, c.is_nullable, c.data_type, c.character_maximum_length, c.numeric_precision
 FROM information_schema.tables as t
 inner join information_schema.columns as c
@@ -362,30 +362,6 @@ def get_column_metadata(engine, db, column, table):
     else:
         return get_default_column_metadata(engine, db, column, table)
 
-def csv_escape(txt):
-    return str(txt).replace(',','.').replace('\n','\t')
-
-def generate_csv_from_table(engine, db, table, max_rows = 50):
-    column_names = [ column['name'] for column in table['columns']]
-    select_rows_query = get_select_rows_query(column_names, table['schema'], table['name'], max_rows)
-    loaded_rows = db.get(engine, select_rows_query)
-    if not len(loaded_rows):
-        print(f"[red]  No csv sample for table '{table['name']}'[/red]")
-        return None
-
-    csv_rows = [','.join(column_names)]
-    for row in loaded_rows:
-        csv_rows.append(','.join([ csv_escape(value) for value in row ]))
-    print(f"  CSV sample for table '{table['name']}' ready")
-    return '\n'.join(csv_rows)
-
-def run_semantic_inference_model(table, csv_str, model_url = DEFAULT_SATO_MODEL_URL):
-    table_name = table['name']
-    column_names = [ c['name'] for c in table['columns']]
-    file_name = table_name.lower() + '.csv'
-    files = { 'file': (file_name, csv_str)}
-    inferences = requests.post(model_url, files=files).json()
-    return dict(zip(column_names, inferences))
 
 def add_metadata(engine, db, structure):
     # TODO - Refactor out. This whole semantic inference process is database agnostic and should not be in a specific dialect implementation
@@ -399,21 +375,7 @@ def add_metadata(engine, db, structure):
         for column in table['columns']:
             column['metadata'] = get_column_metadata(engine, db, column, table)
 
-        # generate csv from table sample
-        csv_table_sample = generate_csv_from_table(engine, db, table)
-        if csv_table_sample:
-            # call SATO for semantic inference
-            semantic_inferences = run_semantic_inference_model(table, csv_table_sample)
-            print(f"  Semantic inferences done.")
-
-            # map semantic inferences to generators
-            for column in table['columns']:
-                if column['name'] in semantic_inferences:
-                    inferred_category = semantic_inferences[column['name']]
-                    if not 'metadata' in column or not column['metadata']:
-                        column['metadata'] = {}
-                    column['metadata']['semanticClass'] = inferred_category
-
-                # TODO - Depending on the category, it may no longer be a text column
+        semantics.add_semantic_metadata_to_table(engine, db, table)
+        # TODO - Depending on the category, it may no longer be a text column
 
     return structure
