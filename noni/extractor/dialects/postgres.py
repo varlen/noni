@@ -1,4 +1,3 @@
-import requests
 from rich import print
 from analysis import numerictools, semantics, named_entity
 
