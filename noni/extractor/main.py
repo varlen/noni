@@ -4,6 +4,7 @@ import os
 import database.common as db
 import database.plugins as db_plugins
 import json
+import core
 from rich import print
 
 """
@@ -33,15 +34,15 @@ def main(source_database_url = None, database_type = None, output_file_name = "o
         db_engine = db.get_engine(source_database_url)
 
     # Load proper implementation to talk with db
-    db_interface = db_plugins.load_dialect(database_type)
+    db_plugin = db_plugins.load_dialect(database_type)
 
     # Extract database structure
-    database_structure = db_interface.get_database_structure(db_engine, db)
+    database_structure = core.get_database_structure(db_engine, db, db_plugin)
 
     with open('checkpoint.json', 'w') as f:
         json.dump(database_structure, f, indent=2)
 
-    db_interface.add_metadata(db_engine, db, database_structure)
+    core.add_metadata(db_engine, db, database_structure, db_plugin)
 
     print(database_structure)
 

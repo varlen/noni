@@ -11,7 +11,7 @@ def run_semantic_inference_model(table, csv_str, model_url = DEFAULT_MODEL_URL):
 def csv_escape(txt):
     return str(txt).replace(',','.').replace('\n','\t')
 
-def generate_csv_from_table(engine, db, table, max_rows = 50):
+def generate_csv_from_table(engine, db, table, plugin, max_rows = 50):
     column_names = [ column['name'] for column in table['columns']]
     select_rows_query = get_select_rows_query(column_names, table['schema'], table['name'], max_rows)
     loaded_rows = db.get(engine, select_rows_query)
@@ -25,8 +25,8 @@ def generate_csv_from_table(engine, db, table, max_rows = 50):
     print(f"  CSV sample for table '{table['name']}' ready")
     return '\n'.join(csv_rows)
 
-def add_semantic_metadata_to_table(engine, db, table):
-    csv_table_sample = generate_csv_from_table(engine, db, table)
+def add_semantic_metadata_to_table(engine, db, table, plugin):
+    csv_table_sample = generate_csv_from_table(engine, db, table, plugin)
     if csv_table_sample:
         semantic_inferences = run_semantic_inference_model(table, csv_table_sample)
         for column in table['columns']:
