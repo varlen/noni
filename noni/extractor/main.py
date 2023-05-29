@@ -70,4 +70,6 @@ if __name__ == "__main__":
         OUTPUT_FILE_NAME = os.environ['OUTPUT_FILE'] \
             if 'OUTPUT_FILE' in os.environ \
             else 'output.json'
-        main(source_database_url=CONNECTION_URL, database_type=DIALECT, output_file_name=OUTPUT_FILE_NAME)
+        main(source_database_url=CONNECTION_URL,
+             database_type=DIALECT,
+             output_file_name=OUTPUT_FILE_NAME)

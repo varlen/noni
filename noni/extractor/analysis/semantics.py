@@ -1,11 +1,18 @@
-DEFAULT_MODEL_URL = "http://localhost:5000/upload-and-predict"
+import os
+import requests
 
-def run_semantic_inference_model(table, csv_str, model_url = DEFAULT_MODEL_URL):
+def run_semantic_inference_model(table, csv_str, model_url = os.environ['SEMANTIC_MODEL_URL']):
     table_name = table['name']
     column_names = [ c['name'] for c in table['columns']]
     file_name = table_name.lower() + '.csv'
     files = { 'file': (file_name, csv_str)}
-    inferences = requests.post(model_url, files=files).json()
+    semantic_model_result = requests.post(model_url, files=files)
+    print("Payload:")
+    print(file_name)
+    print(csv_str)
+    if semantic_model_result.status_code != 200:
+        raise Exception(f"Semantic model request failed. HTTP Status {semantic_model_result.status_code}")
+    inferences = semantic_model_result.json()
     return dict(zip(column_names, inferences))
 
 def csv_escape(txt):
@@ -13,7 +20,7 @@ def csv_escape(txt):
 
 def generate_csv_from_table(engine, db, table, plugin, max_rows = 50):
     column_names = [ column['name'] for column in table['columns']]
-    select_rows_query = get_select_rows_query(column_names, table['schema'], table['name'], max_rows)
+    select_rows_query = plugin.get_select_rows_query(column_names, table['schema'], table['name'], max_rows)
     loaded_rows = db.get(engine, select_rows_query)
     if not len(loaded_rows):
         print(f"[red]  No csv sample for table '{table['name']}'[/red]")

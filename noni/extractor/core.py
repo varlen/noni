@@ -182,7 +182,7 @@ def get_boolean_column_metadata(engine, db, column, table, plugin):
 def get_text_column_metadata(engine, db, column, table, plugin):
     m = get_default_column_metadata(engine, db, column, table, plugin)
 
-    row_count = get_row_count(engine, db, column, table) # refactor to count once
+    row_count = get_row_count(engine, db, column, table, plugin) # TODO - refactor to count once
     m['rowCount'] = row_count
     if column['nativeType'] == 'text':
         return m
@@ -248,7 +248,7 @@ def add_metadata(engine, db, structure, plugin):
     # TODO - Refactor out. This whole semantic inference process is database agnostic and should not be in a specific dialect implementation
     for table in structure['tables']:
 
-        row_count = get_row_count(engine, db, {'name' : 1}, table) # TODO - Improve this ugly call
+        row_count = get_row_count(engine, db, {'name' : 1}, table, plugin) # TODO - Improve this ugly call
         table['metadata'] = {
             'rowCount' : row_count
         }
