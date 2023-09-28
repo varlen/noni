@@ -1,5 +1,6 @@
 import os
 import requests
+from rich import print
 
 def run_semantic_inference_model(table, csv_str, model_url = os.environ['SEMANTIC_MODEL_URL']):
     table_name = table['name']

@@ -194,8 +194,8 @@ def get_text_column_metadata(engine, db, column, table, plugin):
         m['samples'] = samples
         m['entityType'] = named_entity.match_entity(samples)
 
-    if not m['entityType'] or m['entityType'] == 'unknown':
-        print(f"  Could not identify textual data type. Examples: {', '.join(samples[0:3])}")
+    if 'entityType' not in m or not m['entityType'] or m['entityType'] == 'unknown':
+        print(f"  Could not identify textual data type. { 'Examples:' + ', '.join(samples[0:3]) if len(samples) else 'No samples.'}")
 
         possible_categories = named_entity.try_categories_from_samples(samples)
         if len(possible_categories) == len(samples):

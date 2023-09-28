@@ -1,6 +1,7 @@
 import math
 import random
 import statistics
+import decimal
 
 def get_single_sample(samples, integers = False):
     return sequence_from_samples(samples, 1, integers)
@@ -8,13 +9,17 @@ def get_single_sample(samples, integers = False):
 def sequence_from_samples(samples, length, integers = False, unique = False):
     """Returns a list with numbers having a similar distribution to the samples list."""
     samples.sort()
+    decimal_mode = len([1 for s in samples if type(s) is decimal.Decimal]) > 1
     output = []
     while len(output) < length:
         position = random.random() * len(samples)
         index = math.floor(position)
         residue = position - index
         if index + 1 < len(samples):
-            next_value = samples[index] * (1 - residue) + samples[index + 1] * (residue)
+            if decimal_mode:
+                next_value = samples[index] * decimal.Decimal(1 - residue) + samples[index + 1] * decimal.Decimal(residue)
+            else:
+                next_value = samples[index] * (1 - residue) + samples[index + 1] * (residue)
             if integers:
                 next_value = round(next_value)
             if unique and next_value in output:
