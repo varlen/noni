@@ -5,7 +5,7 @@ from sqlalchemy.dialects import postgresql
 from rich import print
 
 CONNECTION_URL = os.environ['OUTPUT_DATABASE_URL'] if 'OUTPUT_DATABASE_URL' in os.environ\
-    else "postgresql://pguser:password@localhost:5432/outputdb5"
+    else "postgresql://pguser:password@localhost:5432/outputdb"
 
 def get_engine():
     return create_engine(CONNECTION_URL)
@@ -20,13 +20,18 @@ string_to_type = {
     "text":postgresql.TEXT,
     "integer":postgresql.INTEGER,
     "real":postgresql.REAL,
+    "numeric": postgresql.NUMERIC,
     "date":postgresql.DATE,
     "bytea":postgresql.BYTEA,
     "boolean":postgresql.BOOLEAN,
     "double":postgresql.DOUBLE_PRECISION,
     "uuid":postgresql.UUID,
     "bigint":postgresql.BIGINT,
-    "timestamp":postgresql.TIMESTAMP
+    "timestamp":postgresql.TIMESTAMP,
+    "timestamp without time zone": postgresql.TIMESTAMP,
+    "tsvector": postgresql.TSVECTOR,
+    "ARRAY": postgresql.ARRAY(item_type=postgresql.TEXT),
+    "USER-DEFINED": postgresql.TEXT # partial support only
 }
 
 def get_type(type_string):
@@ -58,6 +63,7 @@ def get_table_data(spec_table):
     return (spec_table['schema'], spec_table['name'], get_column_data(spec_table))
 
 def create_new_table(schema_name, table_name, column_data):
+    print(f"[purple] Creating table {table_name}[/purple]")
     return Table(
         table_name,
         metadata_context,

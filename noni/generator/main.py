@@ -46,7 +46,13 @@ def get_ordered_tables(tables_list):
         else:
             ordered_table = working_stack.pop()
             output_stack.append((ordered_table['schema'], ordered_table['name']))
-    return output_stack, tables
+
+    result = []
+    for x in output_stack:
+        if not x in result:
+            result.append(x)
+
+    return result, tables
 
 def main(spec, build_structure=True, populate=True, print_dataset=False):
     global dbg
@@ -56,6 +62,8 @@ def main(spec, build_structure=True, populate=True, print_dataset=False):
     ordered_tables, tables_dict = get_ordered_tables(spec['tables'])
 
     foreign_key_data_sources = {}
+
+    print(f"[green]Tables to create: {ordered_tables}[/green]")
 
     for schema, table in ordered_tables:
         table_metadata = tables_dict[(schema, table)]
@@ -160,7 +168,8 @@ def main(spec, build_structure=True, populate=True, print_dataset=False):
             filtered_data = list(filter(deduplicate_pk, generated_data))
             if len(filtered_data):
                 duplications = len(generated_data) - len(filtered_data)
-                print(f"[WARN] {duplications} row(s) filtered out due to primary key duplication")
+                if duplications:
+                    print(f"[yellow][WARN] {duplications} row(s) filtered out due to primary key duplication[/yellow]")
                 generated_data = filtered_data
 
         dataset.append((f'{schema}.{table}', columns, generated_data))

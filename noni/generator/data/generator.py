@@ -45,13 +45,13 @@ def uniform_number_generator(column) -> Callable:
         k = count()
         return lambda : k.__next__()
     else:
-        min = 0
+        min = 1
         max = 32000
         if 'metadata' in column:
-            if 'max' in column['metadata']:
-                max = column['metadata']['max']
-            if 'min' in column['metadata']:
-                min = column['metadata']['min']
+            if 'max' in column['metadata'] and column['metadata']['max']:
+                max = float(column['metadata']['max'])
+            if 'min' in column['metadata'] and column['metadata']['min']:
+                min = float(column['metadata']['min'])
 
         if column['type'] == 'integer':
             return lambda : round(random.uniform(min, max))
@@ -77,7 +77,7 @@ def textual_data_generator(column) -> Callable:
 
             generator = type78_generator(column['metadata']['semanticClass'])
             if not generator:
-                print(f"No text generator assigned for semanticClass {column['metadata']['semanticClass']}")
+                print(f"[yellow][WARN] No text generator assigned for semanticClass {column['metadata']['semanticClass']}[/yellow]")
             else:
                 return generator
 
@@ -86,7 +86,7 @@ def textual_data_generator(column) -> Callable:
                 return lambda : random.choice(samples)
 
             # No samples and no generator
-            print(f"[WARN] No samples available for textual column {column['name']}. Empty strings will be returned.")
+            print(f"[yellow][WARN] No samples available for textual column {column['name']}. Empty strings will be returned.[/yellow]")
             if column['type'] == 'key':
                 lambda : str(uuid.uuid4())
             else:
@@ -99,15 +99,16 @@ def textual_data_generator(column) -> Callable:
 
 def date_generator(column) -> Callable:
     if 'metadata' in column:
-        max = datetime.now().timestamp()
-        min = datetime.now().timestamp()
-        if 'max' in column['metadata']:
+        max = datetime.now()
+        min = datetime.now()
+        if 'max' in column['metadata'] and column['metadata']['max']:
             max = parse_date(column['metadata']['max'])
-        if 'min' in column['metadata']:
+        if 'min' in column['metadata'] and column['metadata']['min']:
             min = parse_date(column['metadata']['min'])
         if min > max:
             min, max = max, min
-        return lambda : random.uniform(min, max)
+        print(f"DATE GENERATOR SPEC - {column['name']}: {type(min)} {min} - {type(max)} {max}")
+        return lambda : datetime.fromtimestamp(random.uniform(min.timestamp(), max.timestamp()))
     else:
         return lambda : datetime.now()
 
@@ -119,14 +120,17 @@ generators_per_native_type = {
     'CHAR' : textual_data_generator,
     'CHARACTER VARYING' : textual_data_generator,
     'CHARACTER' : textual_data_generator,
+    'TSVECTOR' : textual_data_generator,
     'INTEGER' : uniform_number_generator,
+    'NUMERIC' : uniform_number_generator,
     'REAL' : uniform_number_generator,
     'BIGINT' : uniform_number_generator,
     'BOOLEAN' : boolean_generator,
     'BYTEA' : null_generator,
     'UUID' : uuid_generator,
     'DATE' :  date_generator,
-    'TIMESTAMP' : date_generator
+    'TIMESTAMP' : date_generator,
+    'TIMESTAMP WITHOUT TIME ZONE' : date_generator
 }
 
 def make_fk_data_generator(source_column, datasets, column_name, dep_name):
@@ -167,6 +171,6 @@ def get_row_generators(table_spec, datasets):
             print(f"Using native type based generator for column {column['name']} @ {table_spec['name']}")
             row_generators[column['name']] = generators_per_native_type[column_type](column)
         else:
-            print(f"[WARN] Column {column['name']} with native database type {column_type} has no generator defined and will not receive any data")
+            print(f"[yellow][WARN] Column {column['name']} with native database type {column_type} has no generator defined and will not receive any data[/yellow]")
             row_generators[column['name']] = null_generator(column)
     return row_generators

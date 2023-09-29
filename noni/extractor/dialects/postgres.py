@@ -70,7 +70,7 @@ def get_select_rows_query(column_names, table_schema, table_name, max_rows):
 
 type_mapping = {
     'time' : { 'date', 'timestamp without time zone', 'timestamp with timezone', 'time without time zone', 'time with time zone' },
-    'text' : { 'text', 'character varying', 'character', 'citext', 'json', 'jsonb', 'xml' },
+    'text' : { 'text', 'character varying', 'character', 'citext', 'json', 'jsonb', 'xml', 'USER-DEFINED' },
     'integer' : { 'smallint', 'integer', 'bigint' },
     'decimal' : { 'real', 'double precision', 'numeric', 'money' },
     'boolean' : { 'bit(1)', 'bool', 'boolean' }
