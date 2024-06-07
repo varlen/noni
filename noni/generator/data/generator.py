@@ -121,6 +121,7 @@ generators_per_native_type = {
     'CHARACTER VARYING' : textual_data_generator,
     'CHARACTER' : textual_data_generator,
     'TSVECTOR' : textual_data_generator,
+    'USER-DEFINED' : textual_data_generator,
     'INTEGER' : uniform_number_generator,
     'NUMERIC' : uniform_number_generator,
     'REAL' : uniform_number_generator,
