@@ -1,0 +1,40 @@
+# noni
+
+Noni is a Data Anonimization Tool that enables creating an anonimized database from an existing database.
+
+## About
+
+It's main use case is to create secure development databases from existing data. For example, when a company wants to provide a database for development purposes to third-parties without disclosing data.
+
+It consists of two main components:
+- A database extractor that builds a specification file from the data characteristics and database structure
+- A database builder, that takes the specification file as input, creates tables and generates similar data
+
+Currently, only Postgres databases without custom types are supported but it is possible to implement other SQL implementations.
+
+# Install
+
+Noni requires an external HTTP API providing semantic classification. One of such providers is a SATO fork, which is available [here](https://github.com/varlen/SATO). Download the pretrained model available and follow the install instructions to run it.
+
+To make the dependency management easier considering it uses an older Python version, an Open Container Image is avaliable in [this](https://github.com/varlen/sato-env) repository, avoiding the need to install a specific python version and create a virtual env. For more information on SATO, see the original paper [here](https://arxiv.org/abs/1911.06311).
+
+A single command installation is pending.
+
+# Usage
+
+## Extractor
+
+The extractor loads database information from environment variables. See `scripts/extract.sh` script for a reference on how to run the extraction.
+
+## Generator
+
+The connection string for the output database must be in the `OUTPUT_DATABASE_URL` environment variable.
+
+To run the generator, run `main.py` script from the command line.
+`--data` and `--structure` allows to toggle if data and/or database structure will be written in the run.
+
+
+## Improvements
+
+It is possible to replace SATO with any API that receives csv files and returns a JSON list of the semantic types of the columns, as long as the types are constrained to the [type78 list of types](https://raw.githubusercontent.com/varlen/sato/master/configs/types.json).
+
