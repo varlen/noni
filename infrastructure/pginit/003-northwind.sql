@@ -1,3 +1,5 @@
+-- Reproduction of the northwind database
+-- Originally at https://github.com/pthom/northwind_psql
 --
 -- PostgreSQL database dump
 --
