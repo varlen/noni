@@ -1,6 +1,6 @@
 # noni
 
-Noni is a Data Anonimization Tool that enables creating an anonimized database from an existing database.
+Noni is a Data Anonymization Tool that enables creating an anonymized database from an existing database using synthetic data.
 
 ## About
 
