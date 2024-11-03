@@ -191,11 +191,16 @@ def get_text_column_metadata(engine, db, column, table, plugin):
         rows_to_sample = 100
         data_sample = plugin.get_column_samples(engine, db, column, table, row_count, rows_to_sample)
         m['sampleCount'] = len(data_sample)
+        if m['sampleCount'] > 0:
+            samples = data_sample
         m['samples'] = samples
         m['entityType'] = named_entity.match_entity(samples)
+        if m['entityType'] != 'unknown' and m['sampleCount'] > 0:
+            # Suppress samples of potentially sensitive information
+            m['samples'] = []
 
     if 'entityType' not in m or not m['entityType'] or m['entityType'] == 'unknown':
-        print(f"  Could not identify textual data type. { 'Examples:' + ', '.join(samples[0:3]) if len(samples) else 'No samples.'}")
+        print(f"[{table['name']}.{column['name']}] Could not identify textual data type. { 'Examples:' + ', '.join(samples[0:3]) if len(samples) else 'No samples.'}")
 
         possible_categories = named_entity.try_categories_from_samples(samples)
         if len(possible_categories) == len(samples):

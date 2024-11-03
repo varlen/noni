@@ -2,7 +2,7 @@ import random, uuid
 from typing import Callable
 from datetime import datetime
 from itertools import count
-from data.textual import type78_generator
+from data.textual import type78_generator, regex_generator, extended_generators
 from dateutil.parser import parse as parse_date
 from rich import print
 from data.numeric import next_from_distribution
@@ -75,7 +75,12 @@ def textual_data_generator(column) -> Callable:
             if not column['metadata'] and column['type'] == 'key':
                 return lambda : str(uuid.uuid4())
 
-            generator = type78_generator(column['metadata']['semanticClass'])
+            generator = None
+            if column['metadata'] and 'entityType' in column['metadata']\
+                 and column['metadata']['entityType'] in extended_generators.keys():
+                    generator = regex_generator(column['metadata']['entityType'])
+            else:
+                generator = type78_generator(column['metadata']['semanticClass'])
             if not generator:
                 print(f"[yellow][WARN] No text generator assigned for semanticClass {column['metadata']['semanticClass']}[/yellow]")
             else:

@@ -40,3 +40,5 @@ msbuild.wrn
 # Project specific
 output.json
 serial_output.json
+
+venv*
