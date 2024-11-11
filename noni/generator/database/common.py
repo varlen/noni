@@ -5,7 +5,7 @@ from sqlalchemy.dialects import postgresql
 from rich import print
 
 CONNECTION_URL = os.environ['OUTPUT_DATABASE_URL'] if 'OUTPUT_DATABASE_URL' in os.environ\
-    else "postgresql://pguser:password@localhost:5432/outputdb"
+    else "postgresql://pguser:password@localhost:5432/output"
 
 def get_engine():
     return create_engine(CONNECTION_URL)
@@ -115,32 +115,3 @@ def register_foreign_keys(table_name : str, constraint_name : str, column_name :
         cur.execute(alter_command)
     conn.commit()
     conn.close()
-
-def example():
-    with engine.raw_connection() as conn:
-        with conn.cursor() as cur:
-            cur.execute('SELECT * FROM products')
-    # Connect to an existing database
-    with engine.raw_connection() as conn:
-
-        # Open a cursor to perform database operations
-        with conn.cursor() as cur:
-
-            # Pass data to fill a query placeholders and let Psycopg perform
-            # the correct conversion (no SQL injections!)
-            cur.execute(
-                "INSERT INTO test (num, data) VALUES (%s, %s)",
-                (100, "abc'def"))
-
-            # Query the database and obtain data as Python objects.
-            cur.execute("SELECT * FROM test")
-            cur.fetchone()
-            # will return (1, 100, "abc'def")
-
-            # You can use `cur.fetchmany()`, `cur.fetchall()` to return a list
-            # of several records, or even iterate on the cursor
-            for record in cur:
-                print(record)
-
-            # Make the changes to the database persistent
-            conn.commit()
