@@ -26,7 +26,7 @@ specific_generators = {
     'family': lambda : fake.last_name(),
     'fileSize': lambda : fake.numerify('### KB' if fake.pybool() else '### MB'),
     'isbn': lambda : fake.isbn13(),
-    'language': lambda : fake.locale(),
+    'language': lambda : fake.language_name(),
     'location': lambda : fake.city(),
     'manufacturer': lambda : fake.company(),
     'name': lambda : fake.name(),
