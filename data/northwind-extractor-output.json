@@ -1,0 +1,2644 @@
+{
+  "tables": [
+    {
+      "name": "categories",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "category_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "category_name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 15
+          },
+          "metadata": {
+            "distinct": 8,
+            "rowCount": 8,
+            "sampleCount": 8,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "type"
+          }
+        },
+        {
+          "name": "description",
+          "nativeType": "text",
+          "type": "text",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 8,
+            "rowCount": 8,
+            "semanticClass": "description"
+          }
+        },
+        {
+          "name": "picture",
+          "nativeType": "bytea",
+          "type": "unknown",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 1,
+            "semanticClass": "category"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "pk_categories",
+            "column": "category_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": []
+      },
+      "metadata": {
+        "rowCount": 8
+      }
+    },
+    {
+      "name": "customer_customer_demo",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "customer_id",
+          "nativeType": "character",
+          "type": "key",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": null
+        },
+        {
+          "name": "customer_type_id",
+          "nativeType": "character",
+          "type": "key",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": null
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "pk_customer_customer_demo",
+            "column": "customer_id",
+            "order": 1
+          },
+          {
+            "name": "pk_customer_customer_demo",
+            "column": "customer_type_id",
+            "order": 2
+          },
+          {
+            "name": "pk_customer_customer_demo",
+            "column": "customer_id",
+            "order": 1
+          },
+          {
+            "name": "pk_customer_customer_demo",
+            "column": "customer_type_id",
+            "order": 2
+          }
+        ],
+        "foreign_key": [
+          {
+            "name": "fk_customer_customer_demo_customer_demographics",
+            "column": "customer_type_id",
+            "refer_schema": "public",
+            "refer_table": "customer_demographics",
+            "refer_column": "customer_type_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "fk_customer_customer_demo_customers",
+            "column": "customer_id",
+            "refer_schema": "public",
+            "refer_table": "customers",
+            "refer_column": "customer_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 0
+      }
+    },
+    {
+      "name": "customer_demographics",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "customer_type_id",
+          "nativeType": "character",
+          "type": "key",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": null
+        },
+        {
+          "name": "customer_desc",
+          "nativeType": "text",
+          "type": "text",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 0,
+            "rowCount": 0
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "pk_customer_demographics",
+            "column": "customer_type_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": []
+      },
+      "metadata": {
+        "rowCount": 0
+      }
+    },
+    {
+      "name": "customers",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "customer_id",
+          "nativeType": "character",
+          "type": "key",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "company_name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 40
+          },
+          "metadata": {
+            "distinct": 91,
+            "rowCount": 91,
+            "sampleCount": 91,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "contact_name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 30
+          },
+          "metadata": {
+            "distinct": 91,
+            "rowCount": 91,
+            "sampleCount": 91,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "contact_title",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 30
+          },
+          "metadata": {
+            "distinct": 12,
+            "rowCount": 91,
+            "sampleCount": 12,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "position"
+          }
+        },
+        {
+          "name": "address",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 60
+          },
+          "metadata": {
+            "distinct": 91,
+            "rowCount": 91,
+            "sampleCount": 91,
+            "samples": [],
+            "entityType": "address",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "city",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 15
+          },
+          "metadata": {
+            "distinct": 69,
+            "rowCount": 91,
+            "sampleCount": 69,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "city"
+          }
+        },
+        {
+          "name": "region",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 15
+          },
+          "metadata": {
+            "distinct": 19,
+            "rowCount": 31,
+            "sampleCount": 18,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "club"
+          }
+        },
+        {
+          "name": "postal_code",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 10
+          },
+          "metadata": {
+            "distinct": 87,
+            "rowCount": 90,
+            "sampleCount": 86,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "code"
+          }
+        },
+        {
+          "name": "country",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 15
+          },
+          "metadata": {
+            "distinct": 21,
+            "rowCount": 91,
+            "sampleCount": 21,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "country"
+          }
+        },
+        {
+          "name": "phone",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 24
+          },
+          "metadata": {
+            "distinct": 91,
+            "rowCount": 91,
+            "sampleCount": 91,
+            "samples": [
+              "(5) 552-3745",
+              "(95) 555 82 82",
+              "(91) 745 6200",
+              "(5) 555-4729",
+              "(171) 555-1717",
+              "0452-076545",
+              "91.24.45.40",
+              "0372-035188",
+              "(2) 283-2951",
+              "0897-034214",
+              "(171) 555-0297",
+              "(171) 555-2282",
+              "(1) 123-5555",
+              "(11) 555-2167",
+              "(071) 23 67 22 20",
+              "(91) 555 22 82",
+              "86 21 32 43",
+              "88.60.15.31",
+              "6562-9722",
+              "(5) 555-3932",
+              "(14) 555-8122",
+              "(91) 555 94 44",
+              "90-224 8858",
+              "(604) 555-4729",
+              "(503) 555-6874",
+              "(505) 555-5939",
+              "0251-031259",
+              "(503) 555-7555",
+              "(171) 555-7788",
+              "(21) 555-3412",
+              "(11) 555-1189",
+              "0241-039123",
+              "035-640230",
+              "(307) 555-4680",
+              "(02) 201 24 67",
+              "0342-023176",
+              "(198) 555-8888",
+              "(8) 34-56-12",
+              "(406) 555-5834",
+              "0221-0644327",
+              "(907) 555-7584",
+              "(9) 331-6954",
+              "(5) 555-2933",
+              "089-0877310",
+              "0711-020361",
+              "0555-09876",
+              "20.16.10.16",
+              "0621-08460",
+              "(171) 555-7733",
+              "(509) 555-7969",
+              "(604) 555-3392",
+              "31 12 34 56",
+              "78.32.54.86",
+              "(503) 555-3612",
+              "(415) 555-5938",
+              "(21) 555-0091",
+              "(5) 555-3392",
+              "(1) 354-2534",
+              "(1) 356-5634",
+              "7675-3425",
+              "(11) 555-9482",
+              "(11) 555-9857",
+              "40.67.88.88",
+              "07-98 92 35",
+              "(21) 555-4252",
+              "(1) 135-5333",
+              "30.59.84.10",
+              "2967 542",
+              "40.32.21.21",
+              "(208) 555-8097",
+              "(1) 135-5555",
+              "069-0245984",
+              "(171) 555-1212",
+              "(1) 42.34.22.66",
+              "(206) 555-8257",
+              "981-443655",
+              "0522-556721",
+              "(503) 555-9573",
+              "(514) 555-8054",
+              "(206) 555-4112",
+              "(93) 203 4560",
+              "(26) 642-7012",
+              "011-4988260",
+              "26.47.15.10",
+              "(5) 555-1340",
+              "61.77.61.10",
+              "0695-34 67 21",
+              "(1) 47.55.60.10",
+              "(11) 555-7647",
+              "030-0074321",
+              "0921-12 34 65"
+            ],
+            "entityType": "unknown",
+            "semanticClass": "area"
+          }
+        },
+        {
+          "name": "fax",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 24
+          },
+          "metadata": {
+            "distinct": 70,
+            "rowCount": 69,
+            "sampleCount": 69,
+            "samples": [
+              "(1) 354-2535",
+              "030-0076545",
+              "(91) 745 6210",
+              "0621-08924",
+              "30.59.85.11",
+              "089-0877451",
+              "40.67.89.89",
+              "(1) 47.55.60.20",
+              "(171) 555-6750",
+              "(307) 555-6525",
+              "(02) 201 24 68",
+              "(9) 331-7256",
+              "(503) 555-9646",
+              "(91) 555 91 99",
+              "90-224 8858",
+              "0522-556722",
+              "(514) 555-8055",
+              "(91) 555 55 93",
+              "(5) 555-1948",
+              "(11) 555-2168",
+              "(509) 555-6221",
+              "78.32.54.87",
+              "(505) 555-3620",
+              "(1) 135-5535",
+              "(171) 555-2530",
+              "86 22 33 44",
+              "(171) 555-3373",
+              "(604) 555-3745",
+              "31 13 35 57",
+              "26.47.15.11",
+              "(1) 42.34.22.77",
+              "6562-9723",
+              "(503) 555-2376",
+              "(206) 555-2174",
+              "(21) 555-4545",
+              "(071) 23 67 22 21",
+              "0221-0765721",
+              "91.24.45.41",
+              "07-98 92 47",
+              "20.16.10.17",
+              "(907) 555-2880",
+              "(171) 555-5646",
+              "(5) 545-3745",
+              "(8) 34-93-93",
+              "069-0245874",
+              "(406) 555-8083",
+              "(604) 555-7293",
+              "011-4988261",
+              "61.77.61.11",
+              "0711-035428",
+              "0251-035695",
+              "(1) 123-5556",
+              "(206) 555-4115",
+              "(5) 555-3745",
+              "88.60.15.32",
+              "981-443655",
+              "(21) 555-8765",
+              "(26) 642-7012",
+              "(171) 555-9199",
+              "(5) 555-7293",
+              "035-640231",
+              "2967 3333",
+              "(1) 135-4892",
+              "40.32.21.20",
+              "0921-12 34 67",
+              "(93) 203 4561",
+              "7675-3426",
+              "(2) 283-3397",
+              "0241-059428"
+            ],
+            "entityType": "unknown",
+            "semanticClass": "weight"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "pk_customers",
+            "column": "customer_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": []
+      },
+      "metadata": {
+        "rowCount": 91
+      }
+    },
+    {
+      "name": "employees",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "employee_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "last_name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 20
+          },
+          "metadata": {
+            "distinct": 9,
+            "rowCount": 9,
+            "sampleCount": 9,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "first_name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 10
+          },
+          "metadata": {
+            "distinct": 9,
+            "rowCount": 9,
+            "sampleCount": 9,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "title",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 30
+          },
+          "metadata": {
+            "distinct": 4,
+            "rowCount": 9,
+            "sampleCount": 4,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "type"
+          }
+        },
+        {
+          "name": "title_of_courtesy",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 25
+          },
+          "metadata": {
+            "distinct": 4,
+            "rowCount": 9,
+            "sampleCount": 4,
+            "samples": [
+              "Mrs.",
+              "Mr.",
+              "Ms.",
+              "Dr."
+            ],
+            "entityType": "unknown",
+            "semanticClass": "class"
+          }
+        },
+        {
+          "name": "birth_date",
+          "nativeType": "date",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 9,
+            "max": "1966-01-27",
+            "min": "1937-09-19",
+            "mode": "1937-09-19",
+            "semanticClass": "code"
+          }
+        },
+        {
+          "name": "hire_date",
+          "nativeType": "date",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 8,
+            "max": "1994-11-15",
+            "min": "1992-04-01",
+            "mode": "1993-10-17",
+            "semanticClass": "code"
+          }
+        },
+        {
+          "name": "address",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 60
+          },
+          "metadata": {
+            "distinct": 9,
+            "rowCount": 9,
+            "sampleCount": 9,
+            "samples": [
+              "Edgeham Hollow\\nWinchester Way",
+              "4110 Old Redmond Rd.",
+              "908 W. Capital Way",
+              "14 Garrett Hill",
+              "Coventry House\\nMiner Rd.",
+              "722 Moss Bay Blvd.",
+              "4726 - 11th Ave. N.E.",
+              "507 - 20th Ave. E.\\nApt. 2A",
+              "7 Houndstooth Rd."
+            ],
+            "entityType": "unknown",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "city",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 15
+          },
+          "metadata": {
+            "distinct": 5,
+            "rowCount": 9,
+            "sampleCount": 5,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "city"
+          }
+        },
+        {
+          "name": "region",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 15
+          },
+          "metadata": {
+            "distinct": 2,
+            "rowCount": 5,
+            "sampleCount": 1,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "type"
+          }
+        },
+        {
+          "name": "postal_code",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 10
+          },
+          "metadata": {
+            "distinct": 9,
+            "rowCount": 9,
+            "sampleCount": 9,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "country",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 15
+          },
+          "metadata": {
+            "distinct": 2,
+            "rowCount": 9,
+            "sampleCount": 2,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "country"
+          }
+        },
+        {
+          "name": "home_phone",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 24
+          },
+          "metadata": {
+            "distinct": 9,
+            "rowCount": 9,
+            "sampleCount": 9,
+            "samples": [],
+            "entityType": "phonenumber",
+            "semanticClass": "location"
+          }
+        },
+        {
+          "name": "extension",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 4
+          },
+          "metadata": {
+            "distinct": 9,
+            "rowCount": 9,
+            "sampleCount": 9,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "photo",
+          "nativeType": "bytea",
+          "type": "unknown",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 1,
+            "semanticClass": "category"
+          }
+        },
+        {
+          "name": "notes",
+          "nativeType": "text",
+          "type": "text",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 9,
+            "rowCount": 9,
+            "semanticClass": "description"
+          }
+        },
+        {
+          "name": "reports_to",
+          "nativeType": "smallint",
+          "type": "integer",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "distinct": 3,
+            "average": "3.1250000000000000",
+            "max": 5,
+            "min": 2,
+            "variance": "2.4107142857142857",
+            "mode": 2,
+            "sequence": [
+              2.002152462418142,
+              2.094512348609479,
+              2.1379163757309696,
+              2.145752084069901,
+              2.169386892015712,
+              2.1850205319459635,
+              2.2127331603374607,
+              2.213863256589974,
+              2.269261823830009,
+              2.320711156300888,
+              2.46669327011774,
+              2.567390537950865,
+              2.642997515427587,
+              2.6930298606353604,
+              2.7092262690319773,
+              2.751083645069742,
+              2.79749499270045,
+              2.9681682354311474,
+              3.102393126510582,
+              3.293610146343852,
+              3.345320655994554,
+              3.346666897119443,
+              3.4489501905075457,
+              3.5339841325448984,
+              3.58968151910354,
+              3.617893659326818,
+              3.7132115800181955,
+              3.8060467403601366,
+              3.9401444775358825,
+              4.092851163668035,
+              4.193988843517266,
+              4.20565660100909,
+              4.400214374113929,
+              4.438197952500882,
+              4.566116937328047,
+              4.693689135116557,
+              4.7022570675439574,
+              4.874799825320479,
+              4.896364940982669,
+              4.956788103658098
+            ],
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "photo_path",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 255
+          },
+          "metadata": {
+            "distinct": 5,
+            "rowCount": 9,
+            "sampleCount": 5,
+            "samples": [
+              "http://accweb/emmployees/davolio.bmp",
+              "http://accweb/emmployees/leverling.bmp",
+              "http://accweb/emmployees/fuller.bmp",
+              "http://accweb/emmployees/peacock.bmp",
+              "http://accweb/emmployees/buchanan.bmp"
+            ],
+            "entityType": "unknown",
+            "semanticClass": "location"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "pk_employees",
+            "column": "employee_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": [
+          {
+            "name": "fk_employees_employees",
+            "column": "reports_to",
+            "refer_schema": "public",
+            "refer_table": "employees",
+            "refer_column": "employee_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 9
+      }
+    },
+    {
+      "name": "employee_territories",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "employee_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "age"
+          }
+        },
+        {
+          "name": "territory_id",
+          "nativeType": "character varying",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "maxLength": 20
+          },
+          "metadata": {
+            "semanticClass": "region"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "pk_employee_territories",
+            "column": "employee_id",
+            "order": 1
+          },
+          {
+            "name": "pk_employee_territories",
+            "column": "territory_id",
+            "order": 2
+          },
+          {
+            "name": "pk_employee_territories",
+            "column": "employee_id",
+            "order": 1
+          },
+          {
+            "name": "pk_employee_territories",
+            "column": "territory_id",
+            "order": 2
+          }
+        ],
+        "foreign_key": [
+          {
+            "name": "fk_employee_territories_employees",
+            "column": "employee_id",
+            "refer_schema": "public",
+            "refer_table": "employees",
+            "refer_column": "employee_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "fk_employee_territories_territories",
+            "column": "territory_id",
+            "refer_schema": "public",
+            "refer_table": "territories",
+            "refer_column": "territory_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 49
+      }
+    },
+    {
+      "name": "order_details",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "order_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "elevation"
+          }
+        },
+        {
+          "name": "product_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "plays"
+          }
+        },
+        {
+          "name": "unit_price",
+          "nativeType": "real",
+          "type": "decimal",
+          "properties": {
+            "nullable": true,
+            "precision": 24
+          },
+          "metadata": {
+            "distinct": 116,
+            "average": 26.218519710222143,
+            "max": 263.5,
+            "min": 2.0,
+            "variance": 889.6748643799394,
+            "mode": 18.0,
+            "sequence": [
+              5.977488739304292,
+              6.181360536008734,
+              7.5288934358846955,
+              7.576109559525971,
+              9.583127605163888,
+              9.909127959092658,
+              13.534631478065299,
+              13.902882209690892,
+              14.031472945316528,
+              14.240878851404773,
+              14.495440783928055,
+              14.809226003667819,
+              14.879019878032071,
+              17.225747817914222,
+              17.544095926644612,
+              18.161112111190985,
+              18.30299275283265,
+              18.984207400099063,
+              21.040247606984526,
+              21.212312258088765,
+              21.592969213376776,
+              22.139820616960208,
+              22.51227975672059,
+              22.985024945147167,
+              23.583072350270438,
+              24.814994117398143,
+              25.66354026177764,
+              25.875571455228588,
+              25.932351991398804,
+              27.793251558136564,
+              28.549025886710417,
+              28.728991169759762,
+              29.708513684958284,
+              31.990998288545516,
+              33.029419677669786,
+              38.50047948640754,
+              80.43928442184078,
+              97.34726585754208,
+              97.92235787929948,
+              207.52551508963992
+            ],
+            "semanticClass": "weight"
+          }
+        },
+        {
+          "name": "quantity",
+          "nativeType": "smallint",
+          "type": "integer",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "distinct": 55,
+            "average": "23.8129930394431555",
+            "max": 130,
+            "min": 1,
+            "variance": "361.8382712139719553",
+            "mode": 20,
+            "sequence": [
+              1.0646288590121036,
+              1.9045203849873273,
+              2.6245175760297204,
+              3.745191132047738,
+              4.607991205250981,
+              5.61623680088575,
+              5.981336511480049,
+              7.273397920720124,
+              9.172930207057151,
+              9.766022755415781,
+              12.306339543774566,
+              14.774744537825308,
+              17.10869165041616,
+              20.405571416488172,
+              24.948000983327635,
+              27.265747968467853,
+              27.728604127086488,
+              28.672827051394634,
+              29.822617855977235,
+              30.650316090855227,
+              31.793002855122694,
+              32.58599712577124,
+              41.258852976210385,
+              54.33951895658296,
+              55.0344674462976,
+              63.24860410575029,
+              64.42991584371133,
+              65.76979339034048,
+              66.49220806421346,
+              76.00239754450554,
+              76.737989022982,
+              78.4562343061956,
+              78.58901712590672,
+              81.36193215982152,
+              90.22215698500212,
+              90.82064951997202,
+              92.4063568972822,
+              95.0371028308054,
+              96.65482560289848,
+              127.03044453980944
+            ],
+            "semanticClass": "age"
+          }
+        },
+        {
+          "name": "discount",
+          "nativeType": "real",
+          "type": "decimal",
+          "properties": {
+            "nullable": true,
+            "precision": 24
+          },
+          "metadata": {
+            "distinct": 11,
+            "average": 0.05616705420226066,
+            "max": 0.25,
+            "min": 0.0,
+            "variance": 0.006963946237484176,
+            "mode": 0.0,
+            "sequence": [
+              0.0001478549871432089,
+              0.0024542672783171592,
+              0.00586184527742699,
+              0.006149568151285737,
+              0.006319409928468864,
+              0.0077993176488185415,
+              0.012516505965234265,
+              0.021782732304824783,
+              0.025858792860059033,
+              0.030183959573183126,
+              0.03032283969684304,
+              0.031513154229239476,
+              0.039906331571629414,
+              0.04002142710691427,
+              0.04168322024298077,
+              0.04889846230589508,
+              0.05622652369017926,
+              0.05893781385294245,
+              0.0594843848815605,
+              0.06102663458546754,
+              0.0662596858708259,
+              0.06743850474045146,
+              0.07029496663049649,
+              0.071980410242097,
+              0.08055385939008726,
+              0.08506967085840939,
+              0.08623352178057651,
+              0.0912257134399826,
+              0.09769646188852829,
+              0.11621275090744737,
+              0.12072787429838723,
+              0.1395816335376541,
+              0.1464059013133969,
+              0.14881651034067991,
+              0.1499987821124573,
+              0.16325905291286064,
+              0.18025811823842072,
+              0.18257391246086963,
+              0.2241537673076346,
+              0.23735800481028627
+            ],
+            "semanticClass": "elevation"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "pk_order_details",
+            "column": "order_id",
+            "order": 1
+          },
+          {
+            "name": "pk_order_details",
+            "column": "product_id",
+            "order": 2
+          },
+          {
+            "name": "pk_order_details",
+            "column": "order_id",
+            "order": 1
+          },
+          {
+            "name": "pk_order_details",
+            "column": "product_id",
+            "order": 2
+          }
+        ],
+        "foreign_key": [
+          {
+            "name": "fk_order_details_orders",
+            "column": "order_id",
+            "refer_schema": "public",
+            "refer_table": "orders",
+            "refer_column": "order_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "fk_order_details_products",
+            "column": "product_id",
+            "refer_schema": "public",
+            "refer_table": "products",
+            "refer_column": "product_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 2155
+      }
+    },
+    {
+      "name": "orders",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "order_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "customer_id",
+          "nativeType": "character",
+          "type": "key",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "employee_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "age"
+          }
+        },
+        {
+          "name": "order_date",
+          "nativeType": "date",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 480,
+            "max": "1998-05-06",
+            "min": "1996-07-04",
+            "mode": "1998-02-26",
+            "semanticClass": "year"
+          }
+        },
+        {
+          "name": "required_date",
+          "nativeType": "date",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 454,
+            "max": "1998-06-11",
+            "min": "1996-07-24",
+            "mode": "1998-03-26",
+            "semanticClass": "year"
+          }
+        },
+        {
+          "name": "shipped_date",
+          "nativeType": "date",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 388,
+            "max": "1998-05-06",
+            "min": "1996-07-10",
+            "mode": "1998-04-10",
+            "semanticClass": "year"
+          }
+        },
+        {
+          "name": "ship_via",
+          "nativeType": "smallint",
+          "type": "integer",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "distinct": 3,
+            "average": "2.0072289156626506",
+            "max": 3,
+            "min": 1,
+            "variance": "0.60790907901812315607",
+            "mode": 2,
+            "sequence": [
+              1.0361220960199002,
+              1.0373012808194626,
+              1.1274112698626044,
+              1.1284107229833973,
+              1.1309917489690338,
+              1.1698142314802253,
+              1.2262003912261439,
+              1.266207122633212,
+              1.284945613604991,
+              1.4009472568377852,
+              1.4270245989063892,
+              1.4982187830024474,
+              1.5385862211829846,
+              1.5835365513412047,
+              1.6003949556635233,
+              1.6192073483157676,
+              1.7607898771737918,
+              1.7679442760263848,
+              1.8213044949955006,
+              1.826698741103298,
+              1.8339500031693015,
+              1.9646987957538755,
+              2.0367966173701486,
+              2.143061212517069,
+              2.1745303047478544,
+              2.310478581343617,
+              2.3225191794430198,
+              2.449612594829514,
+              2.5014107790430136,
+              2.5446388957209507,
+              2.555106059276794,
+              2.574287647929207,
+              2.6170499744895683,
+              2.661567533416525,
+              2.667124434248867,
+              2.692894127013583,
+              2.712868565145044,
+              2.8209986306935755,
+              2.9051161691967837,
+              2.942289885457355
+            ],
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "freight",
+          "nativeType": "real",
+          "type": "decimal",
+          "properties": {
+            "nullable": true,
+            "precision": 24
+          },
+          "metadata": {
+            "distinct": 799,
+            "average": 78.244204877492,
+            "max": 1007.64,
+            "min": 0.02,
+            "variance": 13637.403521758011,
+            "mode": 0.56,
+            "sequence": [
+              2.7941036400106025,
+              3.741645695295393,
+              4.419463961573097,
+              4.570036301935268,
+              5.847977958184921,
+              7.514820560819594,
+              8.007435045390007,
+              14.928501733705563,
+              15.668789094210823,
+              18.6857389639866,
+              19.796698083141166,
+              23.589221405248132,
+              24.522963197024374,
+              32.372047030769,
+              33.02842401298706,
+              34.652461305392315,
+              34.85264467823993,
+              41.914470494715616,
+              44.10677730555874,
+              45.17501060834235,
+              48.729184591572455,
+              59.11483666300493,
+              59.28034858930592,
+              65.29404880102693,
+              65.54410771545186,
+              68.87999876497823,
+              74.48522295794913,
+              97.2963903651366,
+              117.1849947769031,
+              152.11957769653947,
+              170.0111907545737,
+              181.42218402254736,
+              183.30942064860136,
+              189.0538929403097,
+              209.16390438225093,
+              231.50771607260458,
+              250.3648708947585,
+              276.62673576404484,
+              290.1028392456189,
+              355.0230754999348
+            ],
+            "semanticClass": "region"
+          }
+        },
+        {
+          "name": "ship_name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 40
+          },
+          "metadata": {
+            "distinct": 90,
+            "rowCount": 830,
+            "sampleCount": 60,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "ship_address",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 60
+          },
+          "metadata": {
+            "distinct": 89,
+            "rowCount": 830,
+            "sampleCount": 39,
+            "samples": [],
+            "entityType": "address",
+            "semanticClass": "address"
+          }
+        },
+        {
+          "name": "ship_city",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 15
+          },
+          "metadata": {
+            "distinct": 70,
+            "rowCount": 830,
+            "sampleCount": 0,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "city"
+          }
+        },
+        {
+          "name": "ship_region",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 15
+          },
+          "metadata": {
+            "distinct": 20,
+            "rowCount": 323,
+            "sampleCount": 17,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "club"
+          }
+        },
+        {
+          "name": "ship_postal_code",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 10
+          },
+          "metadata": {
+            "distinct": 85,
+            "rowCount": 811,
+            "sampleCount": 66,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "ship_country",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 15
+          },
+          "metadata": {
+            "distinct": 21,
+            "rowCount": 830,
+            "sampleCount": 20,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "country"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "pk_orders",
+            "column": "order_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": [
+          {
+            "name": "fk_orders_customers",
+            "column": "customer_id",
+            "refer_schema": "public",
+            "refer_table": "customers",
+            "refer_column": "customer_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "fk_orders_employees",
+            "column": "employee_id",
+            "refer_schema": "public",
+            "refer_table": "employees",
+            "refer_column": "employee_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "fk_orders_shippers",
+            "column": "ship_via",
+            "refer_schema": "public",
+            "refer_table": "shippers",
+            "refer_column": "shipper_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 830
+      }
+    },
+    {
+      "name": "products",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "product_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "product_name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 40
+          },
+          "metadata": {
+            "distinct": 77,
+            "rowCount": 77,
+            "sampleCount": 77,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "supplier_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "age"
+          }
+        },
+        {
+          "name": "category_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "quantity_per_unit",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 20
+          },
+          "metadata": {
+            "distinct": 70,
+            "rowCount": 77,
+            "sampleCount": 70,
+            "samples": [
+              "16 - 2 kg boxes",
+              "10 kg pkg.",
+              "48 pieces",
+              "18 - 500 g pkgs.",
+              "10 boxes x 12 pieces",
+              "12 - 200 ml jars",
+              "15 - 625 g jars",
+              "24 pkgs. x 4 pieces",
+              "16 kg pkg.",
+              "10 boxes x 30 bags",
+              "10 - 200 g glasses",
+              "12 - 100 g bars",
+              "20 - 450 g glasses",
+              "24 - 500 ml bottles",
+              "24 - 250 g pkgs.",
+              "500 ml",
+              "1 kg pkg.",
+              "36 boxes",
+              "24 - 250 g  jars",
+              "40 - 100 g pkgs.",
+              "20 - 2 kg bags",
+              "12 - 500 g pkgs.",
+              "15 - 300 g rounds",
+              "24 - 4 oz tins",
+              "24 - 200 g pkgs.",
+              "24 boxes x 2 pies",
+              "50 bags x 30 sausgs.",
+              "12 - 75 cl bottles",
+              "100 - 250 g bags",
+              "30 gift boxes",
+              "24 - 500 g pkgs.",
+              "50 - 300 g pkgs.",
+              "24 - 8 oz jars",
+              "1k pkg.",
+              "32 - 8 oz bottles",
+              "24 - 150 g jars",
+              "10 - 4 oz boxes",
+              "20 bags x 4 pieces",
+              "24 - 12 oz bottles",
+              "24 - 250 ml bottles",
+              "32 - 1 kg pkgs.",
+              "12 boxes",
+              "16 - 500 g tins",
+              "750 cc per bottle",
+              "10 - 500 g pkgs.",
+              "12 - 1 lb pkgs.",
+              "24 pieces",
+              "12 - 550 ml bottles",
+              "24 - 0.5 l bottles",
+              "12 - 12 oz jars",
+              "10 boxes x 8 pieces",
+              "5 kg pkg.",
+              "12 - 355 ml cans",
+              "48 pies",
+              "32 - 500 g boxes",
+              "16 pies",
+              "12 - 12 oz cans",
+              "4 - 450 g glasses",
+              "20 - 1 kg tins",
+              "24 - 355 ml bottles",
+              "500 g",
+              "24 - 50 g pkgs.",
+              "10 pkgs.",
+              "100 - 100 g pieces",
+              "2 kg box",
+              "25 - 825 g cans",
+              "12 - 250 g pkgs.",
+              "12 - 8 oz jars",
+              "12 - 100 g pkgs",
+              "48 - 6 oz jars"
+            ],
+            "entityType": "unknown",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "unit_price",
+          "nativeType": "real",
+          "type": "decimal",
+          "properties": {
+            "nullable": true,
+            "precision": 24
+          },
+          "metadata": {
+            "distinct": 61,
+            "average": 28.83389609200614,
+            "max": 263.5,
+            "min": 2.5,
+            "variance": 1144.4223001785078,
+            "mode": 14.0,
+            "sequence": [
+              3.3171447283463977,
+              5.06300900007001,
+              7.0578196040964025,
+              7.569589586104176,
+              7.913937879057443,
+              8.454312957717182,
+              9.50691564439694,
+              9.796941505619621,
+              12.652563319685356,
+              13.07295825657235,
+              17.34015875816143,
+              18.697159237065716,
+              18.97553320598188,
+              19.461217689333083,
+              19.461494496176726,
+              21.022796234319955,
+              21.462659334983833,
+              22.73058512243208,
+              23.315894212500943,
+              23.539866751193003,
+              25.79161759221759,
+              27.105600824338442,
+              27.156508668632608,
+              29.88417648125302,
+              30.023115574668616,
+              31.152204268850895,
+              32.803405318870546,
+              34.130423099983844,
+              35.98385190143974,
+              37.450365722060326,
+              39.89681630786114,
+              40.82438727968175,
+              42.69949507361816,
+              44.89691889501636,
+              45.52322375450126,
+              45.98357248896323,
+              50.60705456483519,
+              58.535448641546,
+              67.27075649596821,
+              83.43524340102317
+            ],
+            "semanticClass": "weight"
+          }
+        },
+        {
+          "name": "units_in_stock",
+          "nativeType": "smallint",
+          "type": "integer",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "distinct": 51,
+            "average": "40.5064935064935065",
+            "max": 125,
+            "min": 0,
+            "variance": "1306.6216678058783322",
+            "mode": 0,
+            "sequence": [
+              3.1085505070148187,
+              8.597344867422873,
+              9.500035241245644,
+              9.74361087357595,
+              10.735965840456535,
+              11.807255685630228,
+              11.909631642225284,
+              12.863738759211493,
+              13.87692956855784,
+              14.53938771698431,
+              14.889668303387449,
+              17.205627106620884,
+              19.231635665766827,
+              20.81719380721424,
+              25.06870013984504,
+              25.800465326122275,
+              27.167661683384416,
+              28.867262002261796,
+              32.77631141664847,
+              34.31310590627929,
+              34.34033987033045,
+              35.00739855047982,
+              35.03660177954266,
+              35.61345971907707,
+              38.1170027427099,
+              39.73295596442942,
+              51.192025680079226,
+              51.411482831842974,
+              57.18461501604662,
+              60.01128412931442,
+              60.47579339022337,
+              61.52814148210176,
+              72.37467520352936,
+              76.50577583515818,
+              77.38913670360759,
+              90.37146601455265,
+              102.27462385216478,
+              111.12437963847862,
+              111.6186888410169,
+              113.55732132782165
+            ],
+            "semanticClass": "plays"
+          }
+        },
+        {
+          "name": "units_on_order",
+          "nativeType": "smallint",
+          "type": "integer",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "distinct": 10,
+            "average": "10.1298701298701299",
+            "max": 100,
+            "min": 0,
+            "variance": "535.5092276144907724",
+            "mode": 0,
+            "sequence": [
+              0.7128348248425787,
+              3.5665285721615425,
+              5.310333989067207,
+              9.36366188314387,
+              9.55961779107315,
+              10.151970601898153,
+              14.519596195679107,
+              15.111556081038312,
+              16.0081873918799,
+              17.220661308965965,
+              19.669910014104875,
+              23.12495206499039,
+              23.943043190003568,
+              25.586153208249005,
+              28.938725459390245,
+              30.00610642068425,
+              31.284473411404974,
+              36.42541432576642,
+              41.80185796295025,
+              41.9190117042557,
+              43.124490616907224,
+              44.842075401136974,
+              50.480703571423774,
+              50.55987123142051,
+              51.093676770169054,
+              53.24263060506337,
+              53.59153567185015,
+              54.84930894770967,
+              55.49085087724011,
+              57.053412311208476,
+              60.798327252164796,
+              63.835705468231424,
+              73.51481890201012,
+              75.10478595516807,
+              76.95798962283435,
+              86.02157974260209,
+              88.3117558690191,
+              90.14752734643245,
+              94.5217333324386,
+              96.91538901784426
+            ],
+            "semanticClass": "duration"
+          }
+        },
+        {
+          "name": "reorder_level",
+          "nativeType": "smallint",
+          "type": "integer",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "distinct": 7,
+            "average": "12.4675324675324675",
+            "max": 30,
+            "min": 0,
+            "variance": "119.4890635680109364",
+            "mode": 0,
+            "sequence": [
+              2.3091230573289896,
+              4.7710688813319315,
+              5.657979171812286,
+              6.2296912870299925,
+              6.878683426165306,
+              7.122237213852181,
+              7.539820083690909,
+              8.699768269162572,
+              9.173587276647165,
+              9.539294131584366,
+              9.73671628909935,
+              10.000416463452964,
+              11.339474505883938,
+              11.967880148628268,
+              12.222362974623904,
+              13.13573038097824,
+              13.4545461388123,
+              13.90807784282676,
+              15.931171724386834,
+              16.565987456866186,
+              16.620722965480805,
+              18.471581549691624,
+              18.6313974661646,
+              19.248054967610894,
+              19.717763028998263,
+              19.888992797734474,
+              20.277863058338852,
+              20.342749763430096,
+              20.373423210167452,
+              21.34446557761338,
+              23.669773953602498,
+              23.77037585113017,
+              24.299534906501144,
+              25.151704428270563,
+              25.280155217811725,
+              26.13042936149283,
+              26.9449654551211,
+              28.029030073190427,
+              28.73105148560293,
+              28.99031379573967
+            ],
+            "semanticClass": "plays"
+          }
+        },
+        {
+          "name": "discontinued",
+          "nativeType": "integer",
+          "type": "integer",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "distinct": 2,
+            "average": "0.12987012987012987013",
+            "max": 1,
+            "min": 0,
+            "variance": "0.11449077238550922761",
+            "mode": 0,
+            "sequence": [
+              0.15221547665771973,
+              0.18553575683739543,
+              0.20028996392734988,
+              0.21365664442850485,
+              0.22999340101128007,
+              0.2874125367477405,
+              0.3047252615504068,
+              0.31781023434609845,
+              0.35536348643577953,
+              0.37559011127167463,
+              0.39339188644781986,
+              0.41705343243162774,
+              0.41826359742927766,
+              0.41854587610792393,
+              0.43299725323271,
+              0.43423206134485404,
+              0.45407424604773405,
+              0.4667713107541531,
+              0.4802650838098008,
+              0.5287667830611735,
+              0.5497923299186152,
+              0.5528960735236434,
+              0.5708808393213081,
+              0.5783769123148657,
+              0.6016841224228409,
+              0.6158795017970782,
+              0.6187084385263633,
+              0.6255719857825739,
+              0.6310398106786512,
+              0.6748288540176544,
+              0.6872913090037496,
+              0.6944028680422916,
+              0.712617212503075,
+              0.7154930204932579,
+              0.7277332173013222,
+              0.7433335779983374,
+              0.8184061980158301,
+              0.8951328860255054,
+              0.915400640651276,
+              0.9815703189257052
+            ],
+            "semanticClass": "duration"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "pk_products",
+            "column": "product_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": [
+          {
+            "name": "fk_products_categories",
+            "column": "category_id",
+            "refer_schema": "public",
+            "refer_table": "categories",
+            "refer_column": "category_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "fk_products_suppliers",
+            "column": "supplier_id",
+            "refer_schema": "public",
+            "refer_table": "suppliers",
+            "refer_column": "supplier_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 77
+      }
+    },
+    {
+      "name": "region",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "region_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "region_description",
+          "nativeType": "character",
+          "type": "text",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 4,
+            "rowCount": 4,
+            "sampleCount": 4,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "team"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "pk_region",
+            "column": "region_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": []
+      },
+      "metadata": {
+        "rowCount": 4
+      }
+    },
+    {
+      "name": "shippers",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "shipper_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "company_name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 40
+          },
+          "metadata": {
+            "distinct": 6,
+            "rowCount": 6,
+            "sampleCount": 6,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "company"
+          }
+        },
+        {
+          "name": "phone",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 24
+          },
+          "metadata": {
+            "distinct": 6,
+            "rowCount": 6,
+            "sampleCount": 6,
+            "samples": [],
+            "entityType": "phonenumber",
+            "semanticClass": "isbn"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "pk_shippers",
+            "column": "shipper_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": []
+      },
+      "metadata": {
+        "rowCount": 6
+      }
+    },
+    {
+      "name": "suppliers",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "supplier_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "company_name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 40
+          },
+          "metadata": {
+            "distinct": 29,
+            "rowCount": 29,
+            "sampleCount": 29,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "contact_name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 30
+          },
+          "metadata": {
+            "distinct": 29,
+            "rowCount": 29,
+            "sampleCount": 29,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "contact_title",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 30
+          },
+          "metadata": {
+            "distinct": 15,
+            "rowCount": 29,
+            "sampleCount": 15,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "position"
+          }
+        },
+        {
+          "name": "address",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 60
+          },
+          "metadata": {
+            "distinct": 29,
+            "rowCount": 29,
+            "sampleCount": 29,
+            "samples": [
+              "Brovallav\u00e4gen 231",
+              "471 Serangoon Loop, Suite #402",
+              "170 Prince Edward Parade Hunter's Hill",
+              "Via dei Gelsomini, 153",
+              "203, Rue des Francs-Bourgeois",
+              "Calle del Rosal 4",
+              "P.O. Box 78934",
+              "Hatlevegen 5",
+              "49 Gilbert St.",
+              "Bat. B 3, rue des Alpes",
+              "Lyngbysild Fiskebakken 10",
+              "74 Rose St. Moonie Ponds",
+              "22, rue H. Voiron",
+              "Frahmredder 112a",
+              "148 rue Chasseur",
+              "Verkoop Rijnweg 22",
+              "2960 Rue St. Laurent",
+              "Viale Dante, 75",
+              "Bogenallee 51",
+              "3400 - 8th Avenue Suite 210",
+              "92 Setsuko Chuo-ku",
+              "Kaloadagatan 13",
+              "Av. das Americanas 12.890",
+              "9-8 Sekimai Musashino-shi",
+              "707 Oxford Rd.",
+              "29 King's Way",
+              "Tiergartenstra\u00dfe 5",
+              "Valtakatu 12",
+              "Order Processing Dept. 2100 Paul Revere Blvd."
+            ],
+            "entityType": "unknown",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "city",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 15
+          },
+          "metadata": {
+            "distinct": 29,
+            "rowCount": 29,
+            "sampleCount": 29,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "city"
+          }
+        },
+        {
+          "name": "region",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 15
+          },
+          "metadata": {
+            "distinct": 9,
+            "rowCount": 9,
+            "sampleCount": 8,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "state"
+          }
+        },
+        {
+          "name": "postal_code",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 10
+          },
+          "metadata": {
+            "distinct": 29,
+            "rowCount": 29,
+            "sampleCount": 29,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "country",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 15
+          },
+          "metadata": {
+            "distinct": 16,
+            "rowCount": 29,
+            "sampleCount": 16,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "country"
+          }
+        },
+        {
+          "name": "phone",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 24
+          },
+          "metadata": {
+            "distinct": 29,
+            "rowCount": 29,
+            "sampleCount": 29,
+            "samples": [
+              "(617) 555-3267",
+              "(12345) 1212",
+              "(0)2-953010",
+              "38.76.98.06",
+              "(98) 598 76 54",
+              "(03) 444-2343",
+              "(069) 992755",
+              "(03) 3555-5011",
+              "85.57.00.07",
+              "(04721) 8713",
+              "031-987 65 43",
+              "43844108",
+              "(514) 555-2955",
+              "(06) 431-7877",
+              "(1) 03.83.00.68",
+              "(02) 555-5914",
+              "08-123 45 67",
+              "(0544) 60323",
+              "(953) 10956",
+              "(313) 555-5735",
+              "(171) 555-2222",
+              "(010) 9984510",
+              "(161) 555-4448",
+              "555-8787",
+              "(100) 555-4822",
+              "(089) 6547665",
+              "(514) 555-9022",
+              "(503) 555-9931",
+              "(11) 555 4640"
+            ],
+            "entityType": "unknown",
+            "semanticClass": "location"
+          }
+        },
+        {
+          "name": "fax",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 24
+          },
+          "metadata": {
+            "distinct": 14,
+            "rowCount": 13,
+            "sampleCount": 13,
+            "samples": [
+              "(04721) 8714",
+              "(1) 03.83.00.62",
+              "(617) 555-3389",
+              "(03) 444-6588",
+              "38.76.98.58",
+              "(089) 6547667",
+              "(313) 555-3349",
+              "(514) 555-2921",
+              "(12345) 1210",
+              "(02) 555-4873",
+              "031-987 65 91",
+              "(0544) 60603",
+              "43844115"
+            ],
+            "entityType": "unknown",
+            "semanticClass": "status"
+          }
+        },
+        {
+          "name": "homepage",
+          "nativeType": "text",
+          "type": "text",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 6,
+            "rowCount": 5,
+            "semanticClass": "notes"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "pk_suppliers",
+            "column": "supplier_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": []
+      },
+      "metadata": {
+        "rowCount": 29
+      }
+    },
+    {
+      "name": "territories",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "territory_id",
+          "nativeType": "character varying",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "maxLength": 20
+          },
+          "metadata": {
+            "semanticClass": "region"
+          }
+        },
+        {
+          "name": "territory_description",
+          "nativeType": "character",
+          "type": "text",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 52,
+            "rowCount": 53,
+            "sampleCount": 52,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "city"
+          }
+        },
+        {
+          "name": "region_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "pk_territories",
+            "column": "territory_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": [
+          {
+            "name": "fk_territories_region",
+            "column": "region_id",
+            "refer_schema": "public",
+            "refer_table": "region",
+            "refer_column": "region_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 53
+      }
+    },
+    {
+      "name": "us_states",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "state_id",
+          "nativeType": "smallint",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "state_name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 100
+          },
+          "metadata": {
+            "distinct": 51,
+            "rowCount": 51,
+            "sampleCount": 51,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "state"
+          }
+        },
+        {
+          "name": "state_abbr",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 2
+          },
+          "metadata": {
+            "distinct": 51,
+            "rowCount": 51,
+            "sampleCount": 51,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "state"
+          }
+        },
+        {
+          "name": "state_region",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 50
+          },
+          "metadata": {
+            "distinct": 5,
+            "rowCount": 51,
+            "sampleCount": 5,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "city"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "pk_usstates",
+            "column": "state_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": []
+      },
+      "metadata": {
+        "rowCount": 51
+      }
+    }
+  ]
+}

@@ -1,0 +1,2711 @@
+{
+  "tables": [
+    {
+      "name": "actor",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "first_name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 45
+          },
+          "metadata": {
+            "distinct": 128,
+            "rowCount": 200,
+            "sampleCount": 51,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "last_name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 45
+          },
+          "metadata": {
+            "distinct": 121,
+            "rowCount": 200,
+            "sampleCount": 0,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "actor_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "last_update",
+          "nativeType": "timestamp without time zone",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 1,
+            "max": "2006-02-15 04:34:33",
+            "min": "2006-02-15 04:34:33",
+            "mode": "2006-02-15 04:34:33",
+            "semanticClass": "club"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "actor_pkey",
+            "column": "actor_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": []
+      },
+      "metadata": {
+        "rowCount": 200
+      }
+    },
+    {
+      "name": "category",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 25
+          },
+          "metadata": {
+            "distinct": 16,
+            "rowCount": 16,
+            "sampleCount": 16,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "genre"
+          }
+        },
+        {
+          "name": "category_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "last_update",
+          "nativeType": "timestamp without time zone",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 1,
+            "max": "2006-02-15 04:46:27",
+            "min": "2006-02-15 04:46:27",
+            "mode": "2006-02-15 04:46:27",
+            "semanticClass": "code"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "category_pkey",
+            "column": "category_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": []
+      },
+      "metadata": {
+        "rowCount": 16
+      }
+    },
+    {
+      "name": "film",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "title",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 255
+          },
+          "metadata": {
+            "distinct": 1000,
+            "rowCount": 1000,
+            "sampleCount": 100,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "artist"
+          }
+        },
+        {
+          "name": "description",
+          "nativeType": "text",
+          "type": "text",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 1000,
+            "rowCount": 1000,
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "release_year",
+          "nativeType": "integer",
+          "type": "integer",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "distinct": 1,
+            "average": "2006.0000000000000000",
+            "max": 2006,
+            "min": 2006,
+            "variance": "0",
+            "mode": 2006,
+            "semanticClass": "year"
+          }
+        },
+        {
+          "name": "language_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "region"
+          }
+        },
+        {
+          "name": "original_language_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "album"
+          }
+        },
+        {
+          "name": "length",
+          "nativeType": "smallint",
+          "type": "integer",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "distinct": 140,
+            "average": "115.2720000000000000",
+            "max": 185,
+            "min": 46,
+            "variance": "1634.2883043043043043",
+            "mode": 85,
+            "sequence": [
+              46.73360644584682,
+              53.607524987803636,
+              54.657954938254335,
+              56.172533425908576,
+              56.9934894137184,
+              65.52128820299927,
+              66.64704904754828,
+              72.48837624962803,
+              75.06655619434139,
+              75.85378708385011,
+              77.25794085668744,
+              82.11105301047797,
+              82.54851400799848,
+              84.97071769018311,
+              88.9373639466337,
+              91.03361593762465,
+              96.8364176848485,
+              98.17458496485618,
+              103.26214225376407,
+              107.45729889394542,
+              111.29334847341862,
+              112.22343065902135,
+              115.75305779693215,
+              115.97801106356506,
+              121.71141966025404,
+              126.73134545386038,
+              127.89205967765447,
+              130.33712346055017,
+              137.7258603314079,
+              138.1156867471047,
+              141.2621703534055,
+              143.46232463649835,
+              153.2946009130476,
+              157.78661461609775,
+              158.1730004353846,
+              160.8162249382329,
+              173.95413564163448,
+              178.20525435679528,
+              178.48371029901725,
+              183.01612483763142
+            ],
+            "semanticClass": "duration"
+          }
+        },
+        {
+          "name": "special_features",
+          "nativeType": "ARRAY",
+          "type": "unknown",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 15,
+            "semanticClass": "command"
+          }
+        },
+        {
+          "name": "fulltext",
+          "nativeType": "tsvector",
+          "type": "unknown",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 1000,
+            "semanticClass": "description"
+          }
+        },
+        {
+          "name": "film_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "rental_duration",
+          "nativeType": "smallint",
+          "type": "integer",
+          "properties": {
+            "nullable": true,
+            "precision": 16
+          },
+          "metadata": {
+            "distinct": 5,
+            "average": "4.9850000000000000",
+            "max": 7,
+            "min": 3,
+            "variance": "1.9927677677677678",
+            "mode": 6,
+            "sequence": [
+              3.042492811558914,
+              3.1035939751114148,
+              3.1274400815874994,
+              3.501604087517112,
+              3.5832623529341925,
+              4.046515626902722,
+              4.097984555898202,
+              4.233276077056398,
+              4.234582758155406,
+              4.292482355022007,
+              4.353635394518884,
+              4.487640923534096,
+              4.6045307229936006,
+              4.6672391166721,
+              4.669209729881832,
+              4.674793709649101,
+              4.736763626796381,
+              4.850729584969654,
+              5.065850561448626,
+              5.233728689255963,
+              5.258164937528141,
+              5.288596759756714,
+              5.4987605831712685,
+              5.5057126855080085,
+              5.607594389020749,
+              5.636233957090154,
+              5.733306972558706,
+              5.747071454757975,
+              5.845331680767925,
+              5.930439237519126,
+              5.985229447321215,
+              5.996177986455509,
+              6.132412511601528,
+              6.266970427070358,
+              6.403262181375142,
+              6.4687864507206125,
+              6.641275165021608,
+              6.842537636988837,
+              6.9442778231338735,
+              6.986624155186595
+            ],
+            "semanticClass": "age"
+          }
+        },
+        {
+          "name": "rental_rate",
+          "nativeType": "numeric",
+          "type": "decimal",
+          "properties": {
+            "nullable": true,
+            "precision": 4
+          },
+          "metadata": {
+            "distinct": 3,
+            "average": "2.9800000000000000",
+            "max": "4.99",
+            "min": "0.99",
+            "variance": "2.7106106106106106",
+            "mode": "0.99",
+            "sequence": [
+              "1.060323791747924024875260329",
+              "1.236627467541764566760775779",
+              "1.283527832831683710423931188",
+              "1.363847439123023317364413742",
+              "1.400910086105995109306832092",
+              "1.426902097223855090390998157",
+              "1.486891436684554488323328769",
+              "1.538941304522907458363079058",
+              "1.586118005708852205515313472",
+              "1.664080905406091002163293524",
+              "2.198800447893997986881231555",
+              "2.329341265901674793425968346",
+              "2.352039356311484983308446317",
+              "2.357054423166256249544403545",
+              "2.394239692252280846673784253",
+              "2.447004691689262498854873229",
+              "2.474208730051803870608750912",
+              "2.645220895024718696930676742",
+              "2.689080951341053857817087191",
+              "2.760060900290530758738327677",
+              "2.774749580306223881720484314",
+              "2.868602218311367533232214555",
+              "2.992450056921349030858436891",
+              "3.034925311527763689412040549",
+              "3.050635743662831309563898686",
+              "3.464855234943740711628379358",
+              "3.472094507837289132368141508",
+              "3.485425987808788548250049644",
+              "3.601407505111611904169421905",
+              "3.662808977359225401926323684",
+              "3.735959223858051689859394173",
+              "4.159003001277840070315505727",
+              "4.216055976528964475136262990",
+              "4.217251491345398015653245239",
+              "4.287239141479782809085463669",
+              "4.438845117574883989419731733",
+              "4.736027210885908953486023165",
+              "4.822073292865278535401785121",
+              "4.946501451568873228836764610",
+              "4.951630289460880582907975622"
+            ],
+            "semanticClass": "duration"
+          }
+        },
+        {
+          "name": "replacement_cost",
+          "nativeType": "numeric",
+          "type": "decimal",
+          "properties": {
+            "nullable": true,
+            "precision": 5
+          },
+          "metadata": {
+            "distinct": 21,
+            "average": "19.9840000000000000",
+            "max": "29.99",
+            "min": "9.99",
+            "variance": "36.6125765765765766",
+            "mode": "20.99",
+            "sequence": [
+              "10.71992272883985676035223378",
+              "11.23200603517744134762779140",
+              "11.96216188757684962595817524",
+              "12.60583729254919017392921887",
+              "12.69507628079840412027579077",
+              "12.74231394148052777026691729",
+              "14.03069924363494958896581011",
+              "14.52440425876307440233858870",
+              "14.64584876012815751522566643",
+              "14.72058972780521269640985338",
+              "15.07174999046937347912944461",
+              "15.27700660737797711874463858",
+              "16.29042066371190134788093928",
+              "17.52592141107241797470805977",
+              "17.60874216801445047764218543",
+              "17.92566300201009511283700704",
+              "18.22224265871147053985623643",
+              "18.26165799030790083179454087",
+              "18.58431669712210677403163572",
+              "18.87071202023344952181105327",
+              "20.46165759135117468758835457",
+              "21.71292105755399305166974954",
+              "21.74898645095964134554833436",
+              "21.84937865951620118210030341",
+              "22.27938553111247955484941485",
+              "22.47391370817683920790841512",
+              "22.60220092668404291202932654",
+              "23.22923152827291893629535480",
+              "23.65828935467709982276574010",
+              "23.88447016194720596615752584",
+              "24.20573491168874880941075389",
+              "24.50071180045952857540214609",
+              "24.75857433358859239547200559",
+              "25.40758308506940444715382909",
+              "25.87868137659606993850047729",
+              "26.21339514840181706745170232",
+              "26.30285678210824130474065896",
+              "28.12783528669137723454696243",
+              "28.49776431656372622569506347",
+              "29.09934178525354099065225455"
+            ],
+            "semanticClass": "duration"
+          }
+        },
+        {
+          "name": "rating",
+          "nativeType": "USER-DEFINED",
+          "type": "text",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 5,
+            "rowCount": 1000,
+            "sampleCount": 5,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "album"
+          }
+        },
+        {
+          "name": "last_update",
+          "nativeType": "timestamp without time zone",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 1,
+            "max": "2006-02-15 05:03:42",
+            "min": "2006-02-15 05:03:42",
+            "mode": "2006-02-15 05:03:42",
+            "semanticClass": "duration"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "film_pkey",
+            "column": "film_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": [
+          {
+            "name": "film_language_id_fkey",
+            "column": "language_id",
+            "refer_schema": "public",
+            "refer_table": "language",
+            "refer_column": "language_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "film_original_language_id_fkey",
+            "column": "original_language_id",
+            "refer_schema": "public",
+            "refer_table": "language",
+            "refer_column": "language_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 1000
+      }
+    },
+    {
+      "name": "film_actor",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "actor_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "day"
+          }
+        },
+        {
+          "name": "film_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "plays"
+          }
+        },
+        {
+          "name": "last_update",
+          "nativeType": "timestamp without time zone",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 1,
+            "max": "2006-02-15 05:05:03",
+            "min": "2006-02-15 05:05:03",
+            "mode": "2006-02-15 05:05:03",
+            "semanticClass": "result"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "film_actor_pkey",
+            "column": "actor_id",
+            "order": 1
+          },
+          {
+            "name": "film_actor_pkey",
+            "column": "film_id",
+            "order": 2
+          },
+          {
+            "name": "film_actor_pkey",
+            "column": "actor_id",
+            "order": 1
+          },
+          {
+            "name": "film_actor_pkey",
+            "column": "film_id",
+            "order": 2
+          }
+        ],
+        "foreign_key": [
+          {
+            "name": "film_actor_actor_id_fkey",
+            "column": "actor_id",
+            "refer_schema": "public",
+            "refer_table": "actor",
+            "refer_column": "actor_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "film_actor_film_id_fkey",
+            "column": "film_id",
+            "refer_schema": "public",
+            "refer_table": "film",
+            "refer_column": "film_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 5462
+      }
+    },
+    {
+      "name": "film_category",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "film_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "category_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "last_update",
+          "nativeType": "timestamp without time zone",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 1,
+            "max": "2006-02-15 05:07:09",
+            "min": "2006-02-15 05:07:09",
+            "mode": "2006-02-15 05:07:09",
+            "semanticClass": "depth"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "film_category_pkey",
+            "column": "film_id",
+            "order": 1
+          },
+          {
+            "name": "film_category_pkey",
+            "column": "category_id",
+            "order": 2
+          },
+          {
+            "name": "film_category_pkey",
+            "column": "film_id",
+            "order": 1
+          },
+          {
+            "name": "film_category_pkey",
+            "column": "category_id",
+            "order": 2
+          }
+        ],
+        "foreign_key": [
+          {
+            "name": "film_category_category_id_fkey",
+            "column": "category_id",
+            "refer_schema": "public",
+            "refer_table": "category",
+            "refer_column": "category_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "film_category_film_id_fkey",
+            "column": "film_id",
+            "refer_schema": "public",
+            "refer_table": "film",
+            "refer_column": "film_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 1000
+      }
+    },
+    {
+      "name": "address",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "address",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 50
+          },
+          "metadata": {
+            "distinct": 603,
+            "rowCount": 603,
+            "sampleCount": 0,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "address"
+          }
+        },
+        {
+          "name": "address2",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 50
+          },
+          "metadata": {
+            "distinct": 1,
+            "rowCount": 0,
+            "semanticClass": "album"
+          }
+        },
+        {
+          "name": "district",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 20
+          },
+          "metadata": {
+            "distinct": 1,
+            "rowCount": 603,
+            "sampleCount": 0,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "position"
+          }
+        },
+        {
+          "name": "city_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "postal_code",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 10
+          },
+          "metadata": {
+            "distinct": 597,
+            "rowCount": 599,
+            "sampleCount": 100,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "elevation"
+          }
+        },
+        {
+          "name": "phone",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 20
+          },
+          "metadata": {
+            "distinct": 1,
+            "rowCount": 603,
+            "sampleCount": 1,
+            "samples": [
+              " "
+            ],
+            "entityType": "unknown",
+            "semanticClass": "position"
+          }
+        },
+        {
+          "name": "address_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "last_update",
+          "nativeType": "timestamp without time zone",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 1,
+            "max": "2006-02-15 04:45:30",
+            "min": "2006-02-15 04:45:30",
+            "mode": "2006-02-15 04:45:30",
+            "semanticClass": "duration"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "address_pkey",
+            "column": "address_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": [
+          {
+            "name": "address_city_id_fkey",
+            "column": "city_id",
+            "refer_schema": "public",
+            "refer_table": "city",
+            "refer_column": "city_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 603
+      }
+    },
+    {
+      "name": "city",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "city",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 50
+          },
+          "metadata": {
+            "distinct": 599,
+            "rowCount": 600,
+            "sampleCount": 0,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "city"
+          }
+        },
+        {
+          "name": "country_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "plays"
+          }
+        },
+        {
+          "name": "city_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "last_update",
+          "nativeType": "timestamp without time zone",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 1,
+            "max": "2006-02-15 04:45:25",
+            "min": "2006-02-15 04:45:25",
+            "mode": "2006-02-15 04:45:25",
+            "semanticClass": "depth"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "city_pkey",
+            "column": "city_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": [
+          {
+            "name": "city_country_id_fkey",
+            "column": "country_id",
+            "refer_schema": "public",
+            "refer_table": "country",
+            "refer_column": "country_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 600
+      }
+    },
+    {
+      "name": "country",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "country",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 50
+          },
+          "metadata": {
+            "distinct": 109,
+            "rowCount": 109,
+            "sampleCount": 0,
+            "samples": [],
+            "entityType": "unknown",
+            "semanticClass": "country"
+          }
+        },
+        {
+          "name": "country_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "last_update",
+          "nativeType": "timestamp without time zone",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 1,
+            "max": "2006-02-15 04:44:00",
+            "min": "2006-02-15 04:44:00",
+            "mode": "2006-02-15 04:44:00",
+            "semanticClass": "year"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "country_pkey",
+            "column": "country_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": []
+      },
+      "metadata": {
+        "rowCount": 109
+      }
+    },
+    {
+      "name": "customer",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "store_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "first_name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 45
+          },
+          "metadata": {
+            "distinct": 591,
+            "rowCount": 599,
+            "sampleCount": 71,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "last_name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 45
+          },
+          "metadata": {
+            "distinct": 599,
+            "rowCount": 599,
+            "sampleCount": 70,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "email",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 50
+          },
+          "metadata": {
+            "distinct": 599,
+            "rowCount": 599,
+            "sampleCount": 100,
+            "samples": [],
+            "entityType": "email",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "address_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "age"
+          }
+        },
+        {
+          "name": "active",
+          "nativeType": "integer",
+          "type": "integer",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "distinct": 2,
+            "average": "0.97495826377295492487",
+            "max": 1,
+            "min": 0,
+            "variance": "0.02445547484380321718",
+            "mode": 1,
+            "sequence": [
+              0.04284142585152173,
+              0.04291105716280108,
+              0.06276294616259448,
+              0.08083267474213507,
+              0.08595772334388019,
+              0.09569967687830072,
+              0.10310805339592011,
+              0.10486238974900353,
+              0.10743416944963236,
+              0.12507140800737515,
+              0.15242183965822842,
+              0.17622815017822857,
+              0.2176557496601923,
+              0.2205355582954387,
+              0.2861311833006277,
+              0.31333466487861283,
+              0.3145925243462506,
+              0.3304092573893467,
+              0.34993697032987825,
+              0.3593265821109086,
+              0.38759491826969006,
+              0.40759680537185083,
+              0.522067926152527,
+              0.5308147473994569,
+              0.5320611691244665,
+              0.5544466945828588,
+              0.5584608671340985,
+              0.566198800620594,
+              0.6137576181969542,
+              0.6165511706052718,
+              0.7058042623153853,
+              0.7411662466663909,
+              0.7833713320831908,
+              0.8249917494647216,
+              0.8399558967732486,
+              0.8592462791968554,
+              0.9488734602872624,
+              0.971968220637734,
+              0.9788038096110812,
+              0.9924016514700336
+            ],
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "customer_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "activebool",
+          "nativeType": "boolean",
+          "type": "bool",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 1,
+            "entityType": "boolean",
+            "categories": {
+              "true": 599
+            },
+            "semanticClass": "team"
+          }
+        },
+        {
+          "name": "create_date",
+          "nativeType": "date",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 1,
+            "max": "2006-02-14",
+            "min": "2006-02-14",
+            "mode": "2006-02-14",
+            "semanticClass": "age"
+          }
+        },
+        {
+          "name": "last_update",
+          "nativeType": "timestamp without time zone",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 1,
+            "max": "2006-02-15 04:57:20",
+            "min": "2006-02-15 04:57:20",
+            "mode": "2006-02-15 04:57:20",
+            "semanticClass": "depth"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "customer_pkey",
+            "column": "customer_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": [
+          {
+            "name": "customer_address_id_fkey",
+            "column": "address_id",
+            "refer_schema": "public",
+            "refer_table": "address",
+            "refer_column": "address_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "customer_store_id_fkey",
+            "column": "store_id",
+            "refer_schema": "public",
+            "refer_table": "store",
+            "refer_column": "store_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 599
+      }
+    },
+    {
+      "name": "inventory",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "film_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "age"
+          }
+        },
+        {
+          "name": "store_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "inventory_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "last_update",
+          "nativeType": "timestamp without time zone",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 1,
+            "max": "2006-02-15 05:09:17",
+            "min": "2006-02-15 05:09:17",
+            "mode": "2006-02-15 05:09:17",
+            "semanticClass": "depth"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "inventory_pkey",
+            "column": "inventory_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": [
+          {
+            "name": "inventory_film_id_fkey",
+            "column": "film_id",
+            "refer_schema": "public",
+            "refer_table": "film",
+            "refer_column": "film_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "inventory_store_id_fkey",
+            "column": "store_id",
+            "refer_schema": "public",
+            "refer_table": "store",
+            "refer_column": "store_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 4581
+      }
+    },
+    {
+      "name": "language",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "name",
+          "nativeType": "character",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 20
+          },
+          "metadata": {
+            "distinct": 6,
+            "rowCount": 6,
+            "sampleCount": 6,
+            "samples": [
+              "English             ",
+              "Japanese            ",
+              "German              ",
+              "Mandarin            ",
+              "French              ",
+              "Italian             "
+            ],
+            "entityType": "unknown",
+            "semanticClass": "language"
+          }
+        },
+        {
+          "name": "language_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "last_update",
+          "nativeType": "timestamp without time zone",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 1,
+            "max": "2006-02-15 05:02:19",
+            "min": "2006-02-15 05:02:19",
+            "mode": "2006-02-15 05:02:19",
+            "semanticClass": "code"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "language_pkey",
+            "column": "language_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": []
+      },
+      "metadata": {
+        "rowCount": 6
+      }
+    },
+    {
+      "name": "payment",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "customer_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "staff_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "rental_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "amount",
+          "nativeType": "numeric",
+          "type": "decimal",
+          "properties": {
+            "nullable": true,
+            "precision": 5
+          },
+          "metadata": {
+            "distinct": 19,
+            "average": "4.2006673312979002",
+            "max": "11.99",
+            "min": "0.00",
+            "variance": "5.5837399521985169",
+            "mode": "4.99",
+            "sequence": [
+              "0.6322159184169194978686334707",
+              "0.9294615398693895025328259862",
+              "1.846743791968031622729995434",
+              "1.858383427031174106591748796",
+              "1.980498896320126784864612546",
+              "1.984335493226123152687989659",
+              "1.987645511334164543093550037",
+              "1.987647662856358423688618586",
+              "1.988441501152183539247175759",
+              "3.077409238918570419940579086",
+              "3.137117019982304055858435277",
+              "4.734364671730148863559861638",
+              "4.813013906905817549386483733",
+              "5.421711596604830507573069553",
+              "5.843828767146327578529962920",
+              "5.985854356332085561831490849",
+              "6.228370587559455060500113177",
+              "6.262399933177991826482866600",
+              "6.443293213246780624103848823",
+              "7.157971249001546354406855243",
+              "7.396971325404772450440304965",
+              "7.482224520945497818757985442",
+              "8.970029698769352606291249685",
+              "8.970870387316971843461033131",
+              "8.977485458443325505584198254",
+              "8.981360127057476674394820293",
+              "9.089095753829497894571431971",
+              "9.661050600421582874588466439",
+              "9.903533535191969470190542779",
+              "9.980691744621918175539576623",
+              "9.984357517169463562822784297",
+              "9.989057763328903920552193085",
+              "9.989417809251823694438598977",
+              "10.20092867889563393646312761",
+              "10.26238319259279819561925251",
+              "10.36721055322962726563673641",
+              "11.04857974554066558425802213",
+              "11.13660454818782753250161477",
+              "11.50320306998892917249577295",
+              "11.75228637073232619059126591"
+            ],
+            "semanticClass": "weight"
+          }
+        },
+        {
+          "name": "payment_date",
+          "nativeType": "timestamp without time zone",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 15819,
+            "max": "2006-02-14 15:16:03",
+            "min": "2005-05-24 22:53:30",
+            "mode": "2006-02-14 15:16:03",
+            "semanticClass": "duration"
+          }
+        },
+        {
+          "name": "payment_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "payment_pkey",
+            "column": "payment_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": [
+          {
+            "name": "payment_customer_id_fkey",
+            "column": "customer_id",
+            "refer_schema": "public",
+            "refer_table": "customer",
+            "refer_column": "customer_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "payment_rental_id_fkey",
+            "column": "rental_id",
+            "refer_schema": "public",
+            "refer_table": "rental",
+            "refer_column": "rental_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "payment_staff_id_fkey",
+            "column": "staff_id",
+            "refer_schema": "public",
+            "refer_table": "staff",
+            "refer_column": "staff_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 16049
+      }
+    },
+    {
+      "name": "payment_p2007_01",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "customer_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": null
+        },
+        {
+          "name": "staff_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": null
+        },
+        {
+          "name": "rental_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": null
+        },
+        {
+          "name": "amount",
+          "nativeType": "numeric",
+          "type": "decimal",
+          "properties": {
+            "nullable": true,
+            "precision": 5
+          },
+          "metadata": {
+            "distinct": 0,
+            "average": null,
+            "max": null,
+            "min": null,
+            "variance": null,
+            "mode": null
+          }
+        },
+        {
+          "name": "payment_date",
+          "nativeType": "timestamp without time zone",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 0,
+            "max": null,
+            "min": null,
+            "mode": null
+          }
+        },
+        {
+          "name": "payment_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": null
+        }
+      ],
+      "constraints": {
+        "primary_key": [],
+        "foreign_key": [
+          {
+            "name": "payment_p2007_01_customer_id_fkey",
+            "column": "customer_id",
+            "refer_schema": "public",
+            "refer_table": "customer",
+            "refer_column": "customer_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "payment_p2007_01_rental_id_fkey",
+            "column": "rental_id",
+            "refer_schema": "public",
+            "refer_table": "rental",
+            "refer_column": "rental_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "payment_p2007_01_staff_id_fkey",
+            "column": "staff_id",
+            "refer_schema": "public",
+            "refer_table": "staff",
+            "refer_column": "staff_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 0
+      }
+    },
+    {
+      "name": "payment_p2007_02",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "customer_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": null
+        },
+        {
+          "name": "staff_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": null
+        },
+        {
+          "name": "rental_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": null
+        },
+        {
+          "name": "amount",
+          "nativeType": "numeric",
+          "type": "decimal",
+          "properties": {
+            "nullable": true,
+            "precision": 5
+          },
+          "metadata": {
+            "distinct": 0,
+            "average": null,
+            "max": null,
+            "min": null,
+            "variance": null,
+            "mode": null
+          }
+        },
+        {
+          "name": "payment_date",
+          "nativeType": "timestamp without time zone",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 0,
+            "max": null,
+            "min": null,
+            "mode": null
+          }
+        },
+        {
+          "name": "payment_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": null
+        }
+      ],
+      "constraints": {
+        "primary_key": [],
+        "foreign_key": [
+          {
+            "name": "payment_p2007_02_customer_id_fkey",
+            "column": "customer_id",
+            "refer_schema": "public",
+            "refer_table": "customer",
+            "refer_column": "customer_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "payment_p2007_02_rental_id_fkey",
+            "column": "rental_id",
+            "refer_schema": "public",
+            "refer_table": "rental",
+            "refer_column": "rental_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "payment_p2007_02_staff_id_fkey",
+            "column": "staff_id",
+            "refer_schema": "public",
+            "refer_table": "staff",
+            "refer_column": "staff_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 0
+      }
+    },
+    {
+      "name": "payment_p2007_03",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "customer_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": null
+        },
+        {
+          "name": "staff_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": null
+        },
+        {
+          "name": "rental_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": null
+        },
+        {
+          "name": "amount",
+          "nativeType": "numeric",
+          "type": "decimal",
+          "properties": {
+            "nullable": true,
+            "precision": 5
+          },
+          "metadata": {
+            "distinct": 0,
+            "average": null,
+            "max": null,
+            "min": null,
+            "variance": null,
+            "mode": null
+          }
+        },
+        {
+          "name": "payment_date",
+          "nativeType": "timestamp without time zone",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 0,
+            "max": null,
+            "min": null,
+            "mode": null
+          }
+        },
+        {
+          "name": "payment_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": null
+        }
+      ],
+      "constraints": {
+        "primary_key": [],
+        "foreign_key": [
+          {
+            "name": "payment_p2007_03_customer_id_fkey",
+            "column": "customer_id",
+            "refer_schema": "public",
+            "refer_table": "customer",
+            "refer_column": "customer_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "payment_p2007_03_rental_id_fkey",
+            "column": "rental_id",
+            "refer_schema": "public",
+            "refer_table": "rental",
+            "refer_column": "rental_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "payment_p2007_03_staff_id_fkey",
+            "column": "staff_id",
+            "refer_schema": "public",
+            "refer_table": "staff",
+            "refer_column": "staff_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 0
+      }
+    },
+    {
+      "name": "payment_p2007_04",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "customer_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": null
+        },
+        {
+          "name": "staff_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": null
+        },
+        {
+          "name": "rental_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": null
+        },
+        {
+          "name": "amount",
+          "nativeType": "numeric",
+          "type": "decimal",
+          "properties": {
+            "nullable": true,
+            "precision": 5
+          },
+          "metadata": {
+            "distinct": 0,
+            "average": null,
+            "max": null,
+            "min": null,
+            "variance": null,
+            "mode": null
+          }
+        },
+        {
+          "name": "payment_date",
+          "nativeType": "timestamp without time zone",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 0,
+            "max": null,
+            "min": null,
+            "mode": null
+          }
+        },
+        {
+          "name": "payment_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": null
+        }
+      ],
+      "constraints": {
+        "primary_key": [],
+        "foreign_key": [
+          {
+            "name": "payment_p2007_04_customer_id_fkey",
+            "column": "customer_id",
+            "refer_schema": "public",
+            "refer_table": "customer",
+            "refer_column": "customer_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "payment_p2007_04_rental_id_fkey",
+            "column": "rental_id",
+            "refer_schema": "public",
+            "refer_table": "rental",
+            "refer_column": "rental_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "payment_p2007_04_staff_id_fkey",
+            "column": "staff_id",
+            "refer_schema": "public",
+            "refer_table": "staff",
+            "refer_column": "staff_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 0
+      }
+    },
+    {
+      "name": "payment_p2007_05",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "customer_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": null
+        },
+        {
+          "name": "staff_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": null
+        },
+        {
+          "name": "rental_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": null
+        },
+        {
+          "name": "amount",
+          "nativeType": "numeric",
+          "type": "decimal",
+          "properties": {
+            "nullable": true,
+            "precision": 5
+          },
+          "metadata": {
+            "distinct": 0,
+            "average": null,
+            "max": null,
+            "min": null,
+            "variance": null,
+            "mode": null
+          }
+        },
+        {
+          "name": "payment_date",
+          "nativeType": "timestamp without time zone",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 0,
+            "max": null,
+            "min": null,
+            "mode": null
+          }
+        },
+        {
+          "name": "payment_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": null
+        }
+      ],
+      "constraints": {
+        "primary_key": [],
+        "foreign_key": [
+          {
+            "name": "payment_p2007_05_customer_id_fkey",
+            "column": "customer_id",
+            "refer_schema": "public",
+            "refer_table": "customer",
+            "refer_column": "customer_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "payment_p2007_05_rental_id_fkey",
+            "column": "rental_id",
+            "refer_schema": "public",
+            "refer_table": "rental",
+            "refer_column": "rental_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "payment_p2007_05_staff_id_fkey",
+            "column": "staff_id",
+            "refer_schema": "public",
+            "refer_table": "staff",
+            "refer_column": "staff_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 0
+      }
+    },
+    {
+      "name": "payment_p2007_06",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "customer_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": null
+        },
+        {
+          "name": "staff_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": null
+        },
+        {
+          "name": "rental_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": null
+        },
+        {
+          "name": "amount",
+          "nativeType": "numeric",
+          "type": "decimal",
+          "properties": {
+            "nullable": true,
+            "precision": 5
+          },
+          "metadata": {
+            "distinct": 0,
+            "average": null,
+            "max": null,
+            "min": null,
+            "variance": null,
+            "mode": null
+          }
+        },
+        {
+          "name": "payment_date",
+          "nativeType": "timestamp without time zone",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 0,
+            "max": null,
+            "min": null,
+            "mode": null
+          }
+        },
+        {
+          "name": "payment_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": null
+        }
+      ],
+      "constraints": {
+        "primary_key": [],
+        "foreign_key": [
+          {
+            "name": "payment_p2007_06_customer_id_fkey",
+            "column": "customer_id",
+            "refer_schema": "public",
+            "refer_table": "customer",
+            "refer_column": "customer_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "payment_p2007_06_rental_id_fkey",
+            "column": "rental_id",
+            "refer_schema": "public",
+            "refer_table": "rental",
+            "refer_column": "rental_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "payment_p2007_06_staff_id_fkey",
+            "column": "staff_id",
+            "refer_schema": "public",
+            "refer_table": "staff",
+            "refer_column": "staff_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 0
+      }
+    },
+    {
+      "name": "rental",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "rental_date",
+          "nativeType": "timestamp without time zone",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 15815,
+            "max": "2006-02-14 15:16:03",
+            "min": "2005-05-24 22:53:30",
+            "mode": "2006-02-14 15:16:03",
+            "semanticClass": "result"
+          }
+        },
+        {
+          "name": "inventory_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "region"
+          }
+        },
+        {
+          "name": "customer_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "return_date",
+          "nativeType": "timestamp without time zone",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 15837,
+            "max": "2005-09-02 02:35:22",
+            "min": "2005-05-25 23:55:21",
+            "mode": "2005-06-03 06:05:10",
+            "semanticClass": "result"
+          }
+        },
+        {
+          "name": "staff_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "rental_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "last_update",
+          "nativeType": "timestamp without time zone",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 2,
+            "max": "2006-02-23 04:12:08",
+            "min": "2006-02-15 21:30:53",
+            "mode": "2006-02-15 21:30:53",
+            "semanticClass": "result"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "rental_pkey",
+            "column": "rental_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": [
+          {
+            "name": "rental_customer_id_fkey",
+            "column": "customer_id",
+            "refer_schema": "public",
+            "refer_table": "customer",
+            "refer_column": "customer_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "rental_inventory_id_fkey",
+            "column": "inventory_id",
+            "refer_schema": "public",
+            "refer_table": "inventory",
+            "refer_column": "inventory_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "rental_staff_id_fkey",
+            "column": "staff_id",
+            "refer_schema": "public",
+            "refer_table": "staff",
+            "refer_column": "staff_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 16044
+      }
+    },
+    {
+      "name": "staff",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "first_name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 45
+          },
+          "metadata": {
+            "distinct": 2,
+            "rowCount": 2,
+            "sampleCount": 2,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "last_name",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 45
+          },
+          "metadata": {
+            "distinct": 2,
+            "rowCount": 2,
+            "sampleCount": 2,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "address_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "age"
+          }
+        },
+        {
+          "name": "email",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 50
+          },
+          "metadata": {
+            "distinct": 2,
+            "rowCount": 2,
+            "sampleCount": 2,
+            "samples": [],
+            "entityType": "email",
+            "semanticClass": "type"
+          }
+        },
+        {
+          "name": "store_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "username",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 16
+          },
+          "metadata": {
+            "distinct": 2,
+            "rowCount": 2,
+            "sampleCount": 2,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "name"
+          }
+        },
+        {
+          "name": "password",
+          "nativeType": "character varying",
+          "type": "text",
+          "properties": {
+            "nullable": true,
+            "maxLength": 40
+          },
+          "metadata": {
+            "distinct": 1,
+            "rowCount": 2,
+            "sampleCount": 1,
+            "samples": [],
+            "entityType": "name",
+            "semanticClass": "position"
+          }
+        },
+        {
+          "name": "picture",
+          "nativeType": "bytea",
+          "type": "unknown",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 1,
+            "semanticClass": "description"
+          }
+        },
+        {
+          "name": "staff_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "active",
+          "nativeType": "boolean",
+          "type": "bool",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 1,
+            "entityType": "boolean",
+            "categories": {
+              "true": 2
+            },
+            "semanticClass": "jockey"
+          }
+        },
+        {
+          "name": "last_update",
+          "nativeType": "timestamp without time zone",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 1,
+            "max": "2006-02-15 04:57:16",
+            "min": "2006-02-15 04:57:16",
+            "mode": "2006-02-15 04:57:16",
+            "semanticClass": "club"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "staff_pkey",
+            "column": "staff_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": [
+          {
+            "name": "staff_address_id_fkey",
+            "column": "address_id",
+            "refer_schema": "public",
+            "refer_table": "address",
+            "refer_column": "address_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "staff_store_id_fkey",
+            "column": "store_id",
+            "refer_schema": "public",
+            "refer_table": "store",
+            "refer_column": "store_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 2
+      }
+    },
+    {
+      "name": "store",
+      "schema": "public",
+      "columns": [
+        {
+          "name": "manager_staff_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "address_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "order"
+          }
+        },
+        {
+          "name": "store_id",
+          "nativeType": "integer",
+          "type": "key",
+          "properties": {
+            "nullable": true,
+            "precision": 32
+          },
+          "metadata": {
+            "semanticClass": "rank"
+          }
+        },
+        {
+          "name": "last_update",
+          "nativeType": "timestamp without time zone",
+          "type": "time",
+          "properties": {
+            "nullable": true
+          },
+          "metadata": {
+            "distinct": 1,
+            "max": "2006-02-15 04:57:12",
+            "min": "2006-02-15 04:57:12",
+            "mode": "2006-02-15 04:57:12",
+            "semanticClass": "product"
+          }
+        }
+      ],
+      "constraints": {
+        "primary_key": [
+          {
+            "name": "store_pkey",
+            "column": "store_id",
+            "order": 1
+          }
+        ],
+        "foreign_key": [
+          {
+            "name": "store_address_id_fkey",
+            "column": "address_id",
+            "refer_schema": "public",
+            "refer_table": "address",
+            "refer_column": "address_id",
+            "order": 1,
+            "unique_order": 1
+          },
+          {
+            "name": "store_manager_staff_id_fkey",
+            "column": "manager_staff_id",
+            "refer_schema": "public",
+            "refer_table": "staff",
+            "refer_column": "staff_id",
+            "order": 1,
+            "unique_order": 1
+          }
+        ]
+      },
+      "metadata": {
+        "rowCount": 2
+      }
+    }
+  ]
+}
